@@ -57,7 +57,7 @@ class RatesRequest extends Command implements Isolatable
                 $graph[] = $avg;
             }
 
-            $coin->graph = $graph;
+            $coin->graph = json_encode($graph);
             $coin->change = $change;
             $coin->rate = $rate;
 
