@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->integer('rate')->nullable();
-            $table->integer('change')->nullable();
+            $table->float('rate')->nullable();
+            $table->float('change')->nullable();
             $table->json('graph')->nullable();
             $table->timestamps();
         });

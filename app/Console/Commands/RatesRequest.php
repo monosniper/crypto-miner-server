@@ -45,7 +45,8 @@ class RatesRequest extends Command implements Isolatable
             $request = new Request('GET', "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=$coin->slug&tsyms=USD", $headers);
             $res = $client->sendAsync($request)->wait();
 
-            $data = json_decode($res->getBody())->RAW[$coin->slug]->USD;
+            $slug = $coin->slug;
+            $data = json_decode($res->getBody())->RAW->$slug->USD;
 
             $change = $data->CHANGEPCTDAY;
             $rate = $data->PRICE;
