@@ -41,6 +41,7 @@ class CoinResource extends Resource
                     ->label('Иконка')
                     ->image()
                     ->imageEditor()
+                    ->collection('image')
                     ->directory('coins')
             ]);
     }
@@ -49,7 +50,8 @@ class CoinResource extends Resource
     {
         return $table
             ->columns([
-                SpatieMediaLibraryImageColumn::make('image'),
+                SpatieMediaLibraryImageColumn::make('image')
+                    ->collection('image'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
