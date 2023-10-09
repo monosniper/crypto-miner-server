@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ConvertationResource;
-use App\Models\Convertation;
+use App\Http\Resources\WithdrawResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ConvertationController extends Controller
+class WithdrawController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $convertations = Auth::user()->convertations;
-        $collection = ConvertationResource::collection($convertations);
+        $withdraws = Auth::user()->withdraws;
+        $collection = WithdrawResource::collection($withdraws);
 
         return response()->json($collection);
     }

@@ -35,12 +35,10 @@ class ConvertationResource extends Resource
                 Forms\Components\Select::make('from_id')
                     ->label('Монета 1')
                     ->relationship(name: 'from', titleAttribute: 'name')
-                    ->searchable(['name'])
                     ->required(),
                 Forms\Components\Select::make('to_id')
                     ->label('Монета 2')
                     ->relationship(name: 'to', titleAttribute: 'name')
-                    ->searchable(['name'])
                     ->required(),
                 Forms\Components\TextInput::make('amount_from')
                     ->label('Кол-во')
@@ -87,7 +85,7 @@ class ConvertationResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

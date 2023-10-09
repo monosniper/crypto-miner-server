@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
 use App\Http\Controllers\Api\V1\ConvertationController;
+use App\Http\Controllers\Api\V1\WithdrawController;
 use App\Http\Middleware\AuthenticateOnceWithBasicAuth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,7 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('me', [AuthController::class, 'me']);
 
                     Route::apiResource('convertations', ConvertationController::class);
+                    Route::apiResource('withdraws', WithdrawController::class);
                 });
 
             Route::apiResource('coins', CoinController::class);
@@ -29,6 +31,7 @@ Route::prefix('v1')
                 Route::get('me', [AuthController::class, 'me']);
 
                 Route::apiResource('convertations', ConvertationController::class);
+                Route::apiResource('withdraws', WithdrawController::class);
             });
 
         Route::apiResource('coins', CoinController::class);

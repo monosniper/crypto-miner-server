@@ -23,7 +23,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->domain('admin.hogyx.io')
+//            ->domain('admin.hogyx.io')
             ->spa()
             ->default()
             ->id('admin')

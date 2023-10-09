@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Coin::class, 'from_id');
             $table->foreignIdFor(Coin::class, 'to_id');
-            $table->integer('amount_from');
-            $table->integer('amount_to');
+            $table->float('amount_from');
+            $table->float('amount_to');
             $table->timestamps();
         });
     }
