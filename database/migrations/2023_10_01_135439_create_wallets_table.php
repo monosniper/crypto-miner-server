@@ -15,8 +15,7 @@ return new class extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->bigInteger('balance')->default(0);
-            $table->json('values');
+            $table->json('balance')->nullable();
             $table->timestamps();
         });
     }

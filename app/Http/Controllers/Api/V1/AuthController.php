@@ -33,7 +33,7 @@ class AuthController extends Controller
 
     public function me(): JsonResponse
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('wallet');
         $resource = new UserResource($user);
 
         return response()->json($resource);

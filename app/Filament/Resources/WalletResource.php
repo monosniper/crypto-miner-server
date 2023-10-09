@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\WalletResource\Pages;
 use App\Filament\Resources\WalletResource\RelationManagers;
+use App\Models\Coin;
 use App\Models\Wallet;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -32,13 +33,18 @@ class WalletResource extends Resource
                     ->relationship(name: 'user', titleAttribute: 'name')
                     ->searchable(['name'])
                     ->required(),
-                Forms\Components\TextInput::make('balance')
-                    ->label('Баланс USDT')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\KeyValue::make('values')
+                Forms\Components\KeyValue::make('balance')
                     ->label('Баланс')
+                    ->default(function () {
+                        $coins = Coin::all()->pluck('slug');
+                        $array = [];
+
+                        foreach ($coins as $coin) {
+                            $array[$coin] = 0;
+                        }
+
+                        return $array;
+                    })
                     ->keyLabel('Валюта')
                     ->valueLabel('Баланс')
                     ->addable(false)
@@ -55,9 +61,10 @@ class WalletResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Пользователь')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('balance')
+                Tables\Columns\TextColumn::make('balance.USDT')
                     ->label('Баланс')
                     ->numeric()
+                    ->money()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
