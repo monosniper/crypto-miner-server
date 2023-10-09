@@ -28,4 +28,8 @@ class AuthController extends Controller
             ]
         ]);
     }
+
+    public function sign() {
+        return view('welcome');
+    }
 }

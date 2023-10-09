@@ -25,4 +25,9 @@ class Coin extends Model implements HasMedia
             ->addMediaCollection('image')
             ->singleFile();
     }
+
+    public function getIconUrl(): string
+    {
+        return $this->getFirstMediaUrl('image');
+    }
 }
