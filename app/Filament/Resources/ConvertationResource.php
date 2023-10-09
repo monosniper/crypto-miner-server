@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\WalletResource\Pages;
-use App\Filament\Resources\WalletResource\RelationManagers;
-use App\Models\Wallet;
+use App\Filament\Resources\ConvertationResource\Pages;
+use App\Filament\Resources\ConvertationResource\RelationManagers;
+use App\Models\Convertation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,15 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class WalletResource extends Resource
+class ConvertationResource extends Resource
 {
-    protected static ?string $model = Wallet::class;
+    protected static ?string $model = Convertation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-rectangle-stack';
-
-    protected static ?string $navigationLabel = 'Кошельки';
-
-    protected static ?string $navigationGroup = 'Статистика';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -32,19 +28,20 @@ class WalletResource extends Resource
                     ->relationship(name: 'user', titleAttribute: 'name')
                     ->searchable(['name'])
                     ->required(),
-                Forms\Components\TextInput::make('balance')
-                    ->label('Баланс USDT')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\KeyValue::make('values')
-                    ->label('Баланс')
-                    ->keyLabel('Валюта')
-                    ->valueLabel('Баланс')
-                    ->addable(false)
-                    ->deletable(false)
-                    ->editableKeys(false)
+                Forms\Components\Select::make('from_id')
+                    ->label('Монета 1')
+                    ->relationship(name: 'from', titleAttribute: 'name')
+                    ->searchable(['name'])
                     ->required(),
+                Forms\Components\Select::make('to_id')
+                    ->label('Монета 2')
+                    ->relationship(name: 'to', titleAttribute: 'name')
+                    ->searchable(['name'])
+                    ->required(),
+                Forms\Components\TextInput::make('amount_from')
+                    ->label('Кол-во')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -55,8 +52,20 @@ class WalletResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Пользователь')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('balance')
-                    ->label('Баланс')
+                Tables\Columns\TextColumn::make('from.name')
+                    ->label('Монета 1')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('to.name')
+                    ->label('Монета 2')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount_from')
+                    ->label('Кол-во 1')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount_to')
+                    ->label('Кол-во 2')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -93,9 +102,9 @@ class WalletResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListWallets::route('/'),
-            'create' => Pages\CreateWallet::route('/create'),
-            'edit' => Pages\EditWallet::route('/{record}/edit'),
+            'index' => Pages\ListConvertations::route('/'),
+            'create' => Pages\CreateConvertation::route('/create'),
+            'edit' => Pages\EditConvertation::route('/{record}/edit'),
         ];
     }
 }

@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CoinResource;
-use App\Models\Coin;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\ConvertationResource;
+use App\Models\Convertation;
 use Illuminate\Http\Request;
 
-class CoinController extends Controller
+class ConvertationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        $coins = Coin::all()->load('media');
-        $collection = CoinResource::collection($coins);
+        $convertations = Convertation::all();
+        $collection = ConvertationResource::collection($convertations);
 
         return response()->json($collection);
     }

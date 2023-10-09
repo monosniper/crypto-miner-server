@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CoinResource;
-use App\Models\Coin;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\ArticleResource;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
-class CoinController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        $coins = Coin::all()->load('media');
-        $collection = CoinResource::collection($coins);
+        $articles = Article::all();
+        $collection = ArticleResource::collection($articles);
 
         return response()->json($collection);
     }

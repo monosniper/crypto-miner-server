@@ -14,9 +14,10 @@ class CoinSeeder extends Seeder
     public function run(): void
     {
         $coins = [
+            ['name' => 'Tether', 'slug' => 'USDT'],
+
             ['name' => 'BTC', 'slug' => 'BTC'],
             ['name' => 'ETH', 'slug' => 'ETH'],
-            ['name' => 'Tether', 'slug' => 'USDT'],
             ['name' => 'BNB', 'slug' => 'BNB'],
             ['name' => 'XRP', 'slug' => 'XRP'],
             ['name' => 'USDC', 'slug' => 'USDC'],
