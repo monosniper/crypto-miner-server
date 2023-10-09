@@ -13,8 +13,8 @@ class CreateConvertation extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $coin_from = Coin::find($data['coin_from']);
-        $coin_to = Coin::find($data['coin_to']);
+        $coin_from = Coin::find($data['from_id']);
+        $coin_to = Coin::find($data['to_id']);
 
         $data['amount_to'] = ($data['amount_from'] * $coin_from->rate) / $coin_to->rate;
 
