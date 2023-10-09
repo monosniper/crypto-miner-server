@@ -15,6 +15,8 @@ class Coin extends Model implements HasMedia
         'name',
         'slug',
         'rate',
+        'change',
+        'graph',
     ];
 
     public function registerMediaCollections(): void

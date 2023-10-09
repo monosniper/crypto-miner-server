@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Coin;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Console\Command;
@@ -32,8 +33,35 @@ class RatesRequest extends Command implements Isolatable
         $headers = [
             'authorization' => env('CRYPTOCOMPARE_API_KEY')
         ];
-        $request = new Request('GET', 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=23', $headers);
-        $res = $client->sendAsync($request)->wait();
-        echo $res->getBody();
+
+        $coins = Coin::all();
+
+        foreach ($coins as $coin) {
+            $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histohour?fsym=$coin->slug&tsym=USD&limit=23", $headers);
+            $res = $client->sendAsync($request)->wait();
+
+            $graph_data = json_decode($res->getBody())->Data->Data;
+
+            $request = new Request('GET', "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=$coin->slug&tsyms=USD", $headers);
+            $res = $client->sendAsync($request)->wait();
+
+            $data = json_decode($res->getBody())->RAW[$coin->slug]->USD;
+
+            $change = $data->CHANGEPCTDAY;
+            $rate = $data->PRICE;
+
+            $graph = [];
+
+            foreach ($graph_data as $hour) {
+                $avg = ($hour->low + $hour->high) / 2;
+                $graph[] = $avg;
+            }
+
+            $coin->graph = $graph;
+            $coin->change = $change;
+            $coin->rate = $rate;
+
+            $coin->save();
+        }
     }
 }
