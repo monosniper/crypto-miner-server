@@ -17,7 +17,11 @@ class ConvertationResource extends Resource
 {
     protected static ?string $model = Convertation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-scale';
+
+    protected static ?string $navigationLabel = 'Конвертации';
+
+    protected static ?string $navigationGroup = 'Статистика';
 
     public static function form(Form $form): Form
     {

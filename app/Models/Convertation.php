@@ -27,4 +27,9 @@ class Convertation extends Model
     {
         return $this->belongsTo(Coin::class, 'to_id');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
