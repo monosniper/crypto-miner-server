@@ -20,7 +20,7 @@ class CoinResource extends JsonResource
             'slug' => $this->slug,
             'rate' => $this->rate,
             'change' => $this->change,
-            'graph' => $this->graph,
+            'graph' => json_decode($this->graph),
             'icon_url' => $this->getIconUrl(),
         ];
     }
