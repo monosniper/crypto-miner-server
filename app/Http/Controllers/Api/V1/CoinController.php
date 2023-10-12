@@ -7,6 +7,7 @@ use App\Http\Resources\CoinResource;
 use App\Models\Coin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoinController extends Controller
 {
@@ -19,6 +20,23 @@ class CoinController extends Controller
         $collection = CoinResource::collection($coins);
 
         return response()->json($collection);
+    }
+
+    public function positions(): JsonResponse
+    {
+        return response()->json(Auth::user()->coin_positions);
+    }
+
+    public function storePositions(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $user->coin_positions = json_decode($request->getContent());
+        $user->save();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     /**
