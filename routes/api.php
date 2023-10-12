@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
 use App\Http\Controllers\Api\V1\ConvertationController;
+use App\Http\Controllers\Api\V1\ServerController;
 use App\Http\Controllers\Api\V1\WithdrawController;
 use App\Http\Middleware\AuthenticateOnceWithBasicAuth;
 use Illuminate\Support\Facades\Route;
@@ -12,8 +13,11 @@ Route::domain('api.hogyx.io')->group(function () {
     Route::prefix('v1')
         ->group(function () {
             Route::middleware(AuthenticateOnceWithBasicAuth::class)
+                ->prefix('me')
                 ->group(function () {
-                    Route::get('me', [AuthController::class, 'me']);
+                    Route::get('/', [AuthController::class, 'me']);
+                    Route::get('wallet', [AuthController::class, 'wallet']);
+                    Route::get('servers', [AuthController::class, 'servers']);
 
                     Route::apiResource('convertations', ConvertationController::class);
                     Route::apiResource('withdraws', WithdrawController::class);
@@ -21,14 +25,18 @@ Route::domain('api.hogyx.io')->group(function () {
 
             Route::apiResource('coins', CoinController::class);
             Route::apiResource('articles', ArticleController::class);
+            Route::apiResource('servers', ServerController::class);
         });
     });
 
 Route::prefix('v1')
     ->group(function () {
         Route::middleware(AuthenticateOnceWithBasicAuth::class)
+            ->prefix('me')
             ->group(function () {
-                Route::get('me', [AuthController::class, 'me']);
+                Route::get('/', [AuthController::class, 'me']);
+                Route::get('wallet', [AuthController::class, 'wallet']);
+                Route::get('servers', [AuthController::class, 'servers']);
 
                 Route::apiResource('convertations', ConvertationController::class);
                 Route::apiResource('withdraws', WithdrawController::class);
@@ -36,4 +44,5 @@ Route::prefix('v1')
 
         Route::apiResource('coins', CoinController::class);
         Route::apiResource('articles', ArticleController::class);
+        Route::apiResource('servers', ServerController::class);
     });

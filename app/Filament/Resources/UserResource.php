@@ -63,6 +63,11 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('donates_amount_sum')
+                    ->label('Сумма пополнений')
+                    ->state(fn (User $user) => $user->donates->sum('amount'))
+                    ->sortable()
+                    ->money(),
                 Tables\Columns\IconColumn::make('isAdmin')
                     ->label('Админ')
                     ->sortable()

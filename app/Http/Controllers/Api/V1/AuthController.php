@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ServerResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\WalletResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +35,24 @@ class AuthController extends Controller
 
     public function me(): JsonResponse
     {
-        $user = Auth::user()->load('wallet');
+        $user = Auth::user();
         $resource = new UserResource($user);
+
+        return response()->json($resource);
+    }
+
+    public function wallet(): JsonResponse
+    {
+        $wallet = Auth::user()->wallet;
+        $resource = new WalletResource($wallet);
+
+        return response()->json($resource);
+    }
+
+    public function servers(): JsonResponse
+    {
+        $servers = Auth::user()->servers;
+        $resource = ServerResource::collection($servers);
 
         return response()->json($resource);
     }

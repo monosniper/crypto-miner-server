@@ -5,8 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -27,6 +29,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'isAdmin',
+        'ref_id',
     ];
 
     /**
@@ -64,8 +67,28 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Withdraw::class);
     }
 
+    public function servers(): BelongsToMany
+    {
+        return $this->belongsToMany(Server::class, 'users_servers')
+            ->withPivot([
+                'work_started_at',
+                'active_until',
+                'status',
+            ]);
+    }
+
     public function wallet(): hasOne
     {
         return $this->hasOne(Wallet::class);
+    }
+
+    public function refUser(): HasOneThrough
+    {
+        return $this->hasOneThrough(Ref::class, User::class);
+    }
+
+    public function donates(): HasMany
+    {
+        return $this->hasMany(Donate::class);
     }
 }
