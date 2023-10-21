@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ServerResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletResource;
@@ -31,6 +32,12 @@ class AuthController extends Controller
                 'email' => 'The provided credentials do not match our records.',
             ]
         ]);
+    }
+
+    public function update(UpdateUserRequest $request): JsonResponse {
+        $user = Auth::user();
+
+        return response()->json(['success' => $user->update($request->validated())]);
     }
 
     public function me(): JsonResponse

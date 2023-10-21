@@ -30,6 +30,7 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'isAdmin',
         'ref_id',
+        'coin_positions',
     ];
 
     /**

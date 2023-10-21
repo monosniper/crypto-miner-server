@@ -49,9 +49,11 @@ class RefResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('users_count')
                     ->label('Кол-во рег-ий')
+                    ->sortable()
                     ->counts('users'),
                 Tables\Columns\TextColumn::make('donates_total')
                     ->label('Сумма пополнений')
+                    ->sortable()
                     ->state(fn (Ref $ref) => $ref->totalDonates())
                     ->money(),
                 Tables\Columns\TextColumn::make('created_at')

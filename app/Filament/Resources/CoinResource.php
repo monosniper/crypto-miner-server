@@ -51,6 +51,7 @@ class CoinResource extends Resource
         return $table
             ->columns([
                 SpatieMediaLibraryImageColumn::make('image')
+                    ->label('Иконка')
                     ->collection('image'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')

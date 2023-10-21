@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servers', function (Blueprint $table) {
+        Schema::create('server_possibilities', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('price');
-            $table->integer('year_price');
-            $table->boolean('nft')->default(false);
-            $table->boolean('isHot')->default(false);
-            $table->json('possibilities')->nullable();
+            $table->foreignIdFor(\App\Models\Server::class);
+            $table->foreignIdFor(\App\Models\Possibility::class);
+            $table->integer('sort')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servers');
+        Schema::dropIfExists('server_possibilities');
     }
 };

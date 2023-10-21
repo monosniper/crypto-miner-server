@@ -16,11 +16,10 @@ Route::domain('api.hogyx.io')->group(function () {
                 ->prefix('me')
                 ->group(function () {
                     Route::get('/', [AuthController::class, 'me']);
+                    Route::put('/', [AuthController::class, 'update']);
+
                     Route::get('wallet', [AuthController::class, 'wallet']);
                     Route::get('servers', [AuthController::class, 'servers']);
-
-                    Route::get('coins/positions', [CoinController::class, 'positions']);
-                    Route::post('coins/positions', [CoinController::class, 'storePositions']);
 
                     Route::apiResource('convertations', ConvertationController::class);
                     Route::apiResource('withdraws', WithdrawController::class);

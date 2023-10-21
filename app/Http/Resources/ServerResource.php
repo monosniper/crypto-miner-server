@@ -16,6 +16,7 @@ class ServerResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'icon_url' => $this->getIconUrl(),
             'title' => $this->title,
             'price' => $this->price,
             'year_price' => $this->year_price,

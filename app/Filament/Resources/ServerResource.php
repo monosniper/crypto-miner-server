@@ -6,9 +6,13 @@ use App\Filament\Resources\ServerResource\Pages;
 use App\Filament\Resources\ServerResource\RelationManagers;
 use App\Models\Server;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -29,6 +33,12 @@ class ServerResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLength(191),
+                SpatieMediaLibraryFileUpload::make('icon')
+                    ->label('Иконка')
+                    ->image()
+                    ->imageEditor()
+                    ->collection('icon')
+                    ->directory('servers'),
                 Forms\Components\TextInput::make('price')
                     ->label('Цена за месяц')
                     ->required()
@@ -39,12 +49,26 @@ class ServerResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('$'),
+
                 Forms\Components\Toggle::make('nft')
                     ->label('Может фармить НФТ')
                     ->required(),
                 Forms\Components\Toggle::make('isHot')
                     ->label('Рекомендовано')
                     ->required(),
+                Repeater::make('serverPossibilities')
+                    ->label('Возможности')
+                    ->addActionLabel('Добавить возможность')
+                    ->reorderableWithButtons()
+                    ->columns(2)
+                    ->orderColumn('sort')
+                    ->relationship()
+                    ->schema([
+                        Forms\Components\Select::make('possibility_id')
+                            ->label('Возможность')
+                            ->relationship(name: 'possibility', titleAttribute: 'name')
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -52,6 +76,9 @@ class ServerResource extends Resource
     {
         return $table
             ->columns([
+                SpatieMediaLibraryImageColumn::make('icon')
+                    ->label('Иконка')
+                    ->collection('icon'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Название')
                     ->searchable(),
@@ -61,7 +88,7 @@ class ServerResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('year_price')
                     ->label('Цена в год')
-                    ->numeric()
+                    ->money()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('nft')
                     ->label('НФТ')
