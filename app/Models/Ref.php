@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,5 +35,14 @@ class Ref extends Model
         }
 
         return $total;
+    }
+
+    protected static function booted(): void
+    {
+        if (auth()->check()) {
+            static::addGlobalScope('team', function (Builder $query) {
+                $query->whereBelongsTo(auth()->user()->team);
+            });
+        }
     }
 }

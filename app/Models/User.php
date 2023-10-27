@@ -30,6 +30,7 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'isAdmin',
         'ref_id',
+        'team_id',
         'coin_positions',
     ];
 
@@ -92,5 +93,10 @@ class User extends Authenticatable implements FilamentUser
     public function donates(): HasMany
     {
         return $this->hasMany(Donate::class);
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 }

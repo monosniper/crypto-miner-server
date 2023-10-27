@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListWithdraws extends ListRecords
 {
     protected static string $resource = WithdrawResource::class;
+    protected static ?string $title = "Выводы";
 
     protected function getHeaderActions(): array
     {

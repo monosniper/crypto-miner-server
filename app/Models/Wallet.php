@@ -23,4 +23,9 @@ class Wallet extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function nfts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Nft::class, table: 'wallets_nfts');
+    }
 }

@@ -29,12 +29,15 @@ class WithdrawResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship(name: 'user', titleAttribute: 'name')
+                    ->label("Пользователь")
                     ->searchable(['name'])
                     ->required(),
                 Forms\Components\TextInput::make('wallet')
+                    ->label("Кошелек")
                     ->required()
                     ->maxLength(1000),
                 Forms\Components\TextInput::make('amount')
+                    ->label("Сумма")
                     ->required()
                     ->numeric(),
             ]);
@@ -45,17 +48,22 @@ class WithdrawResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label("Пользователь")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('wallet')
+                    ->label("Кошелек")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->numeric()
+                    ->label("Сумма")
+                    ->money()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label("Дата создания")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label("Посл. Изменение")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
