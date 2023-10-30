@@ -2,43 +2,32 @@
 
 namespace App\Models;
 
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Team extends Authenticatable implements FilamentUser
+class Team extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'email',
-        'password',
+        'user_id',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'password' => 'hashed',
-    ];
-
-    public function members(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function members(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(User::class);
     }
 
-    public function canAccessPanel(Panel $panel): bool
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return true;
+        return $this->belongsTo(User::class);
+    }
+
+    public function getTotalRefsCount() {
+        $ref_ids = $this->members->pluck('ref.id');
+        $users = User::whereIn('ref_id', $ref_ids)->get();
+
+        return $users->count();
     }
 }

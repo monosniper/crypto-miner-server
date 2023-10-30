@@ -30,18 +30,20 @@ class PrPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->authPasswordBroker('teams')
+            ->brandName('Hogyx PR Panel')
+            ->brandLogo(asset('images/logo.svg'))
+            ->favicon(asset('images/logo.svg'))
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/PR/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/PR/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/PR/Resources'), for: 'App\\Filament\\PR\\Resources')
+            ->discoverPages(in: app_path('Filament/PR/Pages'), for: 'App\\Filament\\PR\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/PR/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/PR/Widgets'), for: 'App\\Filament\\PR\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -54,7 +56,7 @@ class PrPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->authGuard('team')
+//            ->authGuard('team')
             ->authMiddleware([
                 Authenticate::class,
             ]);

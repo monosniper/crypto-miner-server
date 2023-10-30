@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('refs', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->timestamps();
         });
     }

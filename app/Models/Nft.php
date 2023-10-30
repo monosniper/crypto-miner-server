@@ -22,4 +22,9 @@ class Nft extends Model implements HasMedia
             ->addMediaCollection('image')
             ->singleFile();
     }
+
+    public function getUrl(): string
+    {
+        return $this->getFirstMediaUrl();
+    }
 }

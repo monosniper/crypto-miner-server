@@ -25,18 +25,13 @@ class TeamResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('user_id')
+                    ->label('Пользователь')
+                    ->relationship(name: 'user', titleAttribute: 'name')
+                    ->searchable(['name'])
+                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->label("Название")
-                    ->required()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('email')
-                    ->label("Почта")
-                    ->email()
-                    ->required()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('password')
-                    ->label("Пароль")
-                    ->password()
                     ->required()
                     ->maxLength(191),
             ]);
@@ -46,12 +41,16 @@ class TeamResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Пользователь')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label("Название")
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label("Почта")
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('members_count')
+                    ->label("Кол-во участников")
+                    ->sortable()
+                    ->counts('members'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Дата создания")
                     ->dateTime()

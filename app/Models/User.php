@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,6 +32,7 @@ class User extends Authenticatable implements FilamentUser
         'isAdmin',
         'ref_id',
         'team_id',
+        'nft_id',
         'coin_positions',
     ];
 
@@ -57,7 +59,9 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->isAdmin;
+        return $panel->getId() === 'admin'
+            ? $this->isAdmin
+            : (bool) $this->team;
     }
 
     public function convertations(): HasMany
@@ -90,13 +94,33 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasOneThrough(Ref::class, User::class);
     }
 
+    public function refs(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, Ref::class);
+    }
+
     public function donates(): HasMany
     {
         return $this->hasMany(Donate::class);
     }
 
-    public function team(): BelongsTo
+    public function team(): HasOne
     {
-        return $this->belongsTo(Team::class);
+        return $this->hasOne(Team::class);
+    }
+
+    public function ref(): HasOne
+    {
+        return $this->hasOne(Ref::class);
+    }
+
+    public function nfts(): BelongsToMany
+    {
+        return $this->belongsToMany(Nft::class, 'users_nfts');
+    }
+
+    public function avatar(): BelongsTo
+    {
+        return $this->belongsTo(Nft::class);
     }
 }

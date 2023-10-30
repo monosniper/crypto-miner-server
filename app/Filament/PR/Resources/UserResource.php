@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\PR\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\PR\Resources\UserResource\Pages;
+use App\Filament\PR\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
-use Filament\Tables\Filters\Filter;
+use Filament\Tables\Columns\Summarizers\Count;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -22,7 +20,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-user-group';
 
-    protected static ?string $navigationLabel = 'Пользователи';
+    protected static ?string $navigationLabel = 'Члены команды';
 
     public static function form(Form $form): Form
     {
@@ -42,15 +40,13 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(191),
-                Forms\Components\Toggle::make('isAdmin')
-                    ->label('Админ')
-                    ->required(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('team_id', auth()->user()->team->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Имя')
@@ -58,15 +54,17 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->label('Почта')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('donates_amount_sum')
-                    ->label('Сумма пополнений')
-                    ->state(fn (User $user) => $user->donates->sum('amount'))
-                    ->sortable()
-                    ->money(),
-                Tables\Columns\IconColumn::make('isAdmin')
-                    ->label('Админ')
-                    ->sortable()
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('ref.code')
+                    ->label('Реф. код')
+                    ->copyable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('refs_count')
+                    ->label('Кол-во приглашенных')
+                    ->counts('refs'),
+                Tables\Columns\TextColumn::make('ref.code')
+                    ->label('Реф. код')
+                    ->copyable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -79,13 +77,10 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Filter::make('isAdmin')
-                    ->label('Админ')
-                    ->query(fn (Builder $query) => $query->where('isAdmin', true)),
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
