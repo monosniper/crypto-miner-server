@@ -37,11 +37,33 @@ class RatesRequest extends Command implements Isolatable
         $coins = Coin::all();
 
         foreach ($coins as $coin) {
-            $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histohour?fsym=$coin->slug&tsym=USD&limit=23", $headers);
+            // Graph for year
+            $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histoday?fsym=$coin->slug&tsym=USD&limit=365", $headers);
             $res = $client->sendAsync($request)->wait();
 
             $graph_data = json_decode($res->getBody())->Data->Data;
 
+            $graph = [];
+
+            foreach ($graph_data as $day) {
+                $avg = ($day->low + $day->high) / 2;
+                $graph[] = $avg;
+            }
+
+            // Graph today
+            $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histohour?fsym=$coin->slug&tsym=USD&limit=23", $headers);
+            $res = $client->sendAsync($request)->wait();
+
+            $graph_today_data = json_decode($res->getBody())->Data->Data;
+
+            $graph_today = [];
+
+            foreach ($graph_today_data as $hour) {
+                $avg = ($hour->low + $hour->high) / 2;
+                $graph_today[] = $avg;
+            }
+
+            // Capacity & price
             $request = new Request('GET', "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=$coin->slug&tsyms=USD", $headers);
             $res = $client->sendAsync($request)->wait();
 
@@ -51,14 +73,9 @@ class RatesRequest extends Command implements Isolatable
             $change = $data->CHANGEPCTDAY;
             $rate = $data->PRICE;
 
-            $graph = [];
-
-            foreach ($graph_data as $hour) {
-                $avg = ($hour->low + $hour->high) / 2;
-                $graph[] = $avg;
-            }
-
+            // Save to coin
             $coin->graph = json_encode($graph);
+            $coin->graph_today = json_encode($graph_today);
             $coin->change = $change;
             $coin->rate = $rate;
 

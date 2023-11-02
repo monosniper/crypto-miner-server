@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\NftResource;
 use App\Http\Resources\ServerResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletResource;
@@ -62,5 +63,12 @@ class AuthController extends Controller
         $resource = ServerResource::collection($servers);
 
         return response()->json($resource);
+    }
+
+    public function invest(): JsonResponse
+    {
+        return response()->json([
+            'url' => 'https://www.google.com'
+        ]);
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
 use App\Http\Controllers\Api\V1\ConvertationController;
+use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\ServerController;
 use App\Http\Controllers\Api\V1\WithdrawController;
 use App\Http\Middleware\AuthenticateOnceWithBasicAuth;
@@ -21,6 +22,12 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('wallet', [AuthController::class, 'wallet']);
                     Route::get('servers', [AuthController::class, 'servers']);
 
+                    Route::get('nft', [NftController::class, 'nft']);
+                    Route::post('nft', [NftController::class, 'withdraw_nft']);
+
+                    Route::get('coins', [CoinController::class, 'positions']);
+                    Route::put('coins', [CoinController::class, 'storePositions']);
+
                     Route::apiResource('convertations', ConvertationController::class);
                     Route::apiResource('withdraws', WithdrawController::class);
                 });
@@ -28,6 +35,8 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::apiResource('coins', CoinController::class);
             Route::apiResource('articles', ArticleController::class);
             Route::apiResource('servers', ServerController::class);
+
+            Route::get('invest', [AuthController::class, 'invest']);
         });
     });
 
@@ -37,11 +46,16 @@ Route::prefix('v1')
             ->prefix('me')
             ->group(function () {
                 Route::get('/', [AuthController::class, 'me']);
+                Route::put('/', [AuthController::class, 'update']);
+
                 Route::get('wallet', [AuthController::class, 'wallet']);
                 Route::get('servers', [AuthController::class, 'servers']);
 
-                Route::get('coins/positions', [CoinController::class, 'positions']);
-                Route::post('coins/positions', [CoinController::class, 'storePositions']);
+                Route::get('nft', [NftController::class, 'nft']);
+                Route::post('nft', [NftController::class, 'withdraw_nft']);
+
+                Route::get('coins', [CoinController::class, 'positions']);
+                Route::put('coins', [CoinController::class, 'storePositions']);
 
                 Route::apiResource('convertations', ConvertationController::class);
                 Route::apiResource('withdraws', WithdrawController::class);
@@ -50,4 +64,6 @@ Route::prefix('v1')
         Route::apiResource('coins', CoinController::class);
         Route::apiResource('articles', ArticleController::class);
         Route::apiResource('servers', ServerController::class);
+
+        Route::get('invest', [AuthController::class, 'invest']);
     });

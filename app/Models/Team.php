@@ -30,4 +30,21 @@ class Team extends Model
 
         return $users->count();
     }
+
+    public function totalDonates() {
+        $ref_ids = $this->members->pluck('ref.id');
+        $users = User::whereIn('ref_id', $ref_ids)->get();
+
+        $total = 0;
+
+        foreach ($users as $user) {
+            $total += $user->donates->sum('amount');
+        }
+
+        return $total;
+    }
+
+    public function getIncome() {
+        return ($this->totalDonates() / 100) * 30;
+    }
 }

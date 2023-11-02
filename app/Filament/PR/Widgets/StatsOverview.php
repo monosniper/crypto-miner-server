@@ -11,6 +11,9 @@ class StatsOverview extends BaseWidget
     {
         return [
             Stat::make('Всего приглашено', auth()->user()->team->getTotalRefsCount()),
+            Stat::make('Общая сумма пополнений', auth()->user()->team->totalDonates() . "$"),
+            Stat::make('Прибыль', auth()->user()->team->getIncome() . "$")
+                ->description('Текущий процент - 30%'),
         ];
     }
 }

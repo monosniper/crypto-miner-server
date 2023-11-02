@@ -42,6 +42,7 @@ class NftResource extends Resource
                 SpatieMediaLibraryFileUpload::make('image')
                     ->label('Картинка')
                     ->image()
+                    ->collection('image')
                     ->imageEditor()
                     ->directory('nfts')
             ]);

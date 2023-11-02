@@ -25,6 +25,6 @@ class Nft extends Model implements HasMedia
 
     public function getUrl(): string
     {
-        return $this->getFirstMediaUrl();
+        return $this->getFirstMediaUrl('image');
     }
 }

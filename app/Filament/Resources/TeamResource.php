@@ -47,6 +47,15 @@ class TeamResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label("Название")
                     ->searchable(),
+                Tables\Columns\TextColumn::make('refs_count')
+                    ->label("Кол-во приглашенных")
+                    ->sortable()
+                    ->state(fn (Team $team) => $team->getTotalRefsCount()),
+                Tables\Columns\TextColumn::make('donates_total')
+                    ->label("Сумма пополнений")
+                    ->money()
+                    ->state(fn (Team $team) => $team->totalDonates())
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('members_count')
                     ->label("Кол-во участников")
                     ->sortable()
