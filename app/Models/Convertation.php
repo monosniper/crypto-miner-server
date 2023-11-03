@@ -19,10 +19,10 @@ class Convertation extends Model
         'amount_to',
     ];
 
-    protected $casts = [
-        'amount_from' => RateCast::class,
-        'amount_to' => RateCast::class,
-    ];
+//    protected $casts = [
+//        'amount_from' => RateCast::class,
+//        'amount_to' => RateCast::class,
+//    ];
 
     public function from(): BelongsTo
     {

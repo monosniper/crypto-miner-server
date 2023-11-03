@@ -22,6 +22,7 @@ class ServerResource extends JsonResource
             'year_price' => $this->year_price,
             'nft' => $this->nft,
             'isHot' => $this->isHot,
+            'possibilities' => $this->possibilities(),
             'work_started_at' => $this->whenPivotLoaded('users_servers', $this->pivot?->work_started_at),
             'active_until' => $this->whenPivotLoaded('users_servers', $this->pivot?->active_until),
             'status' => $this->whenPivotLoaded('users_servers', $this->pivot?->status),

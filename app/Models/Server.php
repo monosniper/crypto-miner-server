@@ -51,4 +51,8 @@ class Server extends Model implements HasMedia
     {
         return $this->hasMany(ServerPossibility::class);
     }
+
+    public function possibilities() {
+        return Possibility::whereIn('id', $this->serverPossibilities->pluck('id'))->pluck('name');
+    }
 }
