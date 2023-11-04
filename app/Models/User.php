@@ -121,6 +121,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function avatar(): BelongsTo
     {
-        return $this->belongsTo(Nft::class);
+        return $this->belongsTo(Nft::class, 'avatar_nft_id');
     }
 }
