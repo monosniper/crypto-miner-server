@@ -15,8 +15,10 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "predis/predis": "^2.2",
         "spatie/laravel-schedule-monitor": "^3.4",
-        "spatie/laravel-settings": "^3.2"
+        "spatie/laravel-settings": "^3.2",
+        "textalk/websocket": "^1.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

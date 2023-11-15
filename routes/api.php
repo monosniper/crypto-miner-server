@@ -28,13 +28,17 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('coins', [CoinController::class, 'positions']);
                     Route::put('coins', [CoinController::class, 'storePositions']);
 
-                    Route::apiResource('convertations', ConvertationController::class);
-                    Route::apiResource('withdraws', WithdrawController::class);
+                    Route::apiResources([
+                        'convertations' => ConvertationController::class,
+                        'withdraws' => WithdrawController::class,
+                    ]);
                 });
 
-            Route::apiResource('coins', CoinController::class);
-            Route::apiResource('articles', ArticleController::class);
-            Route::apiResource('servers', ServerController::class);
+            Route::apiResources([
+                'coins' => CoinController::class,
+                'articles' => ArticleController::class,
+                'servers' => ServerController::class,
+            ]);
 
             Route::get('invest', [AuthController::class, 'invest']);
         });
@@ -57,13 +61,19 @@ Route::prefix('v1')
                 Route::get('coins', [CoinController::class, 'positions']);
                 Route::put('coins', [CoinController::class, 'storePositions']);
 
-                Route::apiResource('convertations', ConvertationController::class);
-                Route::apiResource('withdraws', WithdrawController::class);
+                Route::apiResources([
+                    'convertations' => ConvertationController::class,
+                    'withdraws' => WithdrawController::class,
+                ]);
             });
 
-        Route::apiResource('coins', CoinController::class);
-        Route::apiResource('articles', ArticleController::class);
-        Route::apiResource('servers', ServerController::class);
+        Route::apiResources([
+            'coins' => CoinController::class,
+            'articles' => ArticleController::class,
+            'servers' => ServerController::class,
+        ]);
 
         Route::get('invest', [AuthController::class, 'invest']);
+
+        Route::post('check', [AuthController::class, 'checkToken']);
     });

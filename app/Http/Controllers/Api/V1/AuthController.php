@@ -71,4 +71,11 @@ class AuthController extends Controller
             'url' => 'https://www.google.com'
         ]);
     }
+
+    public function checkToken(Request $request) {
+        return response()->json([
+            'success' => true,
+            'user_id' => 1
+        ]);
+    }
 }
