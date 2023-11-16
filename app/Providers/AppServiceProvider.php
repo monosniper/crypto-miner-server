@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\Miner;
+use App\Services\DefaultGenerator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(Miner::class, DefaultGenerator::class);
     }
 
     /**
@@ -22,5 +24,5 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(125);
     }
-    
+
 }

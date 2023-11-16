@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\CoinController;
 use App\Http\Controllers\Api\V1\ConvertationController;
 use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\ServerController;
+use App\Http\Controllers\Api\V1\SessionController;
 use App\Http\Controllers\Api\V1\WithdrawController;
 use App\Http\Middleware\AuthenticateOnceWithBasicAuth;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,7 @@ Route::prefix('v1')
 
                 Route::get('wallet', [AuthController::class, 'wallet']);
                 Route::get('servers', [AuthController::class, 'servers']);
+                Route::get('servers/{id}', [AuthController::class, 'server']);
 
                 Route::get('nft', [NftController::class, 'nft']);
                 Route::post('nft', [NftController::class, 'withdraw_nft']);
@@ -76,4 +78,6 @@ Route::prefix('v1')
         Route::get('invest', [AuthController::class, 'invest']);
 
         Route::post('check', [AuthController::class, 'checkToken']);
+        Route::post('sessions/start', [SessionController::class, 'start']);
+        Route::get('sessions/{session}', [SessionController::class, 'show']);
     });

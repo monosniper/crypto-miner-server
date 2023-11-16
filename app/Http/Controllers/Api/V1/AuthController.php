@@ -65,6 +65,14 @@ class AuthController extends Controller
         return response()->json($resource);
     }
 
+    public function server($id): JsonResponse
+    {
+        $server = Auth::user()->servers()->find($id);
+        $resource = new ServerResource($server);
+
+        return response()->json($resource);
+    }
+
     public function invest(): JsonResponse
     {
         return response()->json([
