@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreWithdrawRequest;
 use App\Http\Resources\WithdrawResource;
+use App\Models\Withdraw;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,9 +25,11 @@ class WithdrawController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreWithdrawRequest $request): WithdrawResource
     {
-        //
+        $withdraw = Withdraw::create($request->validated());
+
+        return new WithdrawResource($withdraw);
     }
 
     /**

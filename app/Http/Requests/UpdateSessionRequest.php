@@ -2,18 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Withdraw;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class StoreWithdrawRequest extends FormRequest
+class UpdateSessionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,11 +22,8 @@ class StoreWithdrawRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => [Rule::in(Withdraw::TYPES), 'sometimes', ],
-            'wallet' => ['required', ],
-            'amount' => ['sometimes', 'numeric', ],
-            'user_id' => ['required', 'exists:users,id', ],
-            'nft_id' => ['sometimes', 'exists:nfts,id', ],
+            'logs' => ['required',],
+            'founds' => ['required',],
         ];
     }
 }

@@ -66,7 +66,7 @@ class CoinResource extends Resource
                 Tables\Columns\TextColumn::make('change')
                     ->label('Изменение')
                     ->suffix('%')
-                    ->color(fn ($state) => $state ? 'success' : 'danger')
+                    ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Посл. обновление')

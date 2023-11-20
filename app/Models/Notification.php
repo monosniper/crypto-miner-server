@@ -11,6 +11,10 @@ class Notification extends Model
 
     protected $fillable = [
         'user_id',
+        'title',
+        'content',
+        'link',
+        'isMass',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

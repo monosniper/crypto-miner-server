@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AppController;
 use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
@@ -22,6 +23,7 @@ Route::domain('api.hogyx.io')->group(function () {
 
                     Route::get('wallet', [AuthController::class, 'wallet']);
                     Route::get('servers', [AuthController::class, 'servers']);
+                    Route::get('servers/{id}', [AuthController::class, 'server']);
 
                     Route::get('nft', [NftController::class, 'nft']);
                     Route::post('nft', [NftController::class, 'withdraw_nft']);
@@ -41,7 +43,14 @@ Route::domain('api.hogyx.io')->group(function () {
                 'servers' => ServerController::class,
             ]);
 
+            Route::apiResource('sessions', SessionController::class)
+                ->only('show', 'update');
+            Route::post('sessions/start', [SessionController::class, 'start']);
+
             Route::get('invest', [AuthController::class, 'invest']);
+            Route::post('check', [AuthController::class, 'checkToken']);
+
+            Route::get('settings', [AppController::class, 'settings']);
         });
     });
 
@@ -75,9 +84,12 @@ Route::prefix('v1')
             'servers' => ServerController::class,
         ]);
 
-        Route::get('invest', [AuthController::class, 'invest']);
-
-        Route::post('check', [AuthController::class, 'checkToken']);
+        Route::apiResource('sessions', SessionController::class)
+            ->only('show', 'update');
         Route::post('sessions/start', [SessionController::class, 'start']);
-        Route::get('sessions/{session}', [SessionController::class, 'show']);
+
+        Route::get('invest', [AuthController::class, 'invest']);
+        Route::post('check', [AuthController::class, 'checkToken']);
+
+        Route::get('settings', [AppController::class, 'settings']);
     });

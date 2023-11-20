@@ -40,6 +40,26 @@ class WithdrawResource extends Resource
                     ->label("Сумма")
                     ->required()
                     ->numeric(),
+                Forms\Components\Select::make('type')
+                    ->label('Тип')
+                    ->default(Withdraw::TYPE_COIN)
+                    ->options([
+                        Withdraw::TYPE_COIN => 'Криптовалюта',
+                        Withdraw::TYPE_NFT => 'НФТ',
+                    ]),
+                Forms\Components\Select::make('nft_id')
+                    ->relationship(name: 'nft', titleAttribute: 'name')
+                    ->label("НФТ")
+                    ->searchable(['name'])
+                    ->requiredIf('type', Withdraw::TYPE_NFT),
+                Forms\Components\Select::make('status')
+                    ->label('Статус')
+                    ->default(Withdraw::STATUS_PENDING)
+                    ->options([
+                        Withdraw::STATUS_FAILED => 'Ошибка',
+                        Withdraw::STATUS_PENDING => 'Ожидание',
+                        Withdraw::STATUS_SUCCESS => 'Успешно',
+                    ])
             ]);
     }
 
@@ -52,6 +72,12 @@ class WithdrawResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('wallet')
                     ->label("Кошелек")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->label("Тип")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label("Статус")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->label("Сумма")

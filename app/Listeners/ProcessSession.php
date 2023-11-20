@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Contracts\Miner;
 use App\Events\SessionStart;
+use App\Http\Resources\SessionResource;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use WebSocket\BadOpcodeException;
@@ -23,7 +24,10 @@ class ProcessSession
         $client = new \WebSocket\Client(env('WS_URL'));
 
         try {
-            $client->send(json_encode(['method' => 'start']));
+            $client->send(json_encode([
+                'method' => 'start',
+                "data" => new SessionResource($event->session)
+            ]));
         } catch (BadOpcodeException $e) {
             $event->session->stop();
         }

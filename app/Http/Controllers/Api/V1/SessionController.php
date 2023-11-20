@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Events\SessionStart;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateSessionRequest;
 use App\Http\Resources\SessionResource;
 use App\Models\Session;
 use Illuminate\Http\Request;
@@ -19,18 +20,23 @@ class SessionController extends Controller
         $session->coins()->sync($request->input('coins'));
         $session->servers()->sync($request->input('servers'));
 
-        event(new SessionStart($session));
+//        event(new SessionStart($session));
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'session_id' => $session->id
-            ]
+            'data' => new SessionResource($session)
         ]);
     }
 
     public function show(Session $session): SessionResource
     {
+        return new SessionResource($session);
+    }
+
+    public function update(Session $session, UpdateSessionRequest $request): SessionResource
+    {
+        $session->update($request->validated());
+
         return new SessionResource($session);
     }
 }

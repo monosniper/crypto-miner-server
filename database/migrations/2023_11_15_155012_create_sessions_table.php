@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Session;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,6 +16,11 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
+            $table->enum('status', Session::STATUSES)
+                ->default(Session::STATUS_ACTIVE);
+            $table->json('logs')->nullable();
+            $table->json('founds')->nullable();
+            $table->foreignIdFor(\App\Models\Server::class, 'current_server_id')->nullable();
             $table->timestamps();
         });
     }

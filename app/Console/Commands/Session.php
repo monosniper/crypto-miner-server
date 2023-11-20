@@ -32,16 +32,18 @@ class Session extends Command
         ]));
 
         while (true) {
-            try {
-                $message = $client->receive();
-                $this->info($message);
-
-                if($message === "stopped") {
-
-                }
-            } catch (\WebSocket\ConnectionException $e) {
-                $this->error($e);
-            }
+            $this->info('test');
+//            try {
+//                $message = $client->receive();
+//                $this->info($message);
+//
+////                if($message === "stopped") {
+////
+////                }
+//            } catch (\WebSocket\ConnectionException $e) {
+//                $this->error($e);
+//                break;
+//            }
         }
 
         $client->close();

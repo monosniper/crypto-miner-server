@@ -2,11 +2,14 @@
 
 namespace App\Livewire;
 
-use Filament\Forms\Components\MarkdownEditor;
+use anlutro\LaravelSettings\Facades\Setting;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\InteractsWithHeaderActions;
 use Livewire\Component;
 
 class SaveSettings extends Component implements HasForms
@@ -22,12 +25,24 @@ class SaveSettings extends Component implements HasForms
 
     public function form(Form $form): Form
     {
+        $schema = [];
+
+        foreach (Setting::all() as $key => $value) {
+            $schema[] = TextInput::make($key)
+                ->default($value)
+                ->required()
+                ->suffixAction(
+                    Action::make('save')
+                        ->icon('heroicon-s-bookmark')
+                        ->action(function ($state) use($key) {
+                            Setting::set($key, $state);
+                            Setting::save();
+                        })
+                );
+        }
+
         return $form
-            ->schema([
-                TextInput::make('title')
-                    ->required(),
-                MarkdownEditor::make('content'),
-            ])
+            ->schema($schema)
             ->statePath('data');
     }
 

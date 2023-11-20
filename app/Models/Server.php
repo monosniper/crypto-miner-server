@@ -55,4 +55,9 @@ class Server extends Model implements HasMedia
     public function possibilities() {
         return Possibility::whereIn('id', $this->serverPossibilities->pluck('id'))->pluck('name');
     }
+
+    public function coins(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Coin::class, 'server_coins');
+    }
 }

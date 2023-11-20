@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\User::class)->nullable();
             $table->string('title');
             $table->text('content');
-            $table->string('link', 2083);
+            $table->string('link', 2083)->nullable();
+            $table->boolean('isMass')->default(false);
             $table->timestamps();
         });
     }
