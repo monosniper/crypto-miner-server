@@ -36,6 +36,21 @@ class AuthController extends Controller
         ]);
     }
 
+    public function nfts(): JsonResponse {
+        $nfts = Auth::user()->nfts;
+        $resource = NftResource::collection($nfts);
+
+        return response()->json($resource);
+    }
+
+    public function withdraw_nft(): JsonResponse {
+        // nft_id
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
     public function update(UpdateUserRequest $request): JsonResponse {
         $user = Auth::user();
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('nft')->default(false);
             $table->boolean('isHot')->default(false);
             $table->json('possibilities')->nullable();
+            $table->enum('type', \App\Models\Server::TYPES);
             $table->timestamps();
         });
     }

@@ -10,15 +10,14 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'title',
         'content',
         'link',
         'isMass',
     ];
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'users_notifications');
     }
 }

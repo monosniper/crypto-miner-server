@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -124,8 +125,17 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsTo(Nft::class, 'avatar_nft_id');
     }
 
-    public function notifications(): HasMany
+    public function notifications(): BelongsToMany
     {
-        return $this->hasMany(Notification::class);
+        return $this->belongsToMany(Notification::class, 'users_notifications');
+    }
+
+    public function notify($notification_id): void
+    {
+        DB::table('users_notifications')->insert([
+            'user_id' => $this->id,
+            'notification_id' => $notification_id
+        ]);
     }
 }
+

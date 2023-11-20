@@ -11,6 +11,22 @@ class Server extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
+    const TYPE_FREE = 'free';
+    const TYPE_STANDARD = 'standard';
+    const TYPE_PRO = 'pro';
+    const TYPE_PREMIUM = 'premium';
+    const TYPE_ELITE = 'elite';
+    const TYPE_MAX = 'max';
+
+    const TYPES = [
+        self::TYPE_FREE,
+        self::TYPE_STANDARD,
+        self::TYPE_PRO,
+        self::TYPE_PREMIUM,
+        self::TYPE_ELITE,
+        self::TYPE_MAX,
+    ];
+
     protected $fillable = [
         'title',
         'price',
@@ -18,6 +34,7 @@ class Server extends Model implements HasMedia
         'nft',
         'isHot',
         'possibilities',
+        'type',
     ];
 
     protected $casts = [
@@ -49,15 +66,15 @@ class Server extends Model implements HasMedia
 
     public function serverPossibilities(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ServerPossibility::class);
+        return $this->hasMany(ServerPossibility::class, 'server_id', 'id');
     }
 
     public function possibilities() {
         return Possibility::whereIn('id', $this->serverPossibilities->pluck('id'))->pluck('name');
     }
 
-    public function coins(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    public function coins(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasManyThrough(Coin::class, 'server_coins');
+        return $this->belongsToMany(Coin::class, 'server_coins');
     }
 }

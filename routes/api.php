@@ -25,8 +25,8 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('servers', [AuthController::class, 'servers']);
                     Route::get('servers/{id}', [AuthController::class, 'server']);
 
-                    Route::get('nft', [NftController::class, 'nft']);
-                    Route::post('nft', [NftController::class, 'withdraw_nft']);
+                    Route::get('nft', [AuthController::class, 'nft']);
+                    Route::post('nft', [AuthController::class, 'withdraw_nft']);
 
                     Route::get('coins', [CoinController::class, 'positions']);
                     Route::put('coins', [CoinController::class, 'storePositions']);
@@ -53,6 +53,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('check', [AuthController::class, 'checkToken']);
 
             Route::get('settings', [AppController::class, 'settings']);
+            Route::get('nfts', [NftController::class, 'nfts']);
         });
     });
 
@@ -68,8 +69,8 @@ Route::prefix('v1')
                 Route::get('servers', [AuthController::class, 'servers']);
                 Route::get('servers/{id}', [AuthController::class, 'server']);
 
-                Route::get('nft', [NftController::class, 'nft']);
-                Route::post('nft', [NftController::class, 'withdraw_nft']);
+                Route::get('nft', [AuthController::class, 'nfts']);
+                Route::post('nft', [AuthController::class, 'withdraw_nft']);
 
                 Route::get('coins', [CoinController::class, 'positions']);
                 Route::put('coins', [CoinController::class, 'storePositions']);
@@ -96,4 +97,5 @@ Route::prefix('v1')
         Route::post('check', [AuthController::class, 'checkToken']);
 
         Route::get('settings', [AppController::class, 'settings']);
+        Route::get('nfts', [NftController::class, 'nfts']);
     });

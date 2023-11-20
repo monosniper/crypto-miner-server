@@ -25,11 +25,6 @@ class NotificationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->label('Пользователь')
-                    ->relationship(name: 'user', titleAttribute: 'name')
-                    ->searchable(['name'])
-                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->label('Заголовок')
                     ->required()
@@ -46,6 +41,12 @@ class NotificationResource extends Resource
                 Forms\Components\Toggle::make('isMass')
                     ->label('Массовое уведомление')
                     ->required(),
+                Forms\Components\Select::make('users_ids')
+                    ->label('Пользователи')
+                    ->relationship(name: 'users', titleAttribute: 'name')
+                    ->multiple()
+                    ->searchable(['name'])
+                    ->requiredIf('isMass', false),
             ]);
     }
 
@@ -53,9 +54,9 @@ class NotificationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label('Пользователь')
-                    ->sortable(),
+//                Tables\Columns\TextColumn::make('user.name')
+//                    ->label('Пользователь')
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Заголовок')
                     ->searchable(),
