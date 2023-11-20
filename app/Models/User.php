@@ -123,4 +123,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsTo(Nft::class, 'avatar_nft_id');
     }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

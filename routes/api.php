@@ -31,6 +31,8 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('coins', [CoinController::class, 'positions']);
                     Route::put('coins', [CoinController::class, 'storePositions']);
 
+                    Route::get('notifications', [AuthController::class, 'notifications']);
+
                     Route::apiResources([
                         'convertations' => ConvertationController::class,
                         'withdraws' => WithdrawController::class,
@@ -71,6 +73,8 @@ Route::prefix('v1')
 
                 Route::get('coins', [CoinController::class, 'positions']);
                 Route::put('coins', [CoinController::class, 'storePositions']);
+
+                Route::get('notifications', [AuthController::class, 'notifications']);
 
                 Route::apiResources([
                     'convertations' => ConvertationController::class,
