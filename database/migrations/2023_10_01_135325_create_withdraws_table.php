@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Coin;
+use App\Models\Nft;
 use App\Models\User;
 use App\Models\Withdraw;
 use Illuminate\Database\Migrations\Migration;
@@ -17,7 +18,7 @@ return new class extends Migration
         Schema::create('withdraws', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->foreignIdFor(\App\Models\Nft::class)->nullable();
+            $table->foreignIdFor(Nft::class)->nullable();
             $table->string('wallet', 1000);
             $table->bigInteger('amount');
             $table->enum('type', Withdraw::TYPES)

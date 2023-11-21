@@ -19,7 +19,10 @@ class WithdrawResource extends JsonResource
             'amount' => $this->amount,
             'type' => $this->type,
             'status' => $this->status,
+            'nft' => $this->whenNotNull(new NftResource($this->nft)),
             'created_at' => $this->created_at,
         ];
     }
 }
+
+

@@ -24,7 +24,7 @@ class ServerResource extends JsonResource
             'isHot' => $this->isHot,
             'type' => $this->type,
             'possibilities' => PossibilityResource::collection($this->possibilities),
-            'coins' => PossibilityResource::collection($this->coins),
+            'coins' => CoinResource::collection($this->coins),
             'active_until' => $this->whenPivotLoaded('users_servers', $this->pivot?->active_until),
             'status' => $this->whenPivotLoaded('users_servers', $this->pivot?->status),
             'server_user_name' => $this->whenPivotLoaded('users_servers', $this->pivot?->server_user_name),
