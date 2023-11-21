@@ -7,6 +7,7 @@ use App\Filament\Resources\NotificationResource\RelationManagers;
 use App\Models\Notification;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -46,7 +47,8 @@ class NotificationResource extends Resource
                     ->relationship(name: 'users', titleAttribute: 'name')
                     ->multiple()
                     ->searchable(['name'])
-                    ->requiredIf('isMass', false),
+                    ->requiredIf('isMass', false)
+                    ->hidden(fn (Get $get): bool => $get('isMass')),
             ]);
     }
 

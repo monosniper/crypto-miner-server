@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CoinResource extends JsonResource
+class PossibilityResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,6 @@ class CoinResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'rate' => $this->rate,
-            'hardLoad' => $this->hardLoad,
-            'change' => $this->change,
-            'graph' => json_decode($this->graph),
-            'graph_today' => json_decode($this->graph_today),
             'icon_url' => $this->getIconUrl(),
         ];
     }

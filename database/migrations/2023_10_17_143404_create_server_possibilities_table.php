@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\Server::class);
             $table->foreignIdFor(\App\Models\Possibility::class);
-            $table->integer('sort')->nullable();
             $table->timestamps();
         });
     }

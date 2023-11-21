@@ -13,7 +13,6 @@ class ServerPossibility extends Model
     protected $fillable = [
         'server_id',
         'possibility_id',
-        'sort',
     ];
 
     public function server(): BelongsTo

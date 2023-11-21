@@ -14,9 +14,10 @@ class UserServer extends Model
     protected $fillable = [
         'user_id',
         'server_id',
-        'work_started_at',
         'active_until',
         'status',
+        'name',
+        'logs',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

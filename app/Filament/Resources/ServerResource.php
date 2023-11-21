@@ -56,19 +56,14 @@ class ServerResource extends Resource
                 Forms\Components\Toggle::make('isHot')
                     ->label('Рекомендовано')
                     ->required(),
-                Repeater::make('serverPossibilities')
+                Forms\Components\Select::make('possibilities')
                     ->label('Возможности')
-                    ->addActionLabel('Добавить возможность')
-                    ->reorderableWithButtons()
-                    ->columns(2)
-                    ->orderColumn('sort')
-                    ->relationship()
-                    ->schema([
-                        Forms\Components\Select::make('possibility_id')
-                            ->label('Возможность')
-                            ->relationship(name: 'possibility', titleAttribute: 'name')
-                            ->required(),
-                    ]),
+                    ->relationship(name: 'possibilities', titleAttribute: 'name')
+                    ->multiple(),
+                Forms\Components\Select::make('coins')
+                    ->label('Монеты')
+                    ->relationship(name: 'coins', titleAttribute: 'name')
+                    ->multiple()
             ]);
     }
 

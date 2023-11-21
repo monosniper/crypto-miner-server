@@ -33,12 +33,7 @@ class Server extends Model implements HasMedia
         'year_price',
         'nft',
         'isHot',
-        'possibilities',
         'type',
-    ];
-
-    protected $casts = [
-        'possibilities' => 'array'
     ];
 
     const WORK_STATUS = 'work';
@@ -55,8 +50,6 @@ class Server extends Model implements HasMedia
         $this
             ->addMediaCollection('icon')
             ->singleFile();
-
-        $this->addMediaCollection('possibilities');
     }
 
     public function getIconUrl(): string
@@ -64,13 +57,9 @@ class Server extends Model implements HasMedia
         return $this->getFirstMediaUrl('icon');
     }
 
-    public function serverPossibilities(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function possibilities(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(ServerPossibility::class, 'server_id', 'id');
-    }
-
-    public function possibilities() {
-        return Possibility::whereIn('id', $this->serverPossibilities->pluck('id'))->pluck('name');
+        return $this->belongsToMany(Possibility::class, 'server_possibilities');
     }
 
     public function coins(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

@@ -12,6 +12,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -40,8 +42,9 @@ class UserServerResource extends Resource
                     ->relationship(name: 'user', titleAttribute: 'title')
                     ->searchable(['title'])
                     ->required(),
-                DateTimePicker::make('work_started_at')
-                    ->label('Время начала работы'),
+                Forms\Components\TextInput::make('name')
+                    ->label('Название')
+                    ->maxLength(191),
                 DateTimePicker::make('active_until')
                     ->label('Активен до'),
                 Select::make('status')
@@ -57,19 +60,26 @@ class UserServerResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Пользователь')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Название сервера')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('server.title')
                     ->label('Сервер')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('work_started_at')
-                    ->label('Время начала работы')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('active_until')
                     ->label('Активен до')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Статус')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        Server::ACTIVE_STATUS => 'success',
+                        Server::NOT_ACTIVE_STATUS => 'danger',
+                        Server::RELOAD_STATUS => 'gray',
+                        Server::WORK_STATUS => 'warning',
+                    })
+                    ->formatStateUsing(fn (string $state): string => __("servers.statuses.{$state}"))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
@@ -83,7 +93,14 @@ class UserServerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Статус')
+                    ->options([
+                        Server::ACTIVE_STATUS => __("servers.statuses.".Server::ACTIVE_STATUS),
+                        Server::WORK_STATUS => __("servers.statuses.".Server::WORK_STATUS),
+                        Server::NOT_ACTIVE_STATUS => __("servers.statuses.".Server::NOT_ACTIVE_STATUS),
+                        Server::RELOAD_STATUS => __("servers.statuses.".Server::RELOAD_STATUS),
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

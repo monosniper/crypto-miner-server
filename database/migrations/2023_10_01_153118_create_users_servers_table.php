@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Server::class);
-            $table->timestamp('work_started_at')->nullable();
             $table->timestamp('active_until');
             $table->enum('status', Server::STATUSES);
+            $table->string('name')->nullable();
+            $table->json('logs')->nullable();
             $table->timestamps();
         });
     }

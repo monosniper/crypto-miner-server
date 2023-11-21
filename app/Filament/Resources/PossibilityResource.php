@@ -6,9 +6,11 @@ use App\Filament\Resources\PossibilityResource\Pages;
 use App\Filament\Resources\PossibilityResource\RelationManagers;
 use App\Models\Possibility;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -29,6 +31,17 @@ class PossibilityResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLength(191),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Слаг')
+                    ->required()
+                    ->unique('possibilities', 'slug')
+                    ->maxLength(191),
+                SpatieMediaLibraryFileUpload::make('icon')
+                    ->label('Иконка')
+                    ->image()
+                    ->imageEditor()
+                    ->collection('icon')
+                    ->directory('possibilities'),
             ]);
     }
 
@@ -36,8 +49,14 @@ class PossibilityResource extends Resource
     {
         return $table
             ->columns([
+                SpatieMediaLibraryImageColumn::make('icon')
+                    ->label('Иконка')
+                    ->collection('icon'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('slug')
+                    ->label('Слаг')
                     ->searchable(),
             ])
             ->filters([

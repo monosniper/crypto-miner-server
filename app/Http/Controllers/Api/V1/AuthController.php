@@ -105,6 +105,6 @@ class AuthController extends Controller
 
     public function notifications(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return NotificationResource::collection(auth()->user()->notifications);
+        return NotificationResource::collection(auth()->user()->notifications()->latest()->get());
     }
 }

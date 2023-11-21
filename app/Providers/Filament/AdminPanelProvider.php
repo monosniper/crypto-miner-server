@@ -24,7 +24,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
 //            ->domain(env('ADMIN_DOMAIN'))
-            ->spa()
+//            ->spa()
             ->default()
             ->id('admin')
             ->path('')

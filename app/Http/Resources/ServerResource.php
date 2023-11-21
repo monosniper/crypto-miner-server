@@ -23,11 +23,12 @@ class ServerResource extends JsonResource
             'nft' => $this->nft,
             'isHot' => $this->isHot,
             'type' => $this->type,
-            'possibilities' => $this->possibilities(),
-            'coins' => CoinResource::collection($this->coins),
-            'work_started_at' => $this->whenPivotLoaded('users_servers', $this->pivot?->work_started_at),
+            'possibilities' => PossibilityResource::collection($this->possibilities),
+            'coins' => PossibilityResource::collection($this->coins),
             'active_until' => $this->whenPivotLoaded('users_servers', $this->pivot?->active_until),
             'status' => $this->whenPivotLoaded('users_servers', $this->pivot?->status),
+            'server_user_name' => $this->whenPivotLoaded('users_servers', $this->pivot?->server_user_name),
+            'logs' => $this->whenPivotLoaded('users_servers', $this->pivot?->logs),
         ];
     }
 }

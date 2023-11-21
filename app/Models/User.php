@@ -79,9 +79,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsToMany(Server::class, 'users_servers')
             ->withPivot([
-                'work_started_at',
                 'active_until',
                 'status',
+                'name as server_user_name',
             ]);
     }
 

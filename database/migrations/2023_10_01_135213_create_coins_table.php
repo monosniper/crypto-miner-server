@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('change')->nullable();
             $table->json('graph')->nullable();
             $table->json('graph_today')->nullable();
+            $table->boolean('hardLoad')->default(false);
             $table->timestamps();
         });
     }
