@@ -25,9 +25,6 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('servers', [AuthController::class, 'servers']);
                     Route::get('servers/{id}', [AuthController::class, 'server']);
 
-                    Route::get('nft', [AuthController::class, 'nft']);
-                    Route::post('nft', [AuthController::class, 'withdraw_nft']);
-
                     Route::get('coins', [CoinController::class, 'positions']);
                     Route::put('coins', [CoinController::class, 'storePositions']);
 
@@ -68,9 +65,6 @@ Route::prefix('v1')
                 Route::get('wallet', [AuthController::class, 'wallet']);
                 Route::get('servers', [AuthController::class, 'servers']);
                 Route::get('servers/{id}', [AuthController::class, 'server']);
-
-                Route::get('nft', [AuthController::class, 'nfts']);
-                Route::post('nft', [AuthController::class, 'withdraw_nft']);
 
                 Route::get('coins', [CoinController::class, 'positions']);
                 Route::put('coins', [CoinController::class, 'storePositions']);
