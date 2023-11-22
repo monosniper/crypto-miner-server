@@ -16,10 +16,7 @@ class WithdrawController extends Controller
      */
     public function index()
     {
-        $withdraws = Auth::user()->withdraws;
-        $collection = WithdrawResource::collection($withdraws);
 
-        return response()->json($collection);
     }
 
     /**

@@ -15,10 +15,7 @@ class ConvertationController extends Controller
      */
     public function index()
     {
-        $convertations = Auth::user()->convertations;
-        $collection = ConvertationResource::collection($convertations);
 
-        return response()->json($collection);
     }
 
     /**

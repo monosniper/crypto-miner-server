@@ -29,17 +29,16 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::put('coins', [CoinController::class, 'storePositions']);
 
                     Route::get('notifications', [AuthController::class, 'notifications']);
-
-                    Route::apiResources([
-                        'convertations' => ConvertationController::class,
-                        'withdraws' => WithdrawController::class,
-                    ]);
+                    Route::get('convertations', [AuthController::class, 'convertations']);
+                    Route::get('withdraws', [AuthController::class, 'withdraws']);
                 });
 
             Route::apiResources([
                 'coins' => CoinController::class,
                 'articles' => ArticleController::class,
                 'servers' => ServerController::class,
+                'convertations' => ConvertationController::class,
+                'withdraws' => WithdrawController::class,
             ]);
 
             Route::apiResource('sessions', SessionController::class)
@@ -70,17 +69,16 @@ Route::prefix('v1')
                 Route::put('coins', [CoinController::class, 'storePositions']);
 
                 Route::get('notifications', [AuthController::class, 'notifications']);
-
-                Route::apiResources([
-                    'convertations' => ConvertationController::class,
-                    'withdraws' => WithdrawController::class,
-                ]);
+                Route::get('convertations', [AuthController::class, 'convertations']);
+                Route::get('withdraws', [AuthController::class, 'withdraws']);
             });
 
         Route::apiResources([
             'coins' => CoinController::class,
             'articles' => ArticleController::class,
             'servers' => ServerController::class,
+            'convertations' => ConvertationController::class,
+            'withdraws' => WithdrawController::class,
         ]);
 
         Route::apiResource('sessions', SessionController::class)

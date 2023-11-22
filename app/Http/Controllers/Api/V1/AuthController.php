@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\ConvertationResource;
 use App\Http\Resources\NftResource;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\ServerResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletResource;
+use App\Http\Resources\WithdrawResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,11 +38,23 @@ class AuthController extends Controller
         ]);
     }
 
+    public function withdraws(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $withdraws = Auth::user()->withdraws;
+        return WithdrawResource::collection($withdraws);
+    }
+
     public function nfts(): JsonResponse {
         $nfts = Auth::user()->nfts;
         $resource = NftResource::collection($nfts);
 
         return response()->json($resource);
+    }
+
+    public function convertations(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $convertations = Auth::user()->convertations;
+        return ConvertationResource::collection($convertations);
     }
 
     public function withdraw_nft(): JsonResponse {

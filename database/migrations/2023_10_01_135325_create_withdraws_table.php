@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Nft::class)->nullable();
             $table->string('wallet', 1000);
-            $table->bigInteger('amount');
+            $table->bigInteger('amount')->nullable();
             $table->enum('type', Withdraw::TYPES)
                 ->default(Withdraw::TYPE_COIN);
             $table->enum('status', Withdraw::STATUSES)
