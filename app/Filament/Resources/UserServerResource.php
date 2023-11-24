@@ -39,17 +39,24 @@ class UserServerResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('server_id')
                     ->label('Сервер')
-                    ->relationship(name: 'user', titleAttribute: 'title')
+                    ->relationship(name: 'server', titleAttribute: 'title')
                     ->searchable(['title'])
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->maxLength(191),
                 DateTimePicker::make('active_until')
+                    ->required()
                     ->label('Активен до'),
                 Select::make('status')
                     ->label('Статус')
-                    ->options(Server::STATUSES)
+                    ->required()
+                    ->options([
+                        Server::ACTIVE_STATUS => __("servers.statuses.".Server::ACTIVE_STATUS),
+                        Server::WORK_STATUS => __("servers.statuses.".Server::WORK_STATUS),
+                        Server::NOT_ACTIVE_STATUS => __("servers.statuses.".Server::NOT_ACTIVE_STATUS),
+                        Server::RELOAD_STATUS => __("servers.statuses.".Server::RELOAD_STATUS),
+                    ])
             ]);
     }
 

@@ -27,7 +27,7 @@ class ServerResource extends JsonResource
             'coins' => CoinResource::collection($this->coins),
             'active_until' => $this->whenPivotLoaded('users_servers', $this->pivot?->active_until),
             'status' => $this->whenPivotLoaded('users_servers', $this->pivot?->status),
-            'server_user_name' => $this->whenPivotLoaded('users_servers', $this->pivot?->server_user_name),
+            'server_user_name' => $this->whenPivotLoaded('users_servers', $this->pivot?->name),
             'logs' => $this->whenPivotLoaded('users_servers', $this->pivot?->logs),
         ];
     }

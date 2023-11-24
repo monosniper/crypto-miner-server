@@ -81,7 +81,7 @@ class User extends Authenticatable implements FilamentUser
             ->withPivot([
                 'active_until',
                 'status',
-                'name as server_user_name',
+                'name',
             ]);
     }
 

@@ -6,8 +6,10 @@ use App\Events\SessionStart;
 use App\Listeners\ProcessSession;
 use App\Models\Ref;
 use App\Models\User;
+use App\Models\UserServer;
 use App\Observers\RefObserver;
 use App\Observers\UserObserver;
+use App\Observers\UserServerObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -35,6 +37,7 @@ class EventServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Ref::observe(RefObserver::class);
+        UserServer::observe(UserServerObserver::class);
     }
 
     /**
