@@ -21,7 +21,7 @@ class CoinResource extends JsonResource
             'rate' => $this->rate,
             'hardLoad' => $this->hardLoad,
             'change' => $this->change,
-            'graph' => json_decode($this->graph),
+//            'graph' => json_decode($this->graph),
             'graph_today' => json_decode($this->graph_today),
             'icon_url' => $this->getIconUrl(),
         ];

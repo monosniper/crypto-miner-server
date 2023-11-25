@@ -44,11 +44,11 @@ class AuthController extends Controller
         return WithdrawResource::collection($withdraws);
     }
 
-    public function nfts(): JsonResponse {
+    public function nfts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
         $nfts = Auth::user()->nfts;
-        $resource = NftResource::collection($nfts);
 
-        return response()->json($resource);
+        return NftResource::collection($nfts);
     }
 
     public function convertations(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -71,36 +71,32 @@ class AuthController extends Controller
         return response()->json(['success' => $user->update($request->validated())]);
     }
 
-    public function me(): JsonResponse
+    public function me(): UserResource
     {
         $user = Auth::user();
-        $resource = new UserResource($user);
 
-        return response()->json($resource);
+        return new UserResource($user);
     }
 
-    public function wallet(): JsonResponse
+    public function wallet(): WalletResource
     {
         $wallet = Auth::user()->wallet;
-        $resource = new WalletResource($wallet);
 
-        return response()->json($resource);
+        return new WalletResource($wallet);
     }
 
-    public function servers(): JsonResponse
+    public function servers(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $servers = Auth::user()->servers;
-        $resource = ServerResource::collection($servers);
 
-        return response()->json($resource);
+        return ServerResource::collection($servers);
     }
 
-    public function server($id): JsonResponse
+    public function server($id): ServerResource
     {
         $server = Auth::user()->servers()->find($id);
-        $resource = new ServerResource($server);
 
-        return response()->json($resource);
+        return new ServerResource($server);
     }
 
     public function invest(): JsonResponse

@@ -14,9 +14,11 @@ class WithdrawController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
+        $withdraws = Withdraw::all();
 
+        return WithdrawResource::collection($withdraws);
     }
 
     /**

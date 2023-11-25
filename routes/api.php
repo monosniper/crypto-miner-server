@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\V1\AppController;
 use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
-use App\Http\Controllers\Api\V1\ConvertationController;
 use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\ServerController;
 use App\Http\Controllers\Api\V1\SessionController;
@@ -37,7 +36,6 @@ Route::domain('api.hogyx.io')->group(function () {
                 'coins' => CoinController::class,
                 'articles' => ArticleController::class,
                 'servers' => ServerController::class,
-                'convertations' => ConvertationController::class,
                 'withdraws' => WithdrawController::class,
             ]);
 
@@ -77,7 +75,6 @@ Route::prefix('v1')
             'coins' => CoinController::class,
             'articles' => ArticleController::class,
             'servers' => ServerController::class,
-            'convertations' => ConvertationController::class,
             'withdraws' => WithdrawController::class,
         ]);
 

@@ -6,18 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $articles = Article::all();
-        $collection = ArticleResource::collection($articles);
+        $articles = Cache::remember('articles', 86400, function () {
+            return Article::all();
+        });
 
-        return response()->json($collection);
+        return ArticleResource::collection($articles);
     }
 
     /**

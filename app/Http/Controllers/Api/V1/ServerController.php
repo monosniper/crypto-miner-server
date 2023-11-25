@@ -6,18 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ServerResource;
 use App\Models\Server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ServerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Http\JsonResponse
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $servers = Server::all();
-        $collection = ServerResource::collection($servers);
+        $servers = Cache::remember('servers', 86400, function () {
+            return Server::all()->load(['possibilities', 'coins', 'media']);
+        });
 
-        return response()->json($collection);
+        return ServerResource::collection($servers);
     }
 
     /**
@@ -31,9 +33,9 @@ class ServerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Server $server): \Illuminate\Http\JsonResponse
+    public function show(Server $server): ServerResource
     {
-        return response()->json(new ServerResource($server));
+        return new ServerResource($server);
     }
 
     /**

@@ -17,7 +17,8 @@ class SessionResource extends JsonResource
         return [
             'id' => $this->id,
             'coins' => CoinResource::collection($this->coins),
-            'servers' => ServerResource::collection($this->servers),
+//            'servers' => ServerResource::collection($this->user_servers),
+            'servers' => $this->servers(),
             'logs' => $this->logs,
             'founds' => $this->founds,
             'current_server' => $this->when($this->currentServer, new ServerResource($this->currentServer)),

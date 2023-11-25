@@ -8,11 +8,16 @@ use App\Models\Nft;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class NftController extends Controller
 {
     public function nfts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return NftResource::collection(Nft::all());
+        $items = Cache::remember('nfts', 86400, function () {
+            return Nft::all()->load('media');
+        });
+
+        return NftResource::collection($items);
     }
 }

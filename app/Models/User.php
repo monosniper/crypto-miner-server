@@ -78,6 +78,7 @@ class User extends Authenticatable implements FilamentUser
     public function servers(): BelongsToMany
     {
         return $this->belongsToMany(Server::class, 'users_servers')
+            ->with(['possibilities', 'coins', 'media'])
             ->withPivot([
                 'active_until',
                 'status',

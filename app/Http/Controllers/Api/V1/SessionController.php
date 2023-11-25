@@ -18,7 +18,7 @@ class SessionController extends Controller
         ]);
 
         $session->coins()->sync($request->input('coins'));
-        $session->servers()->sync($request->input('servers'));
+        $session->user_servers()->sync($request->input('servers'));
 
 //        event(new SessionStart($session));
 

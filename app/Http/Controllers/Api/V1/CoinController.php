@@ -5,21 +5,24 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CoinResource;
 use App\Models\Coin;
+
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CoinController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $coins = Coin::all()->load('media');
-        $collection = CoinResource::collection($coins);
+        $coins = Cache::remember('coins', 86400, function () {
+            return Coin::all()->load('media');
+        });
 
-        return response()->json($collection);
+        return CoinResource::collection($coins);
     }
 
     public function positions(): JsonResponse
