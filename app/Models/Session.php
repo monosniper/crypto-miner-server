@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,9 +22,15 @@ class Session extends Model
         'user_id',
         'status',
         'logs',
-        'founds',
-        'current_server_id',
+        'end_at',
     ];
+
+    protected function logs(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? (is_array($value) ? $value : json_decode($value)) : [],
+        );
+    }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -37,12 +44,7 @@ class Session extends Model
 
     public function user_servers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(
-            UserServer::class,
-            'sessions_user_servers',
-            'id',
-            'user_server_id'
-        );
+        return $this->belongsToMany(UserServer::class, 'sessions_user_servers',);
     }
 
     public function stop(): void

@@ -65,6 +65,11 @@ class User extends Authenticatable implements FilamentUser
             : (bool) $this->team;
     }
 
+    public function session(): HasOne
+    {
+        return $this->hasOne(Session::class);
+    }
+
     public function convertations(): HasMany
     {
         return $this->hasMany(Convertation::class);

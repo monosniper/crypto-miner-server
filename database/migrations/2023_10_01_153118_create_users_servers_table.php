@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status', Server::STATUSES);
             $table->string('name')->nullable();
             $table->json('logs')->nullable();
+            $table->json('founds')->nullable();
             $table->timestamps();
         });
     }

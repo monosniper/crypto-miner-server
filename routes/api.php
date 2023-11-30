@@ -43,6 +43,8 @@ Route::domain('api.hogyx.io')->group(function () {
                 ->only('show', 'update');
             Route::post('sessions/start', [SessionController::class, 'start']);
 
+            Route::put('user/servers', [SessionController::class, 'updateUserServer']);
+
             Route::get('invest', [AuthController::class, 'invest']);
             Route::post('check', [AuthController::class, 'checkToken']);
 
@@ -81,6 +83,8 @@ Route::prefix('v1')
         Route::apiResource('sessions', SessionController::class)
             ->only('show', 'update');
         Route::post('sessions/start', [SessionController::class, 'start']);
+
+        Route::put('user/servers/{userServer}', [SessionController::class, 'updateUserServer']);
 
         Route::get('invest', [AuthController::class, 'invest']);
         Route::post('check', [AuthController::class, 'checkToken']);

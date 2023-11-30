@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SessionResource extends JsonResource
+class UserServerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,12 @@ class SessionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'coins' => CoinResource::collection($this->coins),
-            'servers' => UserServerResource::collection($this->user_servers),
+            'active_until' => $this->active_until,
+            'status' => $this->status,
+            'name' => $this->name,
             'logs' => $this->logs,
-            'created_at' => $this->created_at,
+            'founds' => $this->founds,
+            'server' => new ServerResource($this->server),
         ];
     }
 }

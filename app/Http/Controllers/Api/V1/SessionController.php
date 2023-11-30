@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 use App\Events\SessionStart;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateSessionRequest;
+use App\Http\Requests\UpdateUserServerRequest;
 use App\Http\Resources\SessionResource;
 use App\Models\Session;
+use App\Models\UserServer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SessionController extends Controller
@@ -28,15 +31,26 @@ class SessionController extends Controller
         ]);
     }
 
+    public function updateUserServer(UserServer $userServer, UpdateUserServerRequest $request): array
+    {
+        $userServer->update($request->validated());
+        return ['success' => true];
+    }
+
     public function show(Session $session): SessionResource
     {
         return new SessionResource($session);
     }
 
-    public function update(Session $session, UpdateSessionRequest $request): SessionResource
+    public function update(Session $session, UpdateSessionRequest $request): array
     {
-        $session->update($request->validated());
+        $logs = $session->user_servers->last()->logs;
 
-        return new SessionResource($session);
+        $session->update([
+            ...$request->validated(),
+            'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
+        ]);
+
+        return ['success' => true];
     }
 }
