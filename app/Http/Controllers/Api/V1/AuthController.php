@@ -11,6 +11,7 @@ use App\Http\Resources\ServerResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WithdrawResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -99,18 +100,21 @@ class AuthController extends Controller
         return new ServerResource($server);
     }
 
-    public function invest(): JsonResponse
+    public function invest(): array
     {
-        return response()->json([
+        return [
             'url' => 'https://www.google.com'
-        ]);
+        ];
     }
 
-    public function checkToken(Request $request) {
-        return response()->json([
-            'success' => true,
-            'user_id' => 1
-        ]);
+    public function checkToken(Request $request): array
+    {
+        $user = User::where('token', $request->token)->first();
+
+        return [
+            'success' => (bool)$user,
+            'user_id' => $user?->id
+        ];
     }
 
     public function notifications(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

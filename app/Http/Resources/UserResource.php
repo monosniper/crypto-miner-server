@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'token' => $this->token,
             'coin_positions' => $this->coin_positions,
             'session' => new SessionResource($this->session),
         ];

@@ -16,10 +16,7 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->enum('status', Session::STATUSES)
-                ->default(Session::STATUS_ACTIVE);
             $table->json('logs')->nullable();
-            $table->foreignIdFor(\App\Models\Server::class, 'current_server_id')->nullable();
             $table->timestamp('end_at')->nullable();
             $table->timestamps();
         });

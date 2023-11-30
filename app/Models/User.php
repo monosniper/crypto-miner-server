@@ -34,6 +34,7 @@ class User extends Authenticatable implements FilamentUser
         'ref_id',
         'team_id',
         'nft_id',
+        'token',
         'coin_positions',
     ];
 

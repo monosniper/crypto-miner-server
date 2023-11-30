@@ -9,6 +9,11 @@ use App\Models\Wallet;
 
 class UserObserver
 {
+    protected function generateToken(): string
+    {
+        return md5(microtime() . 'salt' . time());
+    }
+
     protected function addRef($user_id): void
     {
         Ref::create(['user_id' => $user_id]);
@@ -36,6 +41,9 @@ class UserObserver
     {
         $this->addRef($user->id);
         $this->addWallet($user->id);
+        $user->update([
+            'token' => $this->generateToken()
+        ]);
     }
 
     /**

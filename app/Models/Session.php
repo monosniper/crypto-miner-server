@@ -10,17 +10,8 @@ class Session extends Model
 {
     use HasFactory;
 
-    const STATUS_STOPPED = 'stopped';
-    const STATUS_ACTIVE = 'active';
-
-    const STATUSES = [
-        self::STATUS_STOPPED,
-        self::STATUS_ACTIVE,
-    ];
-
     protected $fillable = [
         'user_id',
-        'status',
         'logs',
         'end_at',
     ];
@@ -45,16 +36,5 @@ class Session extends Model
     public function user_servers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(UserServer::class, 'sessions_user_servers',);
-    }
-
-    public function stop(): void
-    {
-        $this->status = self::STATUS_STOPPED;
-        $this->save();
-    }
-
-    public function currentServer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Server::class, 'current_server_id');
     }
 }
