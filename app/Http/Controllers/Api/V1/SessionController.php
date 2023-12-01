@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateSessionRequest;
 use App\Http\Requests\UpdateUserServerRequest;
 use App\Http\Resources\SessionResource;
+use App\Models\Server;
 use App\Models\Session;
 use App\Models\UserServer;
 use Carbon\Carbon;
@@ -22,6 +23,10 @@ class SessionController extends Controller
 
         $session->coins()->sync($request->input('coins'));
         $session->user_servers()->sync($request->input('servers'));
+
+        $servers = $session->user_servers;
+
+        foreach ($servers as $server) $server->update(['status' => Server::WORK_STATUS]);
 
 //        event(new SessionStart($session));
 

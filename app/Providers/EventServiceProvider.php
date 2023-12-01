@@ -25,9 +25,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        SessionStart::class => [
-            ProcessSession::class,
-        ],
     ];
 
     /**

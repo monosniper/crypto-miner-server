@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Facades\Cache;
 
 class RatesRequest extends Command implements Isolatable
 {
@@ -27,7 +28,7 @@ class RatesRequest extends Command implements Isolatable
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $client = new Client();
         $headers = [
@@ -81,5 +82,7 @@ class RatesRequest extends Command implements Isolatable
 
             $coin->save();
         }
+
+        Cache::forget('coins');
     }
 }
