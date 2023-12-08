@@ -23,7 +23,7 @@ class Article extends Model implements HasMedia
             ->singleFile();
     }
 
-    public function getUrl(): string
+    public function getImageUrl(): string
     {
         return $this->getFirstMediaUrl('image');
     }
