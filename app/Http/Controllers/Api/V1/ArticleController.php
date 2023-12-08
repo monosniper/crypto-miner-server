@@ -33,9 +33,9 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Article $article): ArticleResource
     {
-        //
+        return new ArticleResource($article);
     }
 
     /**
