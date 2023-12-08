@@ -26,7 +26,7 @@ class SessionController extends Controller
 
         $servers = $session->user_servers;
 
-        foreach ($servers as $server) $server->update(['status' => Server::WORK_STATUS]);
+        foreach ($servers as $server) $server->server->update(['status' => Server::WORK_STATUS]);
 
 //        event(new SessionStart($session));
 
