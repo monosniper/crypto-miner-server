@@ -6,9 +6,11 @@ use App\Filament\Resources\ArticleResource\Pages;
 use App\Filament\Resources\ArticleResource\RelationManagers;
 use App\Models\Article;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -32,6 +34,12 @@ class ArticleResource extends Resource
                     ->required()
                     ->maxLength(65535)
                     ->fileAttachmentsDirectory('articles'),
+                SpatieMediaLibraryFileUpload::make('image')
+                    ->label('Картинка')
+                    ->image()
+                    ->collection('image')
+                    ->imageEditor()
+                    ->directory('articles')
             ]);
     }
 
@@ -39,6 +47,8 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
+                SpatieMediaLibraryImageColumn::make('image')
+                    ->label('Картинка'),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

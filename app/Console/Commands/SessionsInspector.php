@@ -27,7 +27,7 @@ class SessionsInspector extends Command
      */
     public function handle(): void
     {
-        $sessions = Session::where('end_at', '<', \Carbon\Carbon::now())->get();
+        $sessions = Session::whereNotNull('end_at')->where('end_at', '<', \Carbon\Carbon::now())->get();
 
         foreach ($sessions as $session) $session->delete();
     }
