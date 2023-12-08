@@ -19,6 +19,7 @@ class SessionResource extends JsonResource
             'coins' => CoinResource::collection($this->coins),
             'servers' => UserServerResource::collection($this->user_servers),
             'logs' => $this->logs,
+            'end_at' => $this->end_at,
             'created_at' => $this->created_at,
         ];
     }
