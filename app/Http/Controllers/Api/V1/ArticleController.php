@@ -33,8 +33,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article): ArticleResource
+    public function show(string $id): ArticleResource
     {
+        $article = Cache::remember('articles-'.$id, 86400, function () use($id) {
+            return Article::find($id);
+        });
+
         return new ArticleResource($article);
     }
 
