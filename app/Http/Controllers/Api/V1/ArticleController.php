@@ -16,7 +16,7 @@ class ArticleController extends Controller
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $articles = Cache::remember('articles', 86400, function () {
-            return Article::all();
+            return Article::latest()->get();
         });
 
         return ArticleResource::collection($articles);
