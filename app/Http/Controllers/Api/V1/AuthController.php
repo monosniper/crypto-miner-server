@@ -10,6 +10,7 @@ use App\Http\Resources\NftResource;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\ServerResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserServerResource;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WithdrawResource;
 use App\Models\User;
@@ -98,7 +99,7 @@ class AuthController extends Controller
     {
         $servers = Auth::user()->servers;
 
-        return ServerResource::collection($servers);
+        return UserServerResource::collection($servers);
     }
 
     public function server($id): ServerResource
