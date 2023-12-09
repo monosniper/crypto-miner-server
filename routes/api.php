@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::domain('api.hogyx.io')->group(function () {
     Route::prefix('v1')
         ->group(function () {
+            Route::post('users', [AuthController::class, 'register']);
+
             Route::middleware(AuthenticateOnceWithBasicAuth::class)
                 ->prefix('me')
                 ->group(function () {
@@ -55,6 +57,8 @@ Route::domain('api.hogyx.io')->group(function () {
 
 Route::prefix('v1')
     ->group(function () {
+        Route::post('users', [AuthController::class, 'register']);
+
         Route::middleware(AuthenticateOnceWithBasicAuth::class)
             ->prefix('me')
             ->group(function () {

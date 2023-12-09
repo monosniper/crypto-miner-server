@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ConvertationResource;
 use App\Http\Resources\NftResource;
@@ -18,6 +19,13 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function register(RegisterUserRequest $request): array
+    {
+        $user = User::create($request->validated());
+
+        return ['success' => !!$user];
+    }
+
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
