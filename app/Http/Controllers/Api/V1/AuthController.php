@@ -102,11 +102,11 @@ class AuthController extends Controller
         return UserServerResource::collection($servers);
     }
 
-    public function server($id): ServerResource
+    public function server($id): UserServerResource
     {
         $server = Auth::user()->servers()->find($id);
 
-        return new ServerResource($server);
+        return new UserServerResource($server);
     }
 
     public function invest(): array
