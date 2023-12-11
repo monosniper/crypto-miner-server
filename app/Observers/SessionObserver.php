@@ -45,14 +45,16 @@ class SessionObserver
             });
 
             $wallet = $user->wallet;
+            $balance = $wallet->balance;
 
             foreach ($coins as $found) {
-                $slug = $found->slug;
-                $wallet->balance->$slug += $found->amount;
+                $slug = $found->id;
+                $balance[$slug] += $found->amount;
             }
 
+            $wallet->balance = $balance;
             $wallet->save();
-            $user->nfts()->sync($nfts);
+            $user->nfts()->attach($nfts);
         }
     }
 

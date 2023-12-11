@@ -26,7 +26,7 @@ class SessionController extends Controller
 
         $servers = $session->user_servers;
 
-        foreach ($servers as $server) $server->server->update(['status' => Server::WORK_STATUS]);
+        foreach ($servers as $server) $server->update(['status' => Server::WORK_STATUS]);
 
 //        event(new SessionStart($session));
 
@@ -45,6 +45,11 @@ class SessionController extends Controller
     public function show(Session $session): SessionResource
     {
         return new SessionResource($session);
+    }
+
+    public function stop(Session $session): ?bool
+    {
+        return $session->delete();
     }
 
     public function update(Session $session, UpdateSessionRequest $request): array

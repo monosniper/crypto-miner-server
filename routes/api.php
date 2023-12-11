@@ -87,6 +87,7 @@ Route::prefix('v1')
         Route::apiResource('sessions', SessionController::class)
             ->only('show', 'update');
         Route::post('sessions/start', [SessionController::class, 'start']);
+        Route::delete('sessions/{session}/stop', [SessionController::class, 'stop']);
 
         Route::put('user/servers/{userServer}', [SessionController::class, 'updateUserServer']);
 
