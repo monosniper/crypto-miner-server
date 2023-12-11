@@ -21,6 +21,11 @@ class SessionResource extends Resource
 
     protected static ?string $navigationLabel = 'Сессии';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -33,13 +38,23 @@ class SessionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Пользователь')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Дата создания')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_at')
+                    ->label('Дата окончания')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->label('Остановить'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -59,8 +74,6 @@ class SessionResource extends Resource
     {
         return [
             'index' => Pages\ListSessions::route('/'),
-            'create' => Pages\CreateSession::route('/create'),
-            'edit' => Pages\EditSession::route('/{record}/edit'),
         ];
     }
 }
