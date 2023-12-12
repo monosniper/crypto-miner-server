@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use anlutro\LaravelSettings\Facades\Setting;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AppController extends Controller
 {
@@ -19,6 +20,8 @@ class AppController extends Controller
 
 //        Setting::save();
 
-        return response()->json(Setting::all());
+        return response()->json(Cache::remember('settings', 86400, function () {
+            return Setting::all();
+        }));
     }
 }

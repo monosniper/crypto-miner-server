@@ -12,6 +12,7 @@ use App\Models\Session;
 use App\Models\UserServer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SessionController extends Controller
 {
@@ -44,7 +45,7 @@ class SessionController extends Controller
 
     public function show(Session $session): SessionResource
     {
-        return new SessionResource($session);
+        return new SessionResource($session->load('coins'));
     }
 
     public function stop(Session $session): ?bool
@@ -60,6 +61,10 @@ class SessionController extends Controller
             ...$request->validated(),
             'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
         ]);
+
+        Cache::rememberForever('session.'.$session->user_id, function () use($session) {
+            return new SessionResource($session);
+        });
 
         return ['success' => true];
     }

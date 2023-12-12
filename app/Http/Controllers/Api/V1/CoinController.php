@@ -19,7 +19,7 @@ class CoinController extends Controller
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $coins = Cache::remember('coins', 86400, function () {
-            return Coin::all()->load('media');
+            return Coin::all();
         });
 
         return CoinResource::collection($coins);

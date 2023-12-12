@@ -16,6 +16,8 @@ class Possibility extends Model implements HasMedia
         'slug',
     ];
 
+    protected $with = ['media'];
+
     public function registerMediaCollections(): void
     {
         $this

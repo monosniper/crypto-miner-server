@@ -15,9 +15,7 @@ class ServerController extends Controller
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $servers = Cache::remember('servers', 86400, function () {
-            return Server::all()->load(['possibilities', 'coins', 'media']);
-        });
+        $servers = Server::all()->load(['possibilities', 'coins']);
 
         return ServerResource::collection($servers);
     }

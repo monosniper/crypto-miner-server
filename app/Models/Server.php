@@ -41,6 +41,8 @@ class Server extends Model implements HasMedia
     const NOT_ACTIVE_STATUS = 'not active';
     const RELOAD_STATUS = 'reload';
 
+    protected $with = ['media'];
+
     const STATUSES = [
         self::ACTIVE_STATUS, self::WORK_STATUS, self::NOT_ACTIVE_STATUS, self::RELOAD_STATUS,
     ];

@@ -16,7 +16,7 @@ class WithdrawController extends Controller
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $withdraws = Withdraw::all();
+        $withdraws = Withdraw::all()->load('nfts');
 
         return WithdrawResource::collection($withdraws);
     }

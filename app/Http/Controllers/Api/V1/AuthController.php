@@ -83,9 +83,7 @@ class AuthController extends Controller
 
     public function me(): UserResource
     {
-        $user = Auth::user();
-
-        return new UserResource($user);
+        return new UserResource(Auth::user());
     }
 
     public function wallet(): WalletResource

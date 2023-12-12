@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Server;
 use App\Models\Session;
+use Illuminate\Support\Facades\Cache;
 
 class SessionObserver
 {
@@ -28,6 +29,8 @@ class SessionObserver
      */
     public function deleted(Session $session): void
     {
+        Cache::forget('session.'.$session->user_id);
+
         $servers = $session->user_servers;
         $user = $session->user;
 

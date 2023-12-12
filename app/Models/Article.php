@@ -16,6 +16,8 @@ class Article extends Model implements HasMedia
         'content',
     ];
 
+    protected $with = ['media'];
+
     public function registerMediaCollections(): void
     {
         $this

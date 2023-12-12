@@ -15,7 +15,7 @@ class NftController extends Controller
     public function nfts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $items = Cache::remember('nfts', 86400, function () {
-            return Nft::all()->load('media');
+            return Nft::all();
         });
 
         return NftResource::collection($items);

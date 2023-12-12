@@ -16,6 +16,8 @@ class Nft extends Model implements HasMedia
         'price',
     ];
 
+    protected $with = ['media'];
+
     public function registerMediaCollections(): void
     {
         $this

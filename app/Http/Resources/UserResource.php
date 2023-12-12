@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Cache;
 
 class UserResource extends JsonResource
 {
@@ -20,7 +21,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'token' => $this->token,
             'coin_positions' => $this->coin_positions,
-            'session' => new SessionResource($this->session),
+            'session' => Cache::get('session.'.$this->id),
         ];
     }
 }
