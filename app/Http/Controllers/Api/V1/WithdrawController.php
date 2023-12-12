@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWithdrawRequest;
 use App\Http\Resources\WithdrawResource;
+use App\Models\User;
 use App\Models\Withdraw;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class WithdrawController extends Controller
 {
@@ -16,7 +18,24 @@ class WithdrawController extends Controller
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $withdraws = Withdraw::all()->load('nfts');
+        // Fake withdraws
+        // $withdraws = Withdraw::all()->load('nfts');
+
+        $withdraws = Cache::remember('withdraws', 86400, function () {
+            $withdraws = [];
+
+            $user_ids = User::pluck('id')->toArray();
+
+            for ($i=0; $i < 100; $i++) {
+                $withdraws[] = new Withdraw([
+                    'status' => Withdraw::STATUS_SUCCESS,
+                    'amount' => rand(100, 1000),
+                    'user_id' => $user_ids[array_rand($user_ids)],
+                ]);
+            }
+
+            return $withdraws;
+        });
 
         return WithdrawResource::collection($withdraws);
     }
