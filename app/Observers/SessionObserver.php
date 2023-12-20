@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Notification;
 use App\Models\Server;
 use App\Models\Session;
 use Illuminate\Support\Facades\Cache;
@@ -13,7 +14,12 @@ class SessionObserver
      */
     public function created(Session $session): void
     {
-        //
+        // Send noty for session end
+        $notification = Notification::create([
+            'title' => __('notifications.session.start.title'),
+        ]);
+
+        auth()->user()->notify($notification->id);
     }
 
     /**
@@ -34,6 +40,10 @@ class SessionObserver
         $servers = $session->user_servers;
         $user = $session->user;
 
+        $total = [
+            'nfts' => 0
+        ];
+
         foreach ($servers as $server) {
             $server->update(['status' => Server::ACTIVE_STATUS]);
 
@@ -42,6 +52,8 @@ class SessionObserver
             }, array_filter($server->founds, function ($found) {
                 return $found->type === 'nft';
             }));
+
+            $total['nfts'] += count($nfts);
 
             $coins = array_filter($server->founds, function ($found) {
                 return $found->type === 'coin';
@@ -52,6 +64,12 @@ class SessionObserver
 
             foreach ($coins as $found) {
                 $slug = $found->id;
+
+                if(!$total[$slug]) {
+                    $total[$slug] = 0;
+                }
+
+                $total[$slug] += $found->amount;
                 $balance[$slug] += $found->amount;
             }
 
@@ -59,6 +77,20 @@ class SessionObserver
             $wallet->save();
             $user->nfts()->attach($nfts);
         }
+
+        // Send noty for session end
+        $total_str = "</br>";
+
+        foreach ($total as $coin => $amount) {
+            $total_str .= strtoupper($coin).": <b>$amount</b></br>";
+        }
+
+        $notification = Notification::create([
+            'title' => __('notifications.session.end.title'),
+            'content' => __('notifications.session.end.content') . $total_str
+        ]);
+
+        auth()->user()->notify($notification->id);
     }
 
     /**
