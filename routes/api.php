@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
 use App\Http\Controllers\Api\V1\NftController;
+use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\ServerController;
 use App\Http\Controllers\Api\V1\SessionController;
 use App\Http\Controllers\Api\V1\WithdrawController;
@@ -96,4 +97,6 @@ Route::prefix('v1')
 
         Route::get('settings', [AppController::class, 'settings']);
         Route::get('nfts', [NftController::class, 'nfts']);
+
+        Route::get('payment-callback', [PaymentController::class, 'callback']);
     });

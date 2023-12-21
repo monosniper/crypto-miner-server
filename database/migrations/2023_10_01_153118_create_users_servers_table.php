@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Server;
+use App\Models\ServerLog;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,11 +18,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Server::class);
+            $table->foreignIdFor(ServerLog::class);
             $table->timestamp('active_until');
             $table->enum('status', Server::STATUSES);
             $table->string('name')->nullable();
-            $table->json('logs')->nullable();
-            $table->json('founds')->nullable();
             $table->timestamps();
         });
     }

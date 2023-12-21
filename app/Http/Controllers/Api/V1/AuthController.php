@@ -14,9 +14,11 @@ use App\Http\Resources\UserServerResource;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WithdrawResource;
 use App\Models\User;
+use App\Models\UserServer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -95,14 +97,16 @@ class AuthController extends Controller
 
     public function servers(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $servers = Auth::user()->servers;
+        $servers = Cache::remember('user_servers.'.auth()->id(), 86400, function () {
+            return Auth::user()->servers;
+        });
 
         return UserServerResource::collection($servers);
     }
 
     public function server($id): UserServerResource
     {
-        $server = Auth::user()->servers()->find($id);
+        $server = UserServer::find($id)->with('log');
 
         return new UserServerResource($server);
     }

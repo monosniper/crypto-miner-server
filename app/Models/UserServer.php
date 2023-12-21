@@ -15,26 +15,11 @@ class UserServer extends Model
     protected $fillable = [
         'user_id',
         'server_id',
+        'server_log_id',
         'active_until',
         'status',
         'name',
-        'logs',
-        'founds',
     ];
-
-    protected function logs(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value ? (is_array($value) ? $value : json_decode($value)) : [],
-        );
-    }
-
-    protected function founds(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value ? (is_array($value) ? $value : json_decode($value)) : [],
-        );
-    }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -44,5 +29,10 @@ class UserServer extends Model
     public function server(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Server::class);
+    }
+
+    public function log(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ServerLog::class);
     }
 }

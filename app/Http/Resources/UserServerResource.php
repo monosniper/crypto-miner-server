@@ -19,8 +19,8 @@ class UserServerResource extends JsonResource
             'active_until' => $this->active_until,
             'status' => $this->status,
             'name' => $this->name,
-            'logs' => $this->logs,
-            'founds' => $this->founds,
+            'logs' => $this->whenPivotLoadedAs('log', 'server_logs', $this->log?->logs),
+            'founds' => $this->whenPivotLoadedAs('log', 'server_logs', $this->log?->founds),
             'server' => new ServerResource($this->server),
         ];
     }

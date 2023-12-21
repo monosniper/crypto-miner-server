@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSessionRequest;
 use App\Http\Requests\UpdateUserServerRequest;
 use App\Http\Resources\SessionResource;
 use App\Models\Server;
+use App\Models\ServerLog;
 use App\Models\Session;
 use App\Models\UserServer;
 use Carbon\Carbon;
@@ -39,7 +40,9 @@ class SessionController extends Controller
 
     public function updateUserServer(UserServer $userServer, UpdateUserServerRequest $request): array
     {
-        $userServer->update($request->validated());
+        $serverLog = ServerLog::create($request->validated());
+        $userServer->log()->associate($serverLog);
+        $userServer->save();
         return ['success' => true];
     }
 
@@ -55,7 +58,7 @@ class SessionController extends Controller
 
     public function update(Session $session, UpdateSessionRequest $request): array
     {
-        $logs = $session->user_servers->last()->logs;
+        $logs = $session->user_servers->last()->log->logs;
 
         $session->update([
             ...$request->validated(),

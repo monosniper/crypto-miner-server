@@ -25,11 +25,11 @@ class StoreWithdrawRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => [Rule::in(Withdraw::TYPES), 'sometimes', ],
-            'wallet' => ['required', ],
-            'amount' => ['sometimes', 'numeric', ],
-            'user_id' => ['required', 'exists:users,id', ],
-            'nft_id' => ['sometimes', 'exists:nfts,id', ],
+//            'type' => [Rule::in(Withdraw::TYPES), 'sometimes', ],
+//            'wallet' => ['required', ],
+//            'amount' => ['sometimes', 'numeric', ],
+//            'user_id' => ['required', 'exists:users,id', ],
+//            'nft_id' => ['sometimes', 'exists:nfts,id', ],
         ];
     }
 }
