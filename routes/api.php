@@ -98,5 +98,5 @@ Route::prefix('v1')
         Route::get('settings', [AppController::class, 'settings']);
         Route::get('nfts', [NftController::class, 'nfts']);
 
-        Route::get('payment-callback', [PaymentController::class, 'callback']);
+        Route::post('payment-callback', [PaymentController::class, 'callback']);
     });
