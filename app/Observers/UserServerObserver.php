@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\UserServer;
+use Carbon\Carbon;
 
 class UserServerObserver
 {
@@ -20,10 +21,9 @@ class UserServerObserver
      */
     public function created(UserServer $userServer): void
     {
-        if(!$userServer->name) {
-            $userServer->name = $this->generateServerName();
-            $userServer->save();
-        }
+        $userServer->name = $this->generateServerName();
+        $userServer->active_until = Carbon::now()->addMonth();
+        $userServer->save();
     }
 
     /**

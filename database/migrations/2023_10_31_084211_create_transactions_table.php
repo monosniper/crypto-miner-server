@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('purchase_type', Transaction::PURCHASE_TYPES)->nullable();
             $table->enum('status', Transaction::STATUSES)->default(Transaction::PENDING);
             $table->bigInteger('purchase_id')->nullable();
+            $table->bigInteger('payment_id')->nullable();
             $table->timestamps();
         });
     }

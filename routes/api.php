@@ -34,6 +34,10 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('convertations', [AuthController::class, 'convertations']);
                     Route::get('withdraws', [AuthController::class, 'withdraws']);
                     Route::get('replenishments', [AuthController::class, 'replenishments']);
+
+                    Route::post('replenishments', [AuthController::class, 'storeReplenishment']);
+                    Route::post('donate', [AuthController::class, 'donate']);
+                    Route::post('servers', [AuthController::class, 'buyServer']);
                 });
 
             Route::apiResources([
@@ -78,6 +82,10 @@ Route::prefix('v1')
                 Route::get('convertations', [AuthController::class, 'convertations']);
                 Route::get('withdraws', [AuthController::class, 'withdraws']);
                 Route::get('replenishments', [AuthController::class, 'replenishments']);
+
+                Route::post('replenishments', [AuthController::class, 'storeReplenishment']);
+                Route::post('donate', [AuthController::class, 'donate']);
+                Route::post('servers', [AuthController::class, 'buyServer']);
             });
 
         Route::apiResources([
