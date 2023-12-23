@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Transaction;
+use App\Models\UserServer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -27,14 +28,40 @@ class PaymentChecker extends Command
      */
     public function handle()
     {
-        $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
-            ->get('https://api.nowpayments.io/v1/payment/5724001925');
+        $transactions = Transaction::waiting()->get();
 
-        $this->info($response->body());
-//        $transactions = Transaction::waiting()->get();
-//
-//        foreach ($transactions as $transaction) {
-//
-//        }
+        foreach ($transactions as $transaction) {
+            $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
+                ->get('https://api.nowpayments.io/v1/payment/' . $transaction->payment_id);
+
+            iF($response->ok()) {
+                $payment = $response->json();
+
+                if($payment['payment_status'] === Transaction::COMPLETED) {
+                    $transaction->update(['status' => Transaction::COMPLETED]);
+
+                    if($transaction->type === Transaction::PURCHASE) {
+                        if($transaction->purchase_type === Transaction::SERVER) {
+                            UserServer::create([
+                                'user_id' => $transaction->user_id,
+                                'server_id' => $transaction->purchase_id,
+                            ]);
+
+                            $this->info('User ' . $transaction->user_id . ' got server ' . $transaction->purchase_id);
+                        } else if($transaction->purchase_type === Transaction::BALANCE) {
+                            $wallet = $transaction->user->wallet;
+                            $balance = $wallet->balance;
+                            $balance['USDT'] += $transaction->amount;
+                            $wallet->balance = $balance;
+                            $wallet->save();
+
+                            $this->info('User ' . $transaction->user_id . ' replenished balance for ' . $transaction->amount . ' USDT');
+                        }
+                    }
+                }
+            } else {
+                $this->warn('Can\'t get payment with id: ' . $transaction->payment_id);
+            }
+        }
     }
 }
