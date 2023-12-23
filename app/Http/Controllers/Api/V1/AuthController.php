@@ -9,6 +9,7 @@ use App\Http\Resources\ConvertationResource;
 use App\Http\Resources\NftResource;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\ServerResource;
+use App\Http\Resources\TransactionResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserServerResource;
 use App\Http\Resources\WalletResource;
@@ -54,6 +55,12 @@ class AuthController extends Controller
     {
         $withdraws = Auth::user()->withdraws;
         return WithdrawResource::collection($withdraws);
+    }
+
+    public function replenishments(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $replenishments = Auth::user()->transactions()->replenishments()->get();
+        return TransactionResource::collection($replenishments);
     }
 
     public function nfts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

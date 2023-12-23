@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,7 +18,10 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->bigInteger('amount');
             $table->text('description');
-            $table->enum('type', \App\Models\Transaction::TYPES);
+            $table->enum('type', Transaction::TYPES);
+            $table->enum('purchase_type', Transaction::PURCHASE_TYPES)->nullable();
+            $table->enum('status', Transaction::STATUSES)->default(Transaction::PENDING);
+            $table->bigInteger('purchase_id')->nullable();
             $table->timestamps();
         });
     }

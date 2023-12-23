@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\PaymentChecker;
 use App\Console\Commands\RatesRequest;
 use App\Console\Commands\SessionsInspector;
 use App\Console\Commands\UserServersInspector;
@@ -20,6 +21,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(RatesRequest::class)->daily();
         $schedule->command(UserServersInspector::class)->daily();
         $schedule->command(SessionsInspector::class)->everyTenSeconds();
+        $schedule->command(PaymentChecker::class)->hourly();
     }
 
     /**

@@ -33,6 +33,7 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('notifications', [AuthController::class, 'notifications']);
                     Route::get('convertations', [AuthController::class, 'convertations']);
                     Route::get('withdraws', [AuthController::class, 'withdraws']);
+                    Route::get('replenishments', [AuthController::class, 'replenishments']);
                 });
 
             Route::apiResources([
@@ -76,6 +77,7 @@ Route::prefix('v1')
                 Route::get('notifications', [AuthController::class, 'notifications']);
                 Route::get('convertations', [AuthController::class, 'convertations']);
                 Route::get('withdraws', [AuthController::class, 'withdraws']);
+                Route::get('replenishments', [AuthController::class, 'replenishments']);
             });
 
         Route::apiResources([
@@ -97,6 +99,4 @@ Route::prefix('v1')
 
         Route::get('settings', [AppController::class, 'settings']);
         Route::get('nfts', [NftController::class, 'nfts']);
-
-        Route::post('payment-callback', [PaymentController::class, 'callback']);
     });
