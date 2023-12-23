@@ -27,7 +27,8 @@ class PaymentChecker extends Command
      */
     public function handle()
     {
-        $response = Http::get('https://api.nowpayments.io/v1/payment/5724001925');
+        $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
+            ->get('https://api.nowpayments.io/v1/payment/5724001925');
 
         $this->info($response->body());
 //        $transactions = Transaction::waiting()->get();
