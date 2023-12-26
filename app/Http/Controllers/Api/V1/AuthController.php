@@ -86,8 +86,6 @@ class AuthController extends Controller
                 "cancel_url" => env('FRONT_URL') . "?success=false",
             ]);
 
-        info($response->body());
-
         if($response->ok()) {
             $data = $response->json();
 
@@ -123,6 +121,8 @@ class AuthController extends Controller
                 "success_url" => env('FRONT_URL') . "?success=true&type=server",
                 "cancel_url" => env('FRONT_URL') . "?success=false",
             ]);
+
+        info($response->body());
 
         if($response->ok()) {
             $data = $response->json();
