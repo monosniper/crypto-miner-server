@@ -40,8 +40,7 @@ class SessionController extends Controller
 
     public function updateUserServer(UserServer $userServer, UpdateUserServerRequest $request): array
     {
-        info("infff " . json_encode($request->validated()));
-        $serverLog = ServerLog::create($request->validated());
+        $serverLog = ServerLog::create(json_decode($request->validated()));
         $userServer->log()->associate($serverLog);
         $userServer->save();
         return ['success' => true];
