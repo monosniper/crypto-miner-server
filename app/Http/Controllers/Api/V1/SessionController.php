@@ -40,8 +40,8 @@ class SessionController extends Controller
 
     public function updateUserServer(UserServer $userServer, UpdateUserServerRequest $request): array
     {
-        $serverLog = ServerLog::create($request->validated());
-        $userServer->log()->associate($serverLog);
+        $serverLog = ServerLog::insert($request->validated());
+        $userServer->server_log_id = $serverLog->id;
         $userServer->save();
         return ['success' => true];
     }

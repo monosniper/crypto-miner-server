@@ -15,8 +15,8 @@ class UserServer extends Model
     protected $fillable = [
         'user_id',
         'server_id',
-        'server_log_id',
         'active_until',
+        'server_log_id',
         'status',
         'name',
     ];
