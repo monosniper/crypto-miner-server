@@ -101,7 +101,7 @@ class AuthController extends Controller
 
     public function buyServer(Request $request): array
     {
-        $amount = Server::find($request->server_id)->price_month;
+        $amount = Server::find($request->server_id)->price;
 
         $transaction = Transaction::create([
             'user_id' => auth()->id(),
@@ -121,8 +121,6 @@ class AuthController extends Controller
                 "success_url" => env('FRONT_URL') . "?success=true&type=server",
                 "cancel_url" => env('FRONT_URL') . "?success=false",
             ]);
-
-        info($response->body());
 
         if($response->ok()) {
             $data = $response->json();
