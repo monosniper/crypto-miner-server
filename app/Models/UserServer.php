@@ -31,8 +31,8 @@ class UserServer extends Model
         return $this->belongsTo(Server::class);
     }
 
-    public function log(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function log(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->belongsTo(ServerLog::class);
+        return $this->hasOne(ServerLog::class);
     }
 }
