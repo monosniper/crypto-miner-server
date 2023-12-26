@@ -19,7 +19,7 @@ class SessionObserver
             'title' => __('notifications.session.start.title'),
         ]);
 
-        $session->user()->notify($notification->id);
+        $session->user->notify($notification->id);
     }
 
     /**
@@ -90,7 +90,7 @@ class SessionObserver
             'content' => __('notifications.session.end.content') . $total_str
         ]);
 
-        $session->user()->notify($notification->id);
+        $session->user->notify($notification->id);
     }
 
     /**
