@@ -216,7 +216,7 @@ class AuthController extends Controller
 
     public function server($id): UserServerResource
     {
-        $server = UserServer::find($id)->with('log');
+        $server = UserServer::find($id)->load('log');
 
         return new UserServerResource($server);
     }
