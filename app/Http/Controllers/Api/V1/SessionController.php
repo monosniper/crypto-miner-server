@@ -30,11 +30,15 @@ class SessionController extends Controller
 
         foreach ($servers as $server) $server->update(['status' => Server::WORK_STATUS]);
 
+        $rs = new SessionResource($session);
+
+        Cache::add('sessions'.$request->input('user_id'), $rs);
+
 //        event(new SessionStart($session));
 
         return response()->json([
             'success' => true,
-            'data' => new SessionResource($session)
+            'data' => $rs
         ]);
     }
 
