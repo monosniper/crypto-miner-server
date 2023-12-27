@@ -18,6 +18,7 @@ use App\Models\Server;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserServer;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -109,7 +110,11 @@ class AuthController extends Controller
             if($user->servers()->find($server->id)) {
                 return ['success' => true, 'url' => env('FRONT_URL') . "?success=false&type=server_exists"];
             } else {
-                $user->servers()->attach($server);
+                UserServer::create([
+                    'user_id' => $user->id,
+                    'server_id' => $server->id,
+                    'active_until' => Carbon::now()->addYear(),
+                ]);
 
                 return ['success' => true, 'url' => env('FRONT_URL') . "?success=true&type=server"];
             }
