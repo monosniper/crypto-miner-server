@@ -101,37 +101,46 @@ class AuthController extends Controller
 
     public function buyServer(Request $request): array
     {
-        $amount = Server::find($request->server_id)->price;
+        $server = Server::find($request->server_id);
+        $amount = $server->price;
 
-        $transaction = Transaction::create([
-            'user_id' => auth()->id(),
-            'amount' => $amount,
-            'type' => Transaction::PURCHASE,
-            'description' => __('transactions.buy_server'),
-            'purchase_type' => Transaction::SERVER,
-            'purchase_id' => $request->server_id,
-        ]);
-
-        $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
-            ->post('https://api.nowpayments.io/v1/invoice', [
-                "price_amount" => $amount,
-                "price_currency" => "usd",
-                "order_id" => $transaction->id,
-                "order_description" => __('transactions.buy_server'),
-                "success_url" => env('FRONT_URL') . "?success=true&type=server",
-                "cancel_url" => env('FRONT_URL') . "?success=false",
+        if($server->type === Server::TYPE_FREE) {
+            if(auth()->user()->servers()->find($server->id)) {
+                return ['success' => true, 'url' => env('FRONT_URL') . "?success=false&type=server_exists"];
+            } else {
+                return ['success' => true, 'url' => env('FRONT_URL') . "?success=true&type=server"];
+            }
+        } else {
+            $transaction = Transaction::create([
+                'user_id' => auth()->id(),
+                'amount' => $amount,
+                'type' => Transaction::PURCHASE,
+                'description' => __('transactions.buy_server'),
+                'purchase_type' => Transaction::SERVER,
+                'purchase_id' => $request->server_id,
             ]);
 
-        if($response->ok()) {
-            $data = $response->json();
+            $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
+                ->post('https://api.nowpayments.io/v1/invoice', [
+                    "price_amount" => $amount,
+                    "price_currency" => "usd",
+                    "order_id" => $transaction->id,
+                    "order_description" => __('transactions.buy_server'),
+                    "success_url" => env('FRONT_URL') . "?success=true&type=server",
+                    "cancel_url" => env('FRONT_URL') . "?success=false",
+                ]);
 
-            $transaction->update(['payment_id' => $data['id']]);
+            if($response->ok()) {
+                $data = $response->json();
 
-            return ['success' => true, 'url' => $data['invoice_url']];
-        } else {
-            $transaction->delete();
+                $transaction->update(['payment_id' => $data['id']]);
 
-            return ['success' => false, 'error' => 'Server error'];
+                return ['success' => true, 'url' => $data['invoice_url']];
+            } else {
+                $transaction->delete();
+
+                return ['success' => false, 'error' => 'Server error'];
+            }
         }
     }
 
