@@ -15,6 +15,7 @@ use App\Http\Resources\UserServerResource;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WithdrawResource;
 use App\Models\Server;
+use App\Models\ServerLog;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserServer;
@@ -110,9 +111,11 @@ class AuthController extends Controller
             if($user->servers()->find($server->id)) {
                 return ['success' => true, 'url' => env('FRONT_URL') . "?success=false&type=server_exists"];
             } else {
+                $server_log = ServerLog::create();
                 UserServer::create([
                     'user_id' => $user->id,
                     'server_id' => $server->id,
+                    'server_log_id' => $server_log->id,
                     'active_until' => Carbon::now()->addYear(),
                 ]);
 
