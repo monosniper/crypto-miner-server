@@ -101,18 +101,21 @@ class AuthController extends Controller
 
     public function buyServer(Request $request): array
     {
+        $user = auth()->user();
         $server = Server::find($request->server_id);
         $amount = $server->price;
 
         if($server->type === Server::TYPE_FREE) {
-            if(auth()->user()->servers()->find($server->id)) {
+            if($user->servers()->find($server->id)) {
                 return ['success' => true, 'url' => env('FRONT_URL') . "?success=false&type=server_exists"];
             } else {
+                $user->servers()->attach($server);
+
                 return ['success' => true, 'url' => env('FRONT_URL') . "?success=true&type=server"];
             }
         } else {
             $transaction = Transaction::create([
-                'user_id' => auth()->id(),
+                'user_id' => $user->id,
                 'amount' => $amount,
                 'type' => Transaction::PURCHASE,
                 'description' => __('transactions.buy_server'),
