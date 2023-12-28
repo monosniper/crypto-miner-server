@@ -140,7 +140,7 @@ class AuthController extends Controller
                     "success_url" => env('FRONT_URL') . "?success=true&type=server",
                     "cancel_url" => env('FRONT_URL') . "?success=false",
                 ]);
-            
+
             info("PAY ".json_encode($response->body()));
 
             if($response->ok()) {
