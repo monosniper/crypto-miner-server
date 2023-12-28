@@ -58,13 +58,13 @@ class AuthController extends Controller
 
     public function withdraws(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $withdraws = Auth::user()->withdraws;
+        $withdraws = Auth::user()->withdraws()->latest()->get();
         return WithdrawResource::collection($withdraws);
     }
 
     public function replenishments(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $replenishments = Auth::user()->transactions()->replenishments()->get();
+        $replenishments = Auth::user()->transactions()->replenishments()->latest()->get();
         return TransactionResource::collection($replenishments);
     }
 
@@ -197,7 +197,7 @@ class AuthController extends Controller
 
     public function convertations(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $convertations = Auth::user()->convertations;
+        $convertations = Auth::user()->convertations()->latest()->get();
         return ConvertationResource::collection($convertations);
     }
 
