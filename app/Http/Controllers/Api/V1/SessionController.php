@@ -62,6 +62,9 @@ class SessionController extends Controller
 
     public function update(Session $session, UpdateSessionRequest $request): array
     {
+        info("END_TIME " . json_encode($session->user_servers->last()));
+        info("END_TIME " . json_encode($session->user_servers->last()->log));
+        info("END_TIME " . json_encode($session->user_servers->last()->log->logs[count($session->user_servers->last()->log->logs)-1]));
         $logs = $session->user_servers->last()->log->logs;
 
         $session->update([
