@@ -15,9 +15,7 @@ class ArticleController extends Controller
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $articles = Cache::remember('articles', 86400, function () {
-            return Article::latest()->get();
-        });
+        $articles = Article::latest()->get();
 
         return ArticleResource::collection($articles);
     }
@@ -35,9 +33,7 @@ class ArticleController extends Controller
      */
     public function show(string $id): ArticleResource
     {
-        $article = Cache::remember('articles-'.$id, 86400, function () use($id) {
-            return Article::find($id);
-        });
+        $article = Article::find($id);
 
         return new ArticleResource($article);
     }

@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'token' => $this->token,
             'coin_positions' => $this->coin_positions,
-            'session' => Cache::get('session.'.$this->id),
+            'session' => new SessionResource($this->session),
         ];
     }
 }

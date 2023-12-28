@@ -21,21 +21,17 @@ class WithdrawController extends Controller
         // Fake withdraws
         // $withdraws = Withdraw::all()->load('nfts');
 
-        $withdraws = Cache::remember('withdraws', 86400, function () {
-            $withdraws = [];
+        $withdraws = [];
 
-            $user_ids = User::pluck('id')->toArray();
+        $user_ids = User::pluck('id')->toArray();
 
-            for ($i=0; $i < 100; $i++) {
-                $withdraws[] = new Withdraw([
-                    'status' => Withdraw::STATUS_SUCCESS,
-                    'amount' => rand(100, 1000),
-                    'user_id' => $user_ids[array_rand($user_ids)],
-                ]);
-            }
-
-            return $withdraws;
-        });
+        for ($i=0; $i < 100; $i++) {
+            $withdraws[] = new Withdraw([
+                'status' => Withdraw::STATUS_SUCCESS,
+                'amount' => rand(100, 1000),
+                'user_id' => $user_ids[array_rand($user_ids)],
+            ]);
+        }
 
         return WithdrawResource::collection($withdraws);
     }

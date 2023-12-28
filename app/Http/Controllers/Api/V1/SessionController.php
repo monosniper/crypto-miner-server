@@ -69,10 +69,6 @@ class SessionController extends Controller
             'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
         ]);
 
-        Cache::rememberForever('session.'.$session->user_id, function () use($session) {
-            return new SessionResource($session);
-        });
-
         return ['success' => true];
     }
 }

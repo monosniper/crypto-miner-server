@@ -108,7 +108,7 @@ class AuthController extends Controller
         $amount = $server->price;
 
         if($server->type === Server::TYPE_FREE) {
-            if($user->servers()->find($server->id)) {
+            if($user->servers()->where('server_id',$server->id)->first()) {
                 return ['success' => true, 'url' => env('FRONT_URL') . "?success=false&type=server_exists"];
             } else {
                 $server_log = ServerLog::create();
@@ -229,9 +229,7 @@ class AuthController extends Controller
 
     public function servers(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $servers = Cache::remember('user_servers.'.auth()->id(), 3600, function () {
-            return Auth::user()->servers;
-        });
+        $servers = Auth::user()->servers;
 
         return UserServerResource::collection($servers);
     }

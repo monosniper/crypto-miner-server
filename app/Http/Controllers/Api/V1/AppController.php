@@ -20,8 +20,6 @@ class AppController extends Controller
 
 //        Setting::save();
 
-        return response()->json(Cache::remember('settings', 86400, function () {
-            return Setting::all();
-        }));
+        return Setting::all();
     }
 }
