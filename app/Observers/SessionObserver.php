@@ -43,17 +43,18 @@ class SessionObserver
         ];
 
         foreach ($servers as $server) {
+            $log = $server->log;
             $server->update(['status' => Server::ACTIVE_STATUS]);
 
             $nfts = array_map(function ($found) {
                 return $found->id;
-            }, array_filter($server->founds, function ($found) {
+            }, array_filter($log->founds, function ($found) {
                 return $found->type === 'nft';
             }));
 
             $total['nfts'] += count($nfts);
 
-            $coins = array_filter($server->founds, function ($found) {
+            $coins = array_filter($log->founds, function ($found) {
                 return $found->type === 'coin';
             });
 
