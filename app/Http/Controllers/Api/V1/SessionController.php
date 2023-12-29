@@ -42,7 +42,7 @@ class SessionController extends Controller
         ]);
     }
 
-    public function updateUserServer(UserServer $userServer, UpdateUserServerRequest $request): array
+    public function updateUserServer(UserServer $userServer, Request $request): array
     {
         if($userServer->server_log_id) {
             $log = $userServer->log;
@@ -51,10 +51,10 @@ class SessionController extends Controller
                 'founds' => [$log->founds, ...$request->founds],
             ]);
         } else {
-            $serverLog = ServerLog::create($request->validated());
+            $serverLog = ServerLog::create($request->all());
             $userServer->server_log_id = $serverLog->id;
         }
-        
+
         $userServer->save();
         return ['success' => true];
     }
