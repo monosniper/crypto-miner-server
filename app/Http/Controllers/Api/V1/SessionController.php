@@ -46,6 +46,10 @@ class SessionController extends Controller
     {
         if($userServer->server_log_id) {
             $log = $userServer->log;
+            info("NIXUA " . json_encode($log->logs));
+            info("NIXUA " . json_encode($request->logs));
+            info("NIXUA " . json_encode($log->founds));
+            info("NIXUA " . json_encode($request->founds));
             $log->update([
                 'logs' => [$log->logs, ...$request->logs],
                 'founds' => [$log->founds, ...$request->founds],
