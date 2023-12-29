@@ -38,9 +38,9 @@ class SessionObserver
         $servers = $session->user_servers;
         $user = $session->user;
 
-        $total = [
-            'nfts' => 0
-        ];
+//        $total = [
+//            'nfts' => 0
+//        ];
 
         foreach ($servers as $server) {
             $log = $server->log;
@@ -52,7 +52,7 @@ class SessionObserver
                 return $found->type === 'nft';
             }));
 
-            $total['nfts'] += count($nfts);
+//            $total['nfts'] += count($nfts);
 
             $coins = array_filter($log->founds, function ($found) {
                 return $found->type === 'coin';
@@ -64,11 +64,11 @@ class SessionObserver
             foreach ($coins as $found) {
                 $slug = $found->id;
 
-                if(!$total[$slug]) {
-                    $total[$slug] = 0;
-                }
+//                if(!$total[$slug]) {
+//                    $total[$slug] = 0;
+//                }
 
-                $total[$slug] += $found->amount;
+//                $total[$slug] += $found->amount;
                 $balance[$slug] += $found->amount;
             }
 
@@ -78,15 +78,15 @@ class SessionObserver
         }
 
         // Send noty for session end
-        $total_str = "</br>";
+//        $total_str = "</br>";
 
-        foreach ($total as $coin => $amount) {
-            $total_str .= strtoupper($coin).": <b>$amount</b></br>";
-        }
+//        foreach ($total as $coin => $amount) {
+//            $total_str .= strtoupper($coin).": <b>$amount</b></br>";
+//        }
 
         $notification = Notification::create([
             'title' => __('notifications.session.end.title'),
-            'content' => __('notifications.session.end.content') . $total_str
+//            'content' => __('notifications.session.end.content') . $total_str
         ]);
 
         $session->user->notify($notification->id);

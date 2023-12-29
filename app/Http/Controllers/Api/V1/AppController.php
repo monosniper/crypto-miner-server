@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class AppController extends Controller
 {
-    public function settings(): \Illuminate\Http\JsonResponse
+    public function settings()
     {
 //        Setting::set('telegram', 'https://www.google.com');
 //        Setting::set('youtube', 'https://www.google.com');

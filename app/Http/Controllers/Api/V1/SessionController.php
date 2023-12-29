@@ -46,10 +46,6 @@ class SessionController extends Controller
     {
         if($userServer->server_log_id) {
             $log = $userServer->log;
-            info("NIXUA " . json_encode($log->logs));
-            info("NIXUA " . json_encode($request->logs));
-            info("NIXUA " . json_encode($log->founds));
-            info("NIXUA " . json_encode($request->founds));
             $log->update([
                 'logs' => [...$log->logs, ...$request->logs],
                 'founds' => [...$log->founds, ...$request->founds],
@@ -73,7 +69,7 @@ class SessionController extends Controller
         return $session->delete();
     }
 
-    public function update(Session $session, UpdateSessionRequest $request): array
+    public function update(Session $session, Request $request): array
     {
         info("END_TIME " . json_encode($session->user_servers->last()));
         info("END_TIME " . json_encode($session->user_servers->last()->log));
@@ -81,7 +77,7 @@ class SessionController extends Controller
         $logs = $session->user_servers->last()->log->logs;
 
         $session->update([
-            ...$request->validated(),
+            ...$request->logs,
             'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
         ]);
 
