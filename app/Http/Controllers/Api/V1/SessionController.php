@@ -51,8 +51,8 @@ class SessionController extends Controller
             info("NIXUA " . json_encode($log->founds));
             info("NIXUA " . json_encode($request->founds));
             $log->update([
-                'logs' => [$log->logs, ...$request->logs],
-                'founds' => [$log->founds, ...$request->founds],
+                'logs' => [...$log->logs, ...$request->logs],
+                'founds' => [...$log->founds, ...$request->founds],
             ]);
         } else {
             $serverLog = ServerLog::create($request->all());
