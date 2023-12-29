@@ -44,7 +44,10 @@ class SessionObserver
 
         foreach ($servers as $server) {
             $log = $server->log;
-            $server->update(['status' => Server::ACTIVE_STATUS]);
+            $server->update([
+                'status' => Server::ACTIVE_STATUS,
+                'server_log_id' => null,
+            ]);
 
             $nfts = array_map(function ($found) {
                 return $found->id;
