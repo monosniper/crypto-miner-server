@@ -27,6 +27,11 @@ class TransactionResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -63,9 +68,7 @@ class TransactionResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+            ->actions([])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -84,7 +87,6 @@ class TransactionResource extends Resource
     {
         return [
             'index' => Pages\ListTransactions::route('/'),
-            'create' => Pages\CreateTransaction::route('/create'),
             'edit' => Pages\EditTransaction::route('/{record}/edit'),
         ];
     }
