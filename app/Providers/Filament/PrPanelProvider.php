@@ -23,10 +23,10 @@ class PrPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->spa()
+//            ->spa()
             ->id('pr')
             ->domain(env('PANEL_PR_DOMAIN'))
-            ->path(env('PANEL_PR_PATH', 'pr'))
+            ->path(env('PANEL_PR_PATH'))
             ->login()
             ->passwordReset()
             ->authPasswordBroker('teams')

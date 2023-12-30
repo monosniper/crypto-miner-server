@@ -24,7 +24,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-//            ->domain(env('ADMIN_DOMAIN'))
+            ->domain(env('ADMIN_DOMAIN'))
 //            ->spa()
             ->default()
             ->id('admin')
