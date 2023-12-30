@@ -65,4 +65,9 @@ class Transaction extends Model
         self::FAILED => self::FAILED,
         self::PENDING => self::PENDING,
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

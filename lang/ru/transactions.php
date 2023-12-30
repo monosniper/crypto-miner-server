@@ -1,12 +1,22 @@
 <?php
 
-use App\Models\Server;
+use App\Models\Transaction;
 
 return [
-    'statuses' => [
-        Server::ACTIVE_STATUS => 'Оплачен',
-        Server::WORK_STATUS => 'В работе',
-        Server::NOT_ACTIVE_STATUS => 'Не оплачен',
-        Server::RELOAD_STATUS => 'Перезагрузка',
+    'types' => [
+        Transaction::DONATE => 'Партнерство',
+        Transaction::PURCHASE => 'Покупка',
     ],
+    'purchase_types' => [
+        Transaction::SERVER => 'Сервер',
+        Transaction::BALANCE => 'Баланс',
+    ],
+    'statuses' => [
+        Transaction::COMPLETED => 'Успешно',
+        Transaction::FAILED => 'Отмена',
+        Transaction::PENDING => 'Ожидание',
+    ],
+    'replenishment' => 'Пополнение баланса',
+    'donate' => 'Партнертство',
+    'buy_server' => 'Покупка сервера',
 ];

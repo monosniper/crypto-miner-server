@@ -13,7 +13,7 @@ class StatsOverview extends BaseWidget
             Stat::make('Всего приглашено', auth()->user()->team->getTotalRefsCount()),
             Stat::make('Общая сумма пополнений', auth()->user()->team->totalDonates() . "$"),
             Stat::make('Прибыль', auth()->user()->team->getIncome() . "$")
-                ->description('Текущий процент - 30%'),
+                ->description("Текущий процент - ".setting('pr_percent')."%"),
         ];
     }
 }

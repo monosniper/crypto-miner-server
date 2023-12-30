@@ -19,7 +19,8 @@ class AppController extends Controller
 //        Setting::set('withdraw_fee', 30);
 //        Setting::set('convertation_fee', 1);
 //        Setting::set('ref_percent', 10);
-
+//        Setting::set('pr_percent', 30);
+//
 //        Setting::save();
 
         return Setting::all();

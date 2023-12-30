@@ -45,6 +45,6 @@ class Team extends Model
     }
 
     public function getIncome() {
-        return ($this->totalDonates() / 100) * 30;
+        return ($this->totalDonates() / 100) * setting('pr_percent');
     }
 }
