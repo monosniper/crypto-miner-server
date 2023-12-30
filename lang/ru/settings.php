@@ -7,4 +7,6 @@ return [
     'facebook' => 'Facebook',
     'instagram' => 'Instagram',
     'tiktok' => 'Tik Tok',
+    'ref_percent' => 'Процент пополнений от рефералов',
+    'convertation_fee' => 'Комиссия конвертаций',
 ];

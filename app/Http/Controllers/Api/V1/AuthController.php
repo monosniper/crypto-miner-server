@@ -14,6 +14,9 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\UserServerResource;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WithdrawResource;
+use App\Models\Coin;
+use App\Models\Convertation;
+use App\Models\Ref;
 use App\Models\Server;
 use App\Models\ServerLog;
 use App\Models\Transaction;
@@ -31,6 +34,12 @@ class AuthController extends Controller
     public function register(RegisterUserRequest $request): array
     {
         $user = User::create($request->validated());
+
+        if($request->ref_code) {
+            $user->update([
+                'ref_id' => Ref::where('code', $request->ref_code)->first()->id
+            ]);
+        }
 
         return ['success' => !!$user];
     }
@@ -54,6 +63,36 @@ class AuthController extends Controller
                 'email' => 'The provided credentials do not match our records.',
             ]
         ]);
+    }
+
+    public function storeConvertation(Request $request): array
+    {
+        $coin_from = Coin::find($request->coin_from_id);
+        $coin_to = Coin::find($request->coin_to_id);
+
+        $coef = $coin_from->rate / $coin_to->rate;
+        $amount_to = $request->amount * $coef;
+
+        $amount_to -= $amount_to / 100 * setting('comission_fee');
+
+        $convertation = Convertation::create([
+            'user_id' => auth()->id(),
+            'from_id' => $request->coin_from_id,
+            'to_id' => $request->coin_to_id,
+            'amount_from' => $request->amount,
+            'amount_to' => $amount_to,
+        ]);
+
+        $wallet = auth()->user()->wallet;
+        $balance = $wallet->balance;
+
+        $balance[$coin_from->slug] -= $request->amount;
+        $balance[$coin_to->slug] += $amount_to;
+
+        $wallet->balance = $balance;
+        $wallet->save();
+
+        return ['success' => (bool) $convertation];
     }
 
     public function withdraws(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

@@ -45,7 +45,7 @@ class RefResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->label('Код')
                     ->copyable()
-                    ->copyableState(fn (string $state): string => "https://hogyx.io/login?ref_code={$state}")
+                    ->copyableState(fn (string $state): string => "https://hogyx.io/?ref_code={$state}")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('users_count')
                     ->label('Кол-во рег-ий')

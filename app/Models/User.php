@@ -38,6 +38,8 @@ class User extends Authenticatable implements FilamentUser
         'coin_positions',
     ];
 
+    protected $with = ['ref'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -126,7 +128,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function ref(): HasOne
     {
-        return $this->hasOne(Ref::class);
+        return $this->hasOne(Ref::class, '');
     }
 
     public function nfts(): BelongsToMany

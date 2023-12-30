@@ -17,6 +17,8 @@ class AppController extends Controller
 //        Setting::set('instagram', 'https://www.google.com');
 //        Setting::set('tiktok', 'https://www.google.com');
 //        Setting::set('withdraw_fee', 30);
+//        Setting::set('convertation_fee', 1);
+//        Setting::set('ref_percent', 10);
 
 //        Setting::save();
 

@@ -22,6 +22,9 @@ class UserResource extends JsonResource
             'token' => $this->token,
             'coin_positions' => $this->coin_positions,
             'session' => new SessionResource($this->session),
+            'ref_code' => $this->ref->code,
+            'total_refs' => $this->ref->users()->count(),
+            'total_refs_amount' => $this->ref->totalDonates(),
         ];
     }
 }
