@@ -4,7 +4,9 @@ namespace App\Observers;
 
 use App\Models\Notification;
 use App\Models\Server;
+use App\Models\ServerLog;
 use App\Models\Session;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 class SessionObserver
@@ -44,9 +46,13 @@ class SessionObserver
 
         foreach ($servers as $server) {
             $log = $server->log;
+
+            ServerLog::find($server->server_log_id)->delete();
+
             $server->update([
                 'status' => Server::ACTIVE_STATUS,
                 'server_log_id' => null,
+                'last_work_at' => Carbon::now(),
             ]);
 
             $nfts = array_map(function ($found) {

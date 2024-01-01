@@ -88,6 +88,7 @@ Route::prefix('v1')
                 Route::post('donate', [AuthController::class, 'donate']);
                 Route::post('servers', [AuthController::class, 'buyServer']);
                 Route::post('convertations', [AuthController::class, 'storeConvertation']);
+                Route::post('transfer', [AuthController::class, 'transfer']);
             });
 
         Route::apiResources([
@@ -106,6 +107,8 @@ Route::prefix('v1')
 
         Route::get('invest', [AuthController::class, 'invest']);
         Route::post('check', [AuthController::class, 'checkToken']);
+
+        Route::post('check-username', [AuthController::class, 'checkUsername']);
 
         Route::get('settings', [AppController::class, 'settings']);
         Route::get('nfts', [NftController::class, 'nfts']);

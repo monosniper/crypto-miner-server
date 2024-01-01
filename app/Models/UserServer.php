@@ -17,6 +17,7 @@ class UserServer extends Model
         'server_id',
         'active_until',
         'server_log_id',
+        'last_work_at',
         'status',
         'name',
     ];

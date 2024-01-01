@@ -20,8 +20,10 @@ class AppController extends Controller
 //        Setting::set('convertation_fee', 1);
 //        Setting::set('ref_percent', 10);
 //        Setting::set('pr_percent', 30);
+        Setting::set('transfer_fee', 5);
+        Setting::set('transfer_min', 10);
 //
-//        Setting::save();
+        Setting::save();
 
         return Setting::all();
     }

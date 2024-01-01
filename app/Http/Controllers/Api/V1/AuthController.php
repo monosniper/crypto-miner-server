@@ -44,6 +44,34 @@ class AuthController extends Controller
         return ['success' => !!$user];
     }
 
+    public function checkUsername(Request $request): array
+    {
+        return ['success' => User::where('username', $request->username)->existst()];
+    }
+
+    public function transfer(Request $request): array {
+        $success = true;
+        $user = User::where('username', $request->username)->first();
+
+        if($user) {
+            $amount = $request->amount - ($request->amount / 100 * setting('transfer_fee'));
+
+            $wallet = auth()->user()->wallet;
+            $balance = $wallet->balance;
+            $balance['USDT'] -= $amount;
+            $wallet->balance = $balance;
+            $wallet->save();
+
+            $user_wallet = $user->wallet;
+            $user_balance = $user_wallet->balance;
+            $user_balance['USDT'] += $amount;
+            $user_wallet->balance = $user_balance;
+            $user_wallet->save();
+        } else $success = false;
+
+        return ['success' => $success];
+    }
+
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
