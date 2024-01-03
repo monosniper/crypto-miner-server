@@ -20,6 +20,7 @@ class ServerResource extends JsonResource
             'title' => $this->title,
             'price' => $this->price,
             'year_price' => $this->year_price,
+            'work_time' => $this->work_time,
             'nft' => $this->nft,
             'isHot' => $this->isHot,
             'type' => $this->type,

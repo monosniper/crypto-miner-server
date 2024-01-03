@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('price');
             $table->integer('year_price');
+            $table->float('work_time')->nullable();
             $table->boolean('nft')->default(false);
             $table->boolean('isHot')->default(false);
             $table->enum('type', \App\Models\Server::TYPES);
