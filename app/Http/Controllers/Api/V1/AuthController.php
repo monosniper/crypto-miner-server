@@ -51,7 +51,7 @@ class AuthController extends Controller
 
     public function transfer(Request $request): array {
         $success = true;
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('name', $request->username)->first();
 
         if($user) {
             $amount = $request->amount - ($request->amount / 100 * setting('transfer_fee'));
