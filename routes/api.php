@@ -52,6 +52,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::apiResource('sessions', SessionController::class)
                 ->only('show', 'update');
             Route::post('sessions/start', [SessionController::class, 'start']);
+            Route::delete('sessions/{session}/stop', [SessionController::class, 'stop']);
 
             Route::put('user/servers', [SessionController::class, 'updateUserServer']);
 
