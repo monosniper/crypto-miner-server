@@ -54,7 +54,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('sessions/start', [SessionController::class, 'start']);
             Route::delete('sessions/{session}/stop', [SessionController::class, 'stop']);
 
-            Route::put('user/servers', [SessionController::class, 'updateUserServer']);
+            Route::put('user/servers/{userServer}', [SessionController::class, 'updateUserServer']);
 
             Route::get('invest', [AuthController::class, 'invest']);
             Route::post('check', [AuthController::class, 'checkToken']);
