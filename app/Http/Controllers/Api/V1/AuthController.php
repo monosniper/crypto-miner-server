@@ -173,10 +173,13 @@ class AuthController extends Controller
         $user = auth()->user();
         $server = Server::find($request->server_id);
         $amount = $server->price;
+        $result = [
+            'success' => true,
+        ];
 
         if($server->type === Server::TYPE_FREE) {
             if($user->servers()->where('server_id',$server->id)->first()) {
-                return ['success' => true, 'url' => env('FRONT_URL') . "?success=false&type=server_exists"];
+                $result['url'] = env('FRONT_URL') . "?success=false&type=server_exists";
             } else {
                 $server_log = ServerLog::create();
                 UserServer::create([
@@ -186,7 +189,7 @@ class AuthController extends Controller
                     'active_until' => Carbon::now()->addYear(),
                 ]);
 
-                return ['success' => true, 'url' => env('FRONT_URL') . "?success=true&type=server"];
+                $result['url'] = env('FRONT_URL') . "?success=true&type=server";
             }
         } else {
             $transaction = Transaction::create([
@@ -208,20 +211,25 @@ class AuthController extends Controller
                     "cancel_url" => env('FRONT_URL') . "?success=false",
                 ]);
 
-            info("PAY ".json_encode($response->body()));
-
             if($response->ok()) {
                 $data = $response->json();
 
                 $transaction->update(['payment_id' => $data['id']]);
 
-                return ['success' => true, 'url' => $data['invoice_url']];
+                $result['url'] = $data['invoice_url'];
             } else {
                 $transaction->delete();
 
-                return ['success' => false, 'error' => 'Server error'];
+                $result['success'] = false;
+                $result['error'] = 'Server error';
             }
         }
+
+        Cache::remember('servers.'.auth()->id(), 86400, function () {
+            return Auth::user()->servers;
+        });
+
+        return $result;
     }
 
     public function donate(Request $request) {
@@ -296,7 +304,9 @@ class AuthController extends Controller
 
     public function servers(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $servers = Auth::user()->servers;
+        $servers = Cache::remember('servers.'.auth()->id(), 86400, function () {
+            return Auth::user()->servers;
+        });
 
         return UserServerResource::collection($servers);
     }
