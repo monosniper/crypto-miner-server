@@ -39,6 +39,7 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::post('donate', [AuthController::class, 'donate']);
                     Route::post('servers', [AuthController::class, 'buyServer']);
                     Route::post('convertations', [AuthController::class, 'storeConvertation']);
+                    Route::post('transfer', [AuthController::class, 'transfer']);
                 });
 
             Route::apiResources([
@@ -56,6 +57,8 @@ Route::domain('api.hogyx.io')->group(function () {
 
             Route::get('invest', [AuthController::class, 'invest']);
             Route::post('check', [AuthController::class, 'checkToken']);
+
+            Route::post('check-username', [AuthController::class, 'checkUsername']);
 
             Route::get('settings', [AppController::class, 'settings']);
             Route::get('nfts', [NftController::class, 'nfts']);
