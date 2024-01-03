@@ -77,7 +77,7 @@ class SessionController extends Controller
         $logs = $session->user_servers->last()->log->logs;
 
         $session->update([
-            ...$request->logs,
+            "logs" => $request->logs,
             'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
         ]);
 
