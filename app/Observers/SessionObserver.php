@@ -7,6 +7,7 @@ use App\Models\Server;
 use App\Models\ServerLog;
 use App\Models\Session;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class SessionObserver
@@ -97,6 +98,10 @@ class SessionObserver
             'title' => __('notifications.session.end.title'),
 //            'content' => __('notifications.session.end.content') . $total_str
         ]);
+
+        Cache::remember('servers.'.$user->id, 86400, function () {
+            return Auth::user()->servers;
+        });
 
         $session->user->notify($notification->id);
     }
