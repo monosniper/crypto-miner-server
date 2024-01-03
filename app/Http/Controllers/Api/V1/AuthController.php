@@ -46,7 +46,7 @@ class AuthController extends Controller
 
     public function checkUsername(Request $request): array
     {
-        return ['success' => User::where('name', $request->username)->get()->exists()];
+        return ['success' => User::where('name', $request->username)->first()->exists()];
     }
 
     public function transfer(Request $request): array {
