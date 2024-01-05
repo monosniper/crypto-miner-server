@@ -99,8 +99,8 @@ class SessionObserver
         ]);
 
         Cache::forget('servers.'.$user->id);
-        Cache::remember('servers.'.$user->id, 86400, function () {
-            return Auth::user()->servers;
+        Cache::remember('servers.'.$user->id, 86400, function () use($user) {
+            return $user->servers;
         });
 
         $session->user->notify($notification->id);
