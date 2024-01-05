@@ -48,7 +48,7 @@ class SessionObserver
         foreach ($servers as $server) {
             $log = $server->log;
 
-            ServerLog::find($server->server_log_id)->delete();
+//            ServerLog::find($server->server_log_id)->delete();
 
             $server->update([
                 'status' => Server::ACTIVE_STATUS,
