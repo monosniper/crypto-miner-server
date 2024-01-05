@@ -29,7 +29,7 @@ class SessionController extends Controller
         $servers = $session->user_servers;
 
         foreach ($servers as $server) {
-            ServerLog::find($server->server_log_id)->delete();
+            if($server->server_log_id) ServerLog::find($server->server_log_id)->delete();
             $server->update([
                 'status' => Server::WORK_STATUS,
                 'server_log_id' => null
