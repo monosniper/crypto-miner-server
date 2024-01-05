@@ -52,7 +52,6 @@ class SessionObserver
 
             $server->update([
                 'status' => Server::ACTIVE_STATUS,
-                'server_log_id' => null,
                 'last_work_at' => Carbon::now(),
             ]);
 
