@@ -39,17 +39,17 @@ class RatesRequest extends Command implements Isolatable
 
         foreach ($coins as $coin) {
             // Graph for year
-            $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histoday?fsym=$coin->slug&tsym=USD&limit=365", $headers);
-            $res = $client->sendAsync($request)->wait();
-
-            $graph_data = json_decode($res->getBody())->Data->Data;
-
-            $graph = [];
-
-            foreach ($graph_data as $day) {
-                $avg = ($day->low + $day->high) / 2;
-                $graph[] = $avg;
-            }
+//            $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histoday?fsym=$coin->slug&tsym=USD&limit=365", $headers);
+//            $res = $client->sendAsync($request)->wait();
+//
+//            $graph_data = json_decode($res->getBody())->Data->Data;
+//
+//            $graph = [];
+//
+//            foreach ($graph_data as $day) {
+//                $avg = ($day->low + $day->high) / 2;
+//                $graph[] = $avg;
+//            }
 
             // Graph today
             $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histohour?fsym=$coin->slug&tsym=USD&limit=23", $headers);
@@ -75,7 +75,7 @@ class RatesRequest extends Command implements Isolatable
             $rate = $data->PRICE;
 
             // Save to coin
-            $coin->graph = json_encode($graph);
+//            $coin->graph = json_encode($graph);
             $coin->graph_today = json_encode($graph_today);
             $coin->change = $change;
             $coin->rate = $rate;
