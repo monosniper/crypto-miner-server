@@ -30,9 +30,9 @@ class SaveSettings extends Component implements HasForms
         foreach (Setting::all() as $key => $value) {
             if(is_array($value)) {
                 foreach ($value as $k => $v) {
-                    if(is_array($value)) {
+                    if(is_array($v)) {
                         foreach ($v as $k2 => $v2) {
-                            $schema[] = TextInput::make($k2)
+                            $schema[] = TextInput::make($k.'.'.$k2)
                                 ->label(__("settings.".$key.'.'.$k.'.'.$k2))
                                 ->default($v2)
                                 ->required()
