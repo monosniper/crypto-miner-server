@@ -36,6 +36,7 @@ class User extends Authenticatable implements FilamentUser
         'nft_id',
         'token',
         'coin_positions',
+        'isVerificated',
     ];
 
     protected $with = ['ref'];

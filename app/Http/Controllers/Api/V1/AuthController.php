@@ -44,6 +44,25 @@ class AuthController extends Controller
         return ['success' => !!$user];
     }
 
+    public function forgotPassword(Request $request) {
+        $request->email;
+        //app.hogyx.io/auth/new-password?code={code}
+        // Send recovery mail
+
+        return ['success' => true];
+    }
+
+    public function updatePassword(Request $request) {
+        // code and update password
+
+        return ['success' => true];
+    }
+
+    public function checkPasswordCode(Request $request) {
+        // Check code
+        return ['success' => true];
+    }
+
     public function checkUsername(Request $request): array
     {
         return ['success' => (bool)User::where('name', $request->username)->first()];

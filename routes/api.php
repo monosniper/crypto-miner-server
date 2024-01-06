@@ -63,6 +63,10 @@ Route::domain('api.hogyx.io')->group(function () {
 
             Route::get('settings', [AppController::class, 'settings']);
             Route::get('nfts', [NftController::class, 'nfts']);
+
+            Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
+            Route::post('check-password-code', [AuthController::class, 'checkPasswordCode']);
+            Route::put('update-password', [AuthController::class, 'updatePassword']);
         });
     });
 
