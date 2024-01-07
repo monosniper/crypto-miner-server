@@ -62,6 +62,8 @@ class AuthController extends Controller
                 'isVerificated' => true,
             ]);
 
+            $code->delete();
+
             return redirect()->away(env("FRONT_URL") . "?success=true&type=verificated");
         }
 
@@ -93,6 +95,7 @@ class AuthController extends Controller
             $code->user->update([
                 'password' => $request->password
             ]);
+            $code->delete();
         } else $success = false;
 
         return ['success' => $success];

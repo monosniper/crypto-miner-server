@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('token')->nullable();
             $table->json('coin_positions')->nullable();
+            $table->boolean('isVerificated')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
