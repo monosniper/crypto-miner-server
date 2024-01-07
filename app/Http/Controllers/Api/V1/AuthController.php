@@ -287,7 +287,9 @@ class AuthController extends Controller
             }
         }
 
-        Cache::remember('servers.'.auth()->id(), 86400, function () {
+        $key = 'servers.'.auth()->id();
+        Cache::forget($key);
+        Cache::remember($key, 86400, function () {
             return Auth::user()->servers;
         });
 
