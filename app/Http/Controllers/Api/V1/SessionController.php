@@ -44,7 +44,8 @@ class SessionController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $rs
+            'data' => $rs,
+            'isFirstStart' => $session->user->isFirstStart
         ]);
     }
 

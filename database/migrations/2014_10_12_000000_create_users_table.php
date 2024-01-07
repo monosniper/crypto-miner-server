@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('token')->nullable();
             $table->json('coin_positions')->nullable();
             $table->boolean('isVerificated')->default(false);
+            $table->boolean('isFirstStart')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
