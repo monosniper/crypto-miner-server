@@ -67,6 +67,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
             Route::post('check-password-code', [AuthController::class, 'checkPasswordCode']);
             Route::put('update-password', [AuthController::class, 'updatePassword']);
+            Route::get('verificate/{code}', [AuthController::class, 'verificateMail']);
         });
     });
 

@@ -14,26 +14,35 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\UserServerResource;
 use App\Http\Resources\WalletResource;
 use App\Http\Resources\WithdrawResource;
+use App\Mail\ForgotPassword;
+use App\Mail\Verification;
 use App\Models\Coin;
 use App\Models\Convertation;
+use App\Models\ForgotPasswordCode;
 use App\Models\Ref;
 use App\Models\Server;
 use App\Models\ServerLog;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserServer;
+use App\Models\VerificationCode;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
     public function register(RegisterUserRequest $request): array
     {
         $user = User::create($request->validated());
+        $code = VerificationCode::create([
+            'user_id' => $user->id,
+        ]);
+        Mail::to($user)->send(new Verification($code->value));
 
         if($request->ref_code) {
             $user->update([
@@ -44,23 +53,54 @@ class AuthController extends Controller
         return ['success' => !!$user];
     }
 
-    public function forgotPassword(Request $request) {
-        $request->email;
-        //app.hogyx.io/auth/new-password?code={code}
-        // Send recovery mail
+    public function verificateMail($code): \Illuminate\Http\RedirectResponse
+    {
+        $code = VerificationCode::where('value', $code)->first();
 
-        return ['success' => true];
+        if($code) {
+            $code->user->update([
+                'isVerificated' => true,
+            ]);
+
+            return redirect()->away(env("FRONT_URL") . "?success=true&type=verificated");
+        }
+
+        return redirect()->away(env("FRONT_URL") . "?success=false");
     }
 
-    public function updatePassword(Request $request) {
-        // code and update password
+    public function forgotPassword(Request $request): array
+    {
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        $success = true;
 
-        return ['success' => true];
+        if($user) {
+            $code = ForgotPasswordCode::create([
+                'user_id' => $user->id,
+            ]);
+            Mail::to($email)->send(new ForgotPassword($code->value));
+        } else $success = false;
+
+        return ['success' => $success];
     }
 
-    public function checkPasswordCode(Request $request) {
-        // Check code
-        return ['success' => true];
+    public function updatePassword(Request $request): array
+    {
+        $success = true;
+        $code = ForgotPasswordCode::where('value', $request->code)->first();
+
+        if($code) {
+            $code->user->update([
+                'password' => $request->password
+            ]);
+        } else $success = false;
+
+        return ['success' => $success];
+    }
+
+    public function checkPasswordCode(Request $request): array
+    {
+        return ['success' => (bool) ForgotPasswordCode::where('value', $request->code)->first()];
     }
 
     public function checkUsername(Request $request): array
