@@ -40,12 +40,20 @@ class SessionController extends Controller
 
         Cache::add('sessions'.$request->input('user_id'), $rs);
 
+        $isFirstStart = $session->user->isFirstStart;
+
+        if($isFirstStart) {
+            $session->user->update([
+                'isFirstStart' => false
+            ]);
+        }
+
 //        event(new SessionStart($session));
 
         return response()->json([
             'success' => true,
             'data' => $rs,
-            'isFirstStart' => $session->user->isFirstStart
+            'isFirstStart' => $isFirstStart
         ]);
     }
 
