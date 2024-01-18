@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'token' => $this->token,
             'isVerificated' => $this->isVerificated,
             'coin_positions' => $this->coin_positions,
-            'session' => new SessionResource($this->session),
+            'session' => $this->session->id,
             'ref_code' => $this->ref->code,
             'total_refs' => $this->ref->users()->count(),
             'total_refs_amount' => $this->ref->totalDonates(),
