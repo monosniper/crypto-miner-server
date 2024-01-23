@@ -100,7 +100,7 @@ class SessionObserver
 
         Cache::forget('sessions.'.$user->id);
         Cache::forget('servers.'.$user->id);
-        Cache::add('servers.'.$user->id, $user->servers);
+        Cache::put('servers.'.$user->id, $user->servers);
 
         $session->user->notify($notification->id);
     }
