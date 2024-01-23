@@ -98,10 +98,9 @@ class SessionObserver
 //            'content' => __('notifications.session.end.content') . $total_str
         ]);
 
+        Cache::forget('sessions.'.$user->id);
         Cache::forget('servers.'.$user->id);
-        Cache::remember('servers.'.$user->id, 86400, function () use($user) {
-            return $user->servers;
-        });
+        Cache::add('servers.'.$user->id, $user->servers);
 
         $session->user->notify($notification->id);
     }

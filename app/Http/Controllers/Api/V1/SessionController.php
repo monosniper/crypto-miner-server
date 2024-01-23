@@ -37,11 +37,9 @@ class SessionController extends Controller
             ]);
         }
 
-        $rs = new SessionResource($session);
-
         $user_id = $request->input('user_id');
 
-        Cache::add('sessions'.$user_id, $rs);
+        Cache::add('sessions'.$user_id, $session);
         Cache::forget('servers.'.$user_id);
         Cache::remember('servers.'.$user_id, 86400, function () use($user_id) {
             return User::find($user_id)->servers;
@@ -59,7 +57,7 @@ class SessionController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $rs,
+            'data' => new SessionResource($session),
             'isFirstStart' => $isFirstStart
         ]);
     }
