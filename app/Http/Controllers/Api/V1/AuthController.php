@@ -375,9 +375,9 @@ class AuthController extends Controller
 
     public function server($id): UserServerResource
     {
-        $server = UserServer::find($id)->load('log');
-
-        return new UserServerResource($server);
+        return Cache::remember('all.servers.'.$id, 86400, function () use($id) {
+            return new UserServerResource(UserServer::find($id)->load('log'));
+        });
     }
 
     public function invest(): array
