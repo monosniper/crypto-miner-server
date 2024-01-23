@@ -368,11 +368,9 @@ class AuthController extends Controller
 
     public function servers(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $servers = Cache::remember('servers.'.auth()->id(), 86400, function () {
-            return Auth::user()->servers;
+        return Cache::remember('servers.'.auth()->id(), 86400, function () {
+            return UserServerResource::collection(auth()->user()->servers);
         });
-
-        return UserServerResource::collection($servers);
     }
 
     public function server($id): UserServerResource
