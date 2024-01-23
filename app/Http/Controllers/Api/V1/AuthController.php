@@ -369,7 +369,7 @@ class AuthController extends Controller
     public function servers()
     {
         return Cache::remember('servers.'.auth()->id(), 86400, function () {
-            return UserServerResource::collection(auth()->user()->servers);
+            return UserServerResource::collection(auth()->user()->servers->load('server'));
         });
     }
 
