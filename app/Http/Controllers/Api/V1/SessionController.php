@@ -39,7 +39,7 @@ class SessionController extends Controller
 
         $user_id = $request->input('user_id');
 
-        Cache::put('sessions.'.$user_id, new SessionResource($session->load('servers.log')));
+        Cache::put('sessions.'.$user_id, new SessionResource($session->load('user_servers.log')));
         Cache::forget('servers.'.$user_id);
         Cache::remember('servers.'.$user_id, 86400, function () use($user_id) {
             return User::find($user_id)->servers;
