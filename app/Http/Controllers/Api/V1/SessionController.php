@@ -39,7 +39,6 @@ class SessionController extends Controller
 
         $user_id = $request->input('user_id');
 
-        Cache::put('sessions.'.$user_id, new SessionResource($session->load('user_servers.log')));
         Cache::forget('servers.'.$user_id);
         Cache::remember('servers.'.$user_id, 86400, function () use($user_id) {
             return User::find($user_id)->servers;
@@ -76,6 +75,15 @@ class SessionController extends Controller
         }
 
         $userServer->save();
+
+        Cache::put('sessions.'.$userServer->user_id, new SessionResource($userServer->session->load('user_servers.log')));
+        return ['success' => true];
+    }
+
+    public function cacheSession(Session $session): array
+    {
+        Cache::put('sessions.'.$session->user_id, new SessionResource($session->load('user_servers.log')));
+
         return ['success' => true];
     }
 
