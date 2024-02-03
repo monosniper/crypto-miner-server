@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Transaction;
 use App\Models\UserServer;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -56,6 +57,12 @@ class PaymentChecker extends Command
                             $wallet->save();
 
                             $this->info('User ' . $transaction->user_id . ' replenished balance for ' . $transaction->amount . ' USDT');
+                        }else if($transaction->purchase_type === Transaction::RENEW_SERVER) {
+                            $server = UserServer::find($transaction->purchase_id);
+                            $server->activeUntil = Carbon::now()->addMonth();
+                            $wallet->save();
+
+                            $this->info('User ' . $transaction->user_id . ' renewed server ' . $server->name);
                         }
                     }
                 }

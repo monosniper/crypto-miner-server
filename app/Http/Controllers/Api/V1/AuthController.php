@@ -230,6 +230,56 @@ class AuthController extends Controller
         }
     }
 
+    public function renewServer(Request $request): array
+    {
+        $user = auth()->user();
+        $server = Server::find($request->server_id);
+        $amount = $server->price;
+        $result = [
+            'success' => true,
+        ];
+
+        $transaction = Transaction::create([
+            'user_id' => $user->id,
+            'amount' => $amount,
+            'type' => Transaction::PURCHASE,
+            'description' => __('transactions.renew_server'),
+            'purchase_type' => Transaction::RENEW_SERVER,
+            'purchase_id' => $request->server_id,
+        ]);
+
+        $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
+            ->post('https://api.nowpayments.io/v1/invoice', [
+                "price_amount" => $amount,
+                "price_currency" => "usd",
+                "order_id" => $transaction->id,
+                "order_description" => __('transactions.renew_server'),
+                "success_url" => env('FRONT_URL') . "?success=true&type=renew-server",
+                "cancel_url" => env('FRONT_URL') . "?success=false",
+            ]);
+
+        if($response->ok()) {
+            $data = $response->json();
+
+            $transaction->update(['payment_id' => $data['id']]);
+
+            $result['url'] = $data['invoice_url'];
+        } else {
+            $transaction->delete();
+
+            $result['success'] = false;
+            $result['error'] = 'Server error';
+        }
+
+        $key = 'servers.'.auth()->id();
+        Cache::forget($key);
+        Cache::remember($key, 86400, function () {
+            return Auth::user()->servers;
+        });
+
+        return $result;
+    }
+
     public function buyServer(Request $request): array
     {
         $user = auth()->user();

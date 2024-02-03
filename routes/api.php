@@ -97,6 +97,7 @@ Route::prefix('v1')
                 Route::post('replenishments', [AuthController::class, 'storeReplenishment']);
                 Route::post('donate', [AuthController::class, 'donate']);
                 Route::post('servers', [AuthController::class, 'buyServer']);
+                Route::put('servers', [AuthController::class, 'renewServer']);
                 Route::post('convertations', [AuthController::class, 'storeConvertation']);
                 Route::post('transfer', [AuthController::class, 'transfer']);
             });

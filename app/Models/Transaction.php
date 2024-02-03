@@ -48,6 +48,7 @@ class Transaction extends Model
         self::PURCHASE => self::PURCHASE,
     ];
 
+    const RENEW_SERVER = 'renew_server';
     const SERVER = 'server';
     const BALANCE = 'balance';
 
