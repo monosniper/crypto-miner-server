@@ -233,7 +233,7 @@ class AuthController extends Controller
     public function renewServer(Request $request): array
     {
         $user = auth()->user();
-        $server = Server::find($request->server_id);
+        $server = UserServer::find($request->server_id);
         $amount = $server->price;
         $result = [
             'success' => true,
