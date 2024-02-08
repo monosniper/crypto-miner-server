@@ -234,7 +234,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $server = UserServer::find($request->server_id);
-        $amount = $server->price;
+        $amount = $server->server->price;
         $result = [
             'success' => true,
         ];
