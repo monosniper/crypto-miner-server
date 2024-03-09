@@ -109,6 +109,8 @@ class SessionController extends Controller
             'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
         ]);
 
+        Cache::put('sessions.'.$session->user->id, new SessionResource($session));
+
         return ['success' => true];
     }
 }

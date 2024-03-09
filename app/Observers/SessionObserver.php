@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Http\Resources\SessionResource;
 use App\Models\Notification;
 use App\Models\Server;
 use App\Models\ServerLog;
@@ -17,6 +18,8 @@ class SessionObserver
      */
     public function created(Session $session): void
     {
+        Cache::put('sessions.'.$session->user->id, new SessionResource($session));
+
         // Send noty for session end
         $notification = Notification::create([
             'title' => __('notifications.session.start.title'),
