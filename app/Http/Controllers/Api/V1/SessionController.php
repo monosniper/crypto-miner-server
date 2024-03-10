@@ -76,7 +76,9 @@ class SessionController extends Controller
 
         $userServer->save();
 
-        Cache::put('sessions.'.$userServer->user_id, new SessionResource($userServer->session->load('user_servers.log')));
+        $user = User::find($userServer->user_id);
+        Cache::put('sessions.'.$userServer->user_id, new SessionResource($user->session->load('user_servers.log')));
+
         return ['success' => true];
     }
 
