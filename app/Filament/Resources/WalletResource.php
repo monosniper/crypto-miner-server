@@ -67,7 +67,7 @@ class WalletResource extends Resource
                     ->money()
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query
-                            ->orderByRaw('CAST(balance->"$.USDT" AS unsigned)', $direction);
+                            ->orderByRaw('CAST(JSON_EXTRACT(balance->"$.USDT") AS unsigned)', $direction);
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
