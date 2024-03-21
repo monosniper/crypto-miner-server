@@ -72,12 +72,10 @@ class WalletResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Посл. обновление')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -86,7 +84,7 @@ class WalletResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('balance.USDT', 'desc')
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
