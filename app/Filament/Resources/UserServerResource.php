@@ -112,14 +112,6 @@ class UserServerResource extends Resource
                     ])
             ])
             ->actions([
-                Tables\Actions\CreateAction::make()
-                    ->after(function ($record, $state) {
-                        $key = 'servers.'.$record->user_id;
-                        Cache::forget($key);
-                        Cache::remember($key, 86400, function () use($record) {
-                            return $record->user->servers;
-                        });
-                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->defaultSort('created_at', 'desc')
