@@ -56,6 +56,7 @@ class SessionResource extends Resource
             ->actions([
                 Tables\Actions\DeleteAction::make()->label('Остановить'),
             ])
+            ->defaultSort('created_at', 'desc')
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

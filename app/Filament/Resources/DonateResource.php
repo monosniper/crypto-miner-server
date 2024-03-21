@@ -67,6 +67,7 @@ class DonateResource extends Resource
             ->actions([
 
             ])
+            ->defaultSort('created_at', 'desc')
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

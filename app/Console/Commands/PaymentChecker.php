@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ServerLog;
 use App\Models\Transaction;
 use App\Models\UserServer;
 use Carbon\Carbon;
@@ -43,9 +44,12 @@ class PaymentChecker extends Command
 
                     if($transaction->type === Transaction::PURCHASE) {
                         if($transaction->purchase_type === Transaction::SERVER) {
+                            $server_log = ServerLog::create();
                             UserServer::create([
                                 'user_id' => $transaction->user_id,
                                 'server_id' => $transaction->purchase_id,
+                                'server_log_id' => $server_log->id,
+                                'active_until' => Carbon::now()->addYear(),
                             ]);
 
                             $this->info('User ' . $transaction->user_id . ' got server ' . $transaction->purchase_id);

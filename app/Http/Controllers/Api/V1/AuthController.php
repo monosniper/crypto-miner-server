@@ -157,6 +157,14 @@ class AuthController extends Controller
 
     public function storeConvertation(Request $request): array
     {
+        $wallet = auth()->user()->wallet;
+        $balance = $wallet->balance;
+
+        // Check balance
+        if ($balance[$coin_from->slug] < $request->amount) {
+            return ['success' => false];
+        }
+
         $coin_from = Coin::find($request->coin_from_id);
         $coin_to = Coin::find($request->coin_to_id);
 
@@ -172,9 +180,6 @@ class AuthController extends Controller
             'amount_from' => $request->amount,
             'amount_to' => $amount_to,
         ]);
-
-        $wallet = auth()->user()->wallet;
-        $balance = $wallet->balance;
 
         $balance[$coin_from->slug] -= $request->amount;
         $balance[$coin_to->slug] += $amount_to;
@@ -301,6 +306,12 @@ class AuthController extends Controller
                     'active_until' => Carbon::now()->addYear(),
                 ]);
 
+                $key = 'servers.'.auth()->id();
+                Cache::forget($key);
+                Cache::remember($key, 86400, function () {
+                    return Auth::user()->servers;
+                });
+
                 $result['url'] = env('FRONT_URL') . "?success=true&type=server";
             }
         } else {
@@ -313,35 +324,31 @@ class AuthController extends Controller
                 'purchase_id' => $request->server_id,
             ]);
 
-            $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
-                ->post('https://api.nowpayments.io/v1/invoice', [
-                    "price_amount" => $amount,
-                    "price_currency" => "usd",
-                    "order_id" => $transaction->id,
-                    "order_description" => __('transactions.buy_server'),
-                    "success_url" => env('FRONT_URL') . "?success=true&type=server",
-                    "cancel_url" => env('FRONT_URL') . "?success=false",
-                ]);
+            $result['data'] = $transaction;
 
-            if($response->ok()) {
-                $data = $response->json();
+//            $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
+//                ->post('https://api.nowpayments.io/v1/invoice', [
+//                    "price_amount" => $amount,
+//                    "price_currency" => "usd",
+//                    "order_id" => $transaction->id,
+//                    "order_description" => __('transactions.buy_server'),
+//                    "success_url" => env('FRONT_URL') . "?success=true&type=server",
+//                    "cancel_url" => env('FRONT_URL') . "?success=false",
+//                ]);
 
-                $transaction->update(['payment_id' => $data['id']]);
-
-                $result['url'] = $data['invoice_url'];
-            } else {
-                $transaction->delete();
-
-                $result['success'] = false;
-                $result['error'] = 'Server error';
-            }
+//            if($response->ok()) {
+//                $data = $response->json();
+//
+//                $transaction->update(['payment_id' => $data['id']]);
+//
+//                $result['url'] = $data['invoice_url'];
+//            } else {
+//                $transaction->delete();
+//
+//                $result['success'] = false;
+//                $result['error'] = 'Server error';
+//            }
         }
-
-        $key = 'servers.'.auth()->id();
-        Cache::forget($key);
-        Cache::remember($key, 86400, function () {
-            return Auth::user()->servers;
-        });
 
         return $result;
     }
