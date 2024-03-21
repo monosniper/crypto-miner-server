@@ -65,7 +65,11 @@ class WalletResource extends Resource
                     ->label('Баланс')
                     ->numeric()
                     ->money()
-                    ->sortable(),
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query
+                            ->orderBy('balance.USDT', $direction)
+                            ->orderBy('balance.USDT', $direction);
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
