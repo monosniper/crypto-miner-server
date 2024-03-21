@@ -17,6 +17,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class UserServerResource extends Resource
 {
@@ -42,12 +44,12 @@ class UserServerResource extends Resource
                     ->relationship(name: 'server', titleAttribute: 'title')
                     ->searchable(['title'])
                     ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->label('Название')
-                    ->maxLength(191),
-                DateTimePicker::make('active_until')
-                    ->required()
-                    ->label('Активен до'),
+//                Forms\Components\TextInput::make('name')
+//                    ->label('Название')
+//                    ->maxLength(191),
+//                DateTimePicker::make('active_until')
+//                    ->required()
+//                    ->label('Активен до'),
                 Select::make('status')
                     ->label('Статус')
                     ->required()
@@ -110,6 +112,14 @@ class UserServerResource extends Resource
                     ])
             ])
             ->actions([
+                Tables\Actions\CreateAction::make()
+                    ->after(function ($record, $state) {
+                        $key = 'servers.'.$record->user_id;
+                        Cache::forget($key);
+                        Cache::remember($key, 86400, function () use($record) {
+                            return $record->user->servers;
+                        });
+                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->defaultSort('created_at', 'desc')
