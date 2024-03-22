@@ -25,12 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         FilamentAsset::register([
-            Css::make('../libs/jquery-jvectormap-2.0.5', public_path('css/libs/jquery-jvectormap-2.0.5.css')),
-            Css::make('../libs/world', public_path('css/libs/world.css')),
+            Css::make('jquery-jvectormap-2.0.5', public_path('css/libs/jquery-jvectormap-2.0.5.css')),
+            Css::make('world', public_path('css/libs/world.css')),
             Js::make('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'),
-            Js::make('../libs/jquery.jvectormap.min', public_path('js/libs/jquery.jvectormap.min.js')),
-            Js::make('../libs/jquery-jvectormap-world-mill', public_path('js/libs/jquery-jvectormap-world-mill.js')),
-            Js::make('../libs/world', public_path('js/libs/world.js')),
+            Js::make('jquery.jvectormap.min', public_path('js/libs/jquery.jvectormap.min.js')),
+            Js::make('jquery-jvectormap-world-mill', public_path('js/libs/jquery-jvectormap-world-mill.js')),
+            Js::make('world', public_path('js/libs/world.js')),
         ]);
     }
 }

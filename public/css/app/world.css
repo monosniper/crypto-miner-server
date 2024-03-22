@@ -1,0 +1,8 @@
+/*#world-map-gdp {*/
+/*    width: 100% !important;*/
+/*    height: 100% !important;*/
+/*}*/
+
+#world-map-gdp svg {
+    background: #18181b;
+}
