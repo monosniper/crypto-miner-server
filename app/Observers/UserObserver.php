@@ -6,6 +6,7 @@ use App\Models\Coin;
 use App\Models\Ref;
 use App\Models\User;
 use App\Models\Wallet;
+use Stevebauman\Location\Facades\Location;
 
 class UserObserver
 {
@@ -43,6 +44,7 @@ class UserObserver
         $this->addWallet($user->id);
         $user->update([
             'token' => $this->generateToken(),
+            'country_code' => (Location::get())->countryName,
 
             // TODO: Remove it
             'isVerificated' => true
