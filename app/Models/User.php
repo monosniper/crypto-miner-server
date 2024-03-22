@@ -38,6 +38,10 @@ class User extends Authenticatable implements FilamentUser
         'coin_positions',
         'isVerificated',
         'isFirstStart',
+        'first_name',
+        'last_name',
+        'phone',
+        'country_code',
     ];
 
     protected $with = ['ref'];
