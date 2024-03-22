@@ -31,11 +31,21 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
+    public function geo() {
+        $rs = DB::select("
+            SELECT country_code, count(country_code) as total FROM users WHERE country_code IS NOT NULL
+            GROUP BY country_code ORDER BY total DESC
+        ");
+
+        return response()->json($rs);
+    }
+
     public function register(RegisterUserRequest $request): array
     {
         $user = User::create($request->validated());
