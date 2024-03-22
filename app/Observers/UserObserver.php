@@ -44,7 +44,7 @@ class UserObserver
         $this->addWallet($user->id);
         $user->update([
             'token' => $this->generateToken(),
-            'country_code' => (Location::get())->countryName,
+            'country_code' => (Location::get())->countryCode,
 
             // TODO: Remove it
             'isVerificated' => true
