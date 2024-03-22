@@ -49,10 +49,26 @@ class AuthController extends Controller
     public function register(RegisterUserRequest $request): array
     {
         $user = User::create($request->validated());
-        $code = VerificationCode::create([
-            'user_id' => $user->id,
-        ]);
-        Mail::to($user)->send(new Verification($code->value));
+
+        $basic  = new \Vonage\Client\Credentials\Basic(env("VONAGE_KEY"), env("VONAGE_SECRET"));
+        $client = new \Vonage\Client($basic);
+
+        $response = $client->sms()->send(
+            new \Vonage\SMS\Message\SMS($request->phone, env('APP_NAME'), 'Your verification code: 123456')
+        );
+
+        $message = $response->current();
+
+        if ($message->getStatus() == 0) {
+            info("The message was sent successfully");
+        } else {
+            info("The message failed with status: " . $message->getStatus());
+        }
+
+//        $code = VerificationCode::create([
+//            'user_id' => $user->id,
+//        ]);
+//        Mail::to($user)->send(new Verification($code->value));
 
         if($request->ref_code) {
             $user->update([

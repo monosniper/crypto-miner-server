@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NftResource\Pages;
-use App\Filament\Resources\NftResource\RelationManagers;
 use App\Models\Nft;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;

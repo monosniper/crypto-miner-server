@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,6 +43,7 @@ class User extends Authenticatable implements FilamentUser
         'last_name',
         'phone',
         'country_code',
+        'isOperator',
     ];
 
     protected $with = ['ref'];
@@ -69,9 +71,13 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $panel->getId() === 'admin'
-            ? $this->isAdmin
-            : (bool) $this->team;
+        $access = [
+            'admin' => $this->isAdmin,
+            'pr' => (bool) $this->team,
+            'call' => (bool) $this->isOperator,
+        ];
+
+        return $access[$panel->getId()];
     }
 
     public function session(): HasOne
@@ -82,6 +88,11 @@ class User extends Authenticatable implements FilamentUser
     public function convertations(): HasMany
     {
         return $this->hasMany(Convertation::class);
+    }
+
+    public function scopeOperators(Builder $query): Builder
+    {
+        return $query->where('isOperator', true);
     }
 
     public function withdraws(): HasMany

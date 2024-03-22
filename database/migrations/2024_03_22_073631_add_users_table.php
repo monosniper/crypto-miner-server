@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('phone')->nullable();
             $table->string('country_code')->nullable();
+            $table->boolean('isOperator')->default(false);
         });
     }
 
@@ -29,6 +30,7 @@ return new class extends Migration
             'last_name',
             'country_code',
             'phone',
+            'isOperator',
         ]);
     }
 };

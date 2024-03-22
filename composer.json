@@ -19,7 +19,8 @@
         "predis/predis": "^2.2",
         "spatie/laravel-schedule-monitor": "^3.4",
         "stevebauman/location": "^7.2",
-        "textalk/websocket": "^1.5"
+        "textalk/websocket": "^1.5",
+        "vonage/client": "^4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
