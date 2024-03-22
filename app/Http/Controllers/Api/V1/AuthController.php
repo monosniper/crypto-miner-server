@@ -160,13 +160,13 @@ class AuthController extends Controller
         $wallet = auth()->user()->wallet;
         $balance = $wallet->balance;
 
+        $coin_from = Coin::find($request->coin_from_id);
+        $coin_to = Coin::find($request->coin_to_id);
+
         // Check balance
         if ($balance[$coin_from->slug] < $request->amount) {
             return ['success' => false];
         }
-
-        $coin_from = Coin::find($request->coin_from_id);
-        $coin_to = Coin::find($request->coin_to_id);
 
         $coef = $coin_from->rate / $coin_to->rate;
         $amount_to = $request->amount * $coef;
