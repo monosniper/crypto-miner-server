@@ -1,27 +1,31 @@
-const gdpData = {
-    IN: 10000
-}
-
 window.onload = () => {
     const load = () => {
-        $('#world-map-gdp').vectorMap({
-            map: 'world_mill',
-            series: {
-                regions: [{
-                    values: gdpData,
-                    scale: ['#f2bef9', '#e879f9'],
-                    normalizeFunction: 'polynomial'
-                }]
-            },
-            regionStyle: {
-                initial: {
-                    fill: '#ffffff45',
+        fetch("https://api.hogyx.io/v1/geo").then(rs => rs.json()).then(rs => {
+            const gdpData = {}
+
+            rs.forEach(({country_code, total}) => {
+                gdpData[country_code] = total
+            })
+
+            $('#world-map-gdp').vectorMap({
+                map: 'world_mill',
+                series: {
+                    regions: [{
+                        values: gdpData,
+                        scale: ['#f1daf3', '#f2bef9', '#eb9cf7', '#e879f9'],
+                        normalizeFunction: 'polynomial'
+                    }]
                 },
-            },
-            onRegionTipShow: function(e, el, code){
-                el.html(el.html()+' ('+gdpData[code]+')');
-            }
-        });
+                regionStyle: {
+                    initial: {
+                        fill: '#ffffff45',
+                    },
+                },
+                onRegionTipShow: function(e, el, code){
+                    el.html(el.html()+' ('+gdpData[code] || 0+')');
+                }
+            });
+        })
     }
 
     function tryLoad() {

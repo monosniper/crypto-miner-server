@@ -12,7 +12,7 @@ window.onload = () => {
                 series: {
                     regions: [{
                         values: gdpData,
-                        scale: ['#f2bef9', '#e879f9'],
+                        scale: ['#f1daf3', '#f2bef9', '#eb9cf7', '#e879f9'],
                         normalizeFunction: 'polynomial'
                     }]
                 },
@@ -22,7 +22,7 @@ window.onload = () => {
                     },
                 },
                 onRegionTipShow: function(e, el, code){
-                    el.html(el.html()+' ('+gdpData[code]+')');
+                    el.html(el.html()+' ('+gdpData[code] || 0+')');
                 }
             });
         })
