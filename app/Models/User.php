@@ -44,6 +44,7 @@ class User extends Authenticatable implements FilamentUser
         'phone',
         'country_code',
         'isOperator',
+        'isManager',
     ];
 
     protected $with = ['ref'];
@@ -75,6 +76,7 @@ class User extends Authenticatable implements FilamentUser
             'admin' => $this->isAdmin,
             'pr' => (bool) $this->team,
             'call' => (bool) $this->isOperator,
+            'manager' => (bool) $this->isManager,
         ];
 
         return $access[$panel->getId()];
@@ -93,6 +95,11 @@ class User extends Authenticatable implements FilamentUser
     public function scopeOperators(Builder $query): Builder
     {
         return $query->where('isOperator', true);
+    }
+
+    public function scopeManagers(Builder $query): Builder
+    {
+        return $query->where('isManager', true);
     }
 
     public function withdraws(): HasMany
@@ -156,6 +163,11 @@ class User extends Authenticatable implements FilamentUser
     public function avatar(): BelongsTo
     {
         return $this->belongsTo(Nft::class, 'avatar_nft_id');
+    }
+
+    public function report(): BelongsTo
+    {
+        return $this->belongsTo(OperatorReport::class);
     }
 
     public function notifications(): BelongsToMany

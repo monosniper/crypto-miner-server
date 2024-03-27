@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class, 'operator_id');
             $table->foreignIdFor(User::class);
-            $table->enum('status', OperatorReport::REPORT_STATUSES);
+            $table->enum('status', OperatorReport::REPORT_STATUSES)->default(OperatorReport::STATUS_NOT_CALLED);
             $table->text('comment')->nullable();
             $table->integer('amount')->default(0);
+            $table->boolean('isHot')->default(true);
+            $table->boolean('isArchive')->default(false);
             $table->timestamps();
         });
     }

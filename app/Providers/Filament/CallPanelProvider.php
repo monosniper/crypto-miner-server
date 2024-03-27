@@ -26,16 +26,15 @@ class CallPanelProvider extends PanelProvider
             ->id('call')
 
             ->domain(env('PANEL_CALL_DOMAIN'))
-            ->path(env('PANEL_CALL_PATH'))
+            ->path(env('PANEL_CALL_PATH', ''))
             ->brandName('Hogyx Call Panel')
-//            ->brandLogo(asset('images/logo.svg'))
             ->favicon(asset('images/logo.svg'))
+
             ->login()
             ->passwordReset()
-            ->authPasswordBroker('operators')
 
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Emerald,
             ])
             ->discoverResources(in: app_path('Filament/Call/Resources'), for: 'App\\Filament\\Call\\Resources')
             ->discoverPages(in: app_path('Filament/Call/Pages'), for: 'App\\Filament\\Call\\Pages')
@@ -45,7 +44,6 @@ class CallPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Call/Widgets'), for: 'App\\Filament\\Call\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

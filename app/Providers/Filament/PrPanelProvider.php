@@ -26,12 +26,12 @@ class PrPanelProvider extends PanelProvider
 //            ->spa()
             ->id('pr')
             ->domain(env('PANEL_PR_DOMAIN'))
-            ->path(env('PANEL_PR_PATH'))
+            ->path(env('PANEL_PR_PATH', ''))
             ->login()
             ->passwordReset()
 //            ->authPasswordBroker('teams')
             ->brandName('Hogyx PR Panel')
-            ->brandLogo(asset('images/logo.svg'))
+//            ->brandLogo(asset('images/logo.svg'))
             ->favicon(asset('images/logo.svg'))
 
             ->colors([

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('country_code')->nullable();
             $table->boolean('isOperator')->default(false);
+            $table->boolean('isManager')->default(false);
         });
     }
 

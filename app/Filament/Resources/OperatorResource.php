@@ -24,6 +24,9 @@ class OperatorResource extends Resource
 
     protected static ?string $navigationGroup = 'Колл-центр';
 
+    protected static ?string $label = 'Операторы';
+    protected static ?string $pluralLabel = 'Операторы';
+
     public static function form(Form $form): Form
     {
         return $form

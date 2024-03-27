@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
 //            ->spa()
             ->default()
             ->id('admin')
-            ->path(env('ADMIN_PATH'))
+            ->path(env('ADMIN_PATH', ''))
             ->login()
             ->passwordReset()
             ->brandName('Hogyx Admin')
