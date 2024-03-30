@@ -12,7 +12,7 @@ class CacheService
 
     static public function save(string $name, $value = null): bool
     {
-        return Cache::put(
+        return Cache::set(
             $name,
             $value ?: CacheService::getDefaultValue($name)
         );
