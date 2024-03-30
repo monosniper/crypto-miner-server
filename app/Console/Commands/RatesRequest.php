@@ -38,6 +38,27 @@ class RatesRequest extends Command implements Isolatable
 
         $coins = Coin::all();
 
+        // Capacity & price
+        $slugs = implode(',', $coins->pluck('slug')->toArray());
+
+        $request = new Request('GET', "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=$slugs&tsyms=USD", $headers);
+        $res = $client->sendAsync($request)->wait();
+
+        $data = (array) json_decode($res->getBody())->RAW;
+
+        foreach ($data as $slug => $d) {
+            $_data = $d->USD;
+            $change = $_data->CHANGEPCTDAY;
+            $rate = $_data->PRICE;
+
+            $coin = $coins->where('slug', $slug)->first();
+
+            $coin->change = $change;
+            $coin->rate = $rate;
+
+            $coin->save();
+        }
+
         foreach ($coins as $coin) {
             try {
                 // Graph today
@@ -53,21 +74,8 @@ class RatesRequest extends Command implements Isolatable
                     $graph_today[] = $avg;
                 }
 
-                // Capacity & price
-                $request = new Request('GET', "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=$coin->slug&tsyms=USD", $headers);
-                $res = $client->sendAsync($request)->wait();
-
-                $slug = $coin->slug;
-
-                $data = json_decode($res->getBody())->RAW->$slug->USD;
-
-                $change = $data->CHANGEPCTDAY;
-                $rate = $data->PRICE;
-
                 // Save to coin
                 $coin->graph_today = json_encode($graph_today);
-                $coin->change = $change;
-                $coin->rate = $rate;
 
                 $coin->save();
             } catch (\Exception $err) {
