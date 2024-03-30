@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Contracts\Miner;
 use App\Services\DefaultGenerator;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(125);
+
+        RateLimiter::for('verification', function (Request $request) {
+            return Limit::perMinute(1)->by($request->user()->email);
+        });
     }
 
 }

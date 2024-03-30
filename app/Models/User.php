@@ -47,7 +47,7 @@ class User extends Authenticatable implements FilamentUser
         'isManager',
     ];
 
-    protected $with = ['ref'];
+    protected $withCount = ['ref.users'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -107,6 +107,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Withdraw::class);
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
@@ -152,7 +157,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function ref(): HasOne
     {
-        return $this->hasOne(Ref::class, '');
+        return $this->hasOne(Ref::class);
     }
 
     public function nfts(): BelongsToMany

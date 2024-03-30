@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Coin;
+use App\Services\CacheService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Console\Command;
@@ -83,6 +84,6 @@ class RatesRequest extends Command implements Isolatable
             $coin->save();
         }
 
-        Cache::forget('coins');
+        CacheService::save(CacheService::COINS);
     }
 }

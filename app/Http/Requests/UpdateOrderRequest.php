@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Order;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +24,10 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'coin_positions' => ['array'],
-            'name' => ['string'],
-            'first_name' => ['string'],
-            'last_name' => ['string'],
-            'phone' => ['string'],
-            'email' => ['string', 'email'],
+            'method' => [
+                'required', 'string', 'in:'.implode(',', Order::METHODS),
+//                'not_in:'.implode(',', array_filter(fn ($method) $method !== $order->method, Order::METHODS))
+            ]
         ];
     }
 }

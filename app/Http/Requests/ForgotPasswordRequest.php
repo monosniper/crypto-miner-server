@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,17 +17,12 @@ class UpdateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'coin_positions' => ['array'],
-            'name' => ['string'],
-            'first_name' => ['string'],
-            'last_name' => ['string'],
-            'phone' => ['string'],
-            'email' => ['string', 'email'],
+            'email' => ['required', 'email']
         ];
     }
 }

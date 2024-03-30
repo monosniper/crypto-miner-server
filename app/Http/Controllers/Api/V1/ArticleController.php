@@ -3,54 +3,36 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ArticleResource;
 use App\Models\Article;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use App\Services\ArticleService;
+use Illuminate\Http\JsonResponse;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        $articles = Article::latest()->get();
+    private ArticleService $articleService;
 
-        return ArticleResource::collection($articles);
+    public function __construct(ArticleService $articleService)
+    {
+        $this->articleService = $articleService;
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of the resource.
      */
-    public function store(Request $request)
+    public function index(): JsonResponse
     {
-        //
+        $result = $this->articleService->getAll();
+
+        return $this->sendResponse($result);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): ArticleResource
+    public function show(Article $article): JsonResponse
     {
-        $article = Article::find($id);
+        $result = $this->articleService->getOne($article);
 
-        return new ArticleResource($article);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $this->sendResponse($result);
     }
 }

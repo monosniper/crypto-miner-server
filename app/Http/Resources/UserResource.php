@@ -21,13 +21,13 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'token' => $this->token,
             'isVerificated' => $this->isVerificated,
-            'coin_positions' => $this->coin_positions,
-//            'session' => $this->session->id,
+            'session' => (bool) $this->session,
 //            'session' => new SessionResource($this->session),
-            'session' => Cache::get("sessions.".$this->id),
-            'ref_code' => $this->ref->code,
+//            'session' => Cache::get("sessions.".$this->id),
+//            'ref_code' => $this->ref->code,
             'total_refs' => $this->ref->users()->count(),
-            'total_refs_amount' => $this->ref->totalDonates(),
+//            'total_refs_amount' => $this->ref->totalDonates(),
+            'coin_positions' => $this->coin_positions,
         ];
     }
 }

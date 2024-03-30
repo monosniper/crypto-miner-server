@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Cache;
 
 class SessionController extends Controller
 {
-    public function start(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $session = Session::create([
             'user_id' => $request->input('user_id')
@@ -94,7 +94,7 @@ class SessionController extends Controller
         return new SessionResource($session->load('coins'));
     }
 
-    public function stop(Session $session): ?bool
+    public function destroy(Session $session): ?bool
     {
         return $session->delete();
     }

@@ -3,19 +3,22 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\NftResource;
-use App\Models\Nft;
+use App\Services\NFTService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class NftController extends Controller
 {
-    public function nfts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        $items = Nft::all();
+    private NFTService $nftService;
 
-        return NftResource::collection($items);
+    public function __construct(NFTService $nftService)
+    {
+        $this->nftService = $nftService;
+    }
+
+    public function __invoke(): JsonResponse
+    {
+        $result = $this->nftService->getAll();
+
+        return $this->sendResponse($result);
     }
 }

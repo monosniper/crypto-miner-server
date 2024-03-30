@@ -6,9 +6,20 @@ use anlutro\LaravelSettings\Facades\Setting;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class AppController extends Controller
 {
+
+    public function geo() {
+        $rs = DB::select("
+            SELECT country_code, count(country_code) as total FROM users WHERE country_code IS NOT NULL
+            GROUP BY country_code ORDER BY total DESC
+        ");
+
+        return response()->json($rs);
+    }
+
     public function settings()
     {
 //        Setting::set('telegram', 'https://www.google.com');
