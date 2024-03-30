@@ -47,7 +47,7 @@ class User extends Authenticatable implements FilamentUser
         'isManager',
     ];
 
-    protected $withCount = ['ref.users'];
+//    protected $withCount = ['ref.users'];
 
     /**
      * The attributes that should be hidden for serialization.

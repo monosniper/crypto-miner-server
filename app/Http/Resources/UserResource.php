@@ -26,7 +26,7 @@ class UserResource extends JsonResource
 //            'session' => Cache::get("sessions.".$this->id),
 //            'ref_code' => $this->ref->code,
             'total_refs' => $this->ref->users()->count(),
-//            'total_refs_amount' => $this->ref->totalDonates(),
+            'total_refs_amount' => $this->ref->totalDonates(),
             'coin_positions' => $this->coin_positions,
         ];
     }
