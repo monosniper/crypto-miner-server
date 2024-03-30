@@ -10,14 +10,15 @@ class CacheService
 {
     const COINS = 'coins';
 
-    static public function save(string $name, $value = null) {
+    static public function save(string $name, $value = null): bool
+    {
         return Cache::put(
             $name,
-            fn () => $value ?: $this->getDefaultValue($name)
+            $value ?: CacheService::getDefaultValue($name)
         );
     }
 
-    public function getDefaultValue(string $name) {
+    static public function getDefaultValue(string $name) {
         return [
             self::COINS => Coin::all()
         ][$name];
