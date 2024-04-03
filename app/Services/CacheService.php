@@ -42,35 +42,56 @@ class CacheService
 
     static public function getDefaultValue(string $name): \Closure
     {
+        $user = auth()->user();
+
         return [
-            self::SERVERS => fn () => Server::all()->load(['possibilities', 'coins']),
-            self::COINS => fn () => Coin::all(),
-            self::USER_SERVERS => fn () => auth()->user()?->servers->load('server'),
-            self::NOTIFICATIONS => fn () => auth()->user()?->notifications()->latest()->get(),
-            self::REPLENISHMENTS => fn () => auth()->user()?->replenishments(),
-            self::USER_NFTS => fn () => auth()->user()?->nfts(),
-            self::ORDERS => fn () => auth()->user()?->orders(),
-            self::WALLET => fn () => auth()->user()?->wallet(),
-            self::SESSION => fn () => auth()->user()?->session,
-//            self::SESSION => auth()->user()?->session()->load('log'),
-            self::WITHDRAWS => fn () => auth()->user()?->withdraws()->latest()->get(),
-            self::CONVERTATIONS => fn () => auth()->user()?->convertations()->latest()->get(),
-            self::NFTS => fn () => Nft::all(),
-            self::ARTICLES => fn () => Article::latest()->get(),
-            self::GEO => fn () => DB::select("
-                SELECT country_code, count(country_code) as total FROM users WHERE country_code IS NOT NULL
-                GROUP BY country_code ORDER BY total DESC
-            "),
+            self::COINS =>
+                fn () => Coin::all(),
+            self::NFTS =>
+                fn () => Nft::all(),
+            self::ARTICLES =>
+                fn () => Article::latest()->get(),
+            self::SERVERS =>
+                fn () => Server::all()->load(['possibilities', 'coins']),
+            self::REPLENISHMENTS =>
+                fn () => $user?->replenishments,
+            self::USER_NFTS =>
+                fn () => $user?->nfts,
+            self::ORDERS =>
+                fn () => $user?->orders,
+            self::WALLET =>
+                fn () => $user?->wallet,
+            self::SESSION =>
+                fn () => $user?->session->load('log'),
+            self::USER_SERVERS =>
+                fn () => $user?->servers->load('server'),
+            self::WITHDRAWS =>
+                fn () => $user?->withdraws()->latest()->get(),
+            self::CONVERTATIONS =>
+                fn () => $user?->convertations()->latest()->get(),
+            self::NOTIFICATIONS =>
+                fn () => $user?->notifications()->latest()->get(),
+            self::GEO =>
+                fn () => DB::select("
+                    SELECT country_code, count(country_code) as total FROM users WHERE country_code IS NOT NULL
+                    GROUP BY country_code ORDER BY total DESC
+                "),
         ][$name];
     }
 
-    static public function getDefaultSingleValue(string $name, $id) {
+    static public function getDefaultSingleValue(string $name, $id): \Closure
+    {
         return [
-            self::ARTICLES => fn () => Article::find($id),
-            self::ORDERS => fn () => Order::find($id),
-            self::USER_SERVERS => fn () => UserServer::find($id),
-            self::USER_NFTS => fn () => Nft::find($id),
-            self::USER => fn () => User::find($id),
+            self::ARTICLES =>
+                fn () => Article::find($id),
+            self::ORDERS =>
+                fn () => Order::find($id),
+            self::USER_SERVERS =>
+                fn () => UserServer::find($id),
+            self::USER_NFTS =>
+                fn () => Nft::find($id),
+            self::USER =>
+                fn () => User::find($id),
         ][$name];
     }
 

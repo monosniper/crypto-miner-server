@@ -6,8 +6,8 @@ use App\Http\Resources\WalletResource;
 
 class WalletService
 {
-    public function get(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function get(): WalletResource
     {
-        return WalletResource::collection(CacheService::getAuth(CacheService::WALLET));
+        return new WalletResource(CacheService::getAuth(CacheService::WALLET));
     }
 }

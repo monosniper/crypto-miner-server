@@ -17,7 +17,6 @@ class WalletResource extends JsonResource
         return [
             'id' => $this->id,
             'balance' => $this->balance,
-            'nfts' => NftResource::collection($this->user->nfts),
         ];
     }
 }
