@@ -10,8 +10,7 @@ class WithdrawService
 {
     public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $withdraws = Auth::user()->withdraws()->latest()->get();
-        return WithdrawResource::collection($withdraws);
+        return WithdrawResource::collection(CacheService::getAuth(CacheService::WITHDRAWS));
     }
 
     public function store($data): WithdrawResource

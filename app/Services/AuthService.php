@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\NftResource;
 use App\Mail\ForgotPassword;
 use App\Models\ForgotPasswordCode;
+use App\Models\Ref;
 use App\Models\User;
 use App\Models\VerificationCode;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,42 @@ class AuthService
     public function sendVerificationMail(): bool
     {
         return true;
+    }
+
+    public function register($data): bool
+    {
+        $user = User::create($data);
+
+//        $basic  = new \Vonage\Client\Credentials\Basic(env("VONAGE_KEY"), env("VONAGE_SECRET"));
+//        $client = new \Vonage\Client($basic);
+//
+//        $response = $client->sms()->send(
+//            new \Vonage\SMS\Message\SMS($data->phone, env('APP_NAME'), 'Your verification code: 123456')
+//        );
+//
+//        $message = $response->current();
+//
+//        if ($message->getStatus() == 0) {
+//            info("The message was sent successfully");
+//        } else {
+//            info("The message failed with status: " . $message->getStatus());
+//        }
+
+//        $code = VerificationCode::create([
+//            'user_id' => $user->id,
+//        ]);
+//        Mail::to($user)->send(new Verification($code->value));
+
+        if($data->ref_code) {
+            $user->update([
+                'ref_id' => Ref::where('code', $data->ref_code)->first()->id
+            ]);
+        }
+
+        // TODO: in queue
+        CacheService::save(CacheService::GEO);
+
+        return (bool) $user;
     }
 
     public function verificateMail(string $code): \Illuminate\Http\RedirectResponse
@@ -37,39 +74,46 @@ class AuthService
     public function forgotPassword(string $email): bool
     {
         $user = User::where('email', $email)->first();
-        $success = true;
 
-        if($user) {
-            $code = ForgotPasswordCode::create([
-                'user_id' => $user->id,
-            ]);
-            Mail::to($email)->send(new ForgotPassword($code->value));
-        } else $success = false;
+        $code = ForgotPasswordCode::create([
+            'user_id' => $user->id,
+        ]);
+        Mail::to($email)->send(new ForgotPassword($code->value));
 
-        return $success;
+        return true;
     }
 
     public function updatePassword($data): bool
     {
-        $success = true;
         $code = ForgotPasswordCode::where('value', $data['code'])->first();
 
-        if($code) {
-            $code->user->update([
-                'password' => $data['password']
-            ]);
-            $code->delete();
-        } else $success = false;
+        $code->user->update([
+            'password' => $data['password']
+        ]);
+        $code->delete();
 
-        return $success;
+        return true;
     }
 
-    public function checkPasswordCode($data) {
-        return (bool) ForgotPasswordCode::where('value', $data['code'])->first();
+    public function login($data): bool
+    {
+        if (Auth::attempt($data)) {
+            request()->session()->regenerate();
+
+            return true;
+        }
+
+        return false;
     }
 
-    public function checkUsername($data) {
-        return (bool) User::where('name', $data['username'])->first();
+    public function checkPasswordCode(): bool
+    {
+        return true;
+    }
+
+    public function checkUsername(): bool
+    {
+        return true;
     }
 
     public function nfts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

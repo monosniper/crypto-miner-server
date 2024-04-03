@@ -92,6 +92,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Convertation::class);
     }
 
+    public function replenishments(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function scopeOperators(Builder $query): Builder
     {
         return $query->where('isOperator', true);

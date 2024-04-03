@@ -8,21 +8,16 @@ use App\Models\Convertation;
 
 class ConvertationService
 {
-    private ?\Illuminate\Contracts\Auth\Authenticatable $user;
-
-    public function __construct() {
-        $this->user = auth()->user();
-    }
-
     public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $convertations = $this->user->convertations()->latest()->get();
-        return ConvertationResource::collection($convertations);
+        return ConvertationResource::collection(CacheService::getAuth(CacheService::CONVERTATIONS));
     }
 
     public function store($data): bool
     {
-        $wallet = $this->user->wallet;
+        $user = auth()->user();
+
+        $wallet = $user->wallet;
         $balance = $wallet->balance;
 
         $coin_from_id = $data['coin_from_id'];
@@ -43,7 +38,7 @@ class ConvertationService
         $amount_to -= $amount_to / 100 * setting('comission_fee');
 
         $convertation = Convertation::create([
-            'user_id' => $this->user->id,
+            'user_id' => $user->id,
             'from_id' => $coin_from_id,
             'to_id' => $coin_to_id,
             'amount_from' => $amount,

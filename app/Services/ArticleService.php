@@ -3,19 +3,16 @@
 namespace App\Services;
 
 use App\Http\Resources\ArticleResource;
-use App\Models\Article;
 
 class ArticleService
 {
     public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $articles = Article::latest()->get();
-
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection(CacheService::get(CacheService::ARTICLES));
     }
 
-    public function getOne(Article $article): ArticleResource
+    public function getOne(string $id): ArticleResource
     {
-        return new ArticleResource($article);
+        return new ArticleResource(CacheService::getSingle(CacheService::ARTICLES, $id));
     }
 }

@@ -19,19 +19,9 @@ class ServerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function __invoke(): JsonResponse
     {
         $result = $this->serverService->getAll();
-
-        return $this->sendResponse($result);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Server $server): JsonResponse
-    {
-        $result = $this->serverService->getOne($server);
 
         return $this->sendResponse($result);
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use anlutro\LaravelSettings\Facades\Setting;
 use App\Http\Controllers\Controller;
+use App\Services\CacheService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -11,13 +12,11 @@ use Illuminate\Support\Facades\DB;
 class AppController extends Controller
 {
 
-    public function geo() {
-        $rs = DB::select("
-            SELECT country_code, count(country_code) as total FROM users WHERE country_code IS NOT NULL
-            GROUP BY country_code ORDER BY total DESC
-        ");
+    public function geo(): \Illuminate\Http\JsonResponse
+    {
+        $result = CacheService::get(CacheService::GEO);
 
-        return response()->json($rs);
+        return $this->sendResponse($result);
     }
 
     public function settings()

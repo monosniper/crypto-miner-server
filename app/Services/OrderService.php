@@ -10,13 +10,12 @@ class OrderService
 {
     public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $orders = auth()->user()->orders();
-        return OrderResource::collection($orders);
+        return OrderResource::collection(CacheService::getAuth(CacheService::ORDERS));
     }
 
-    public function getOne(Order $order): OrderResource
+    public function getOne($id): OrderResource
     {
-        return new OrderResource($order);
+        return new OrderResource(CacheService::getSingle(CacheService::ORDERS, $id));
     }
 
     public function store($data): OrderResource

@@ -8,8 +8,6 @@ class NotificationService
 {
     public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $notifications = auth()->user()->notifications()->latest()->get();
-
-        return NotificationResource::collection($notifications);
+        return NotificationResource::collection(CacheService::getAuth(CacheService::NOTIFICATIONS));
     }
 }

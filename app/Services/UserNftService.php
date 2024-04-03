@@ -4,10 +4,10 @@ namespace App\Services;
 
 use App\Http\Resources\NftResource;
 
-class NFTService
+class UserNftService
 {
     public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return NftResource::collection(CacheService::get(CacheService::NFTS));
+        return NftResource::collection(CacheService::getAuth(CacheService::USER_NFTS));
     }
 }

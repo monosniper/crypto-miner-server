@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckPasswordCodeRequest;
 use App\Http\Requests\CheckUsernameRequest;
 use App\Http\Requests\ForgotPasswordRequest;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -31,6 +32,7 @@ use App\Models\User;
 use App\Models\UserServer;
 use App\Models\VerificationCode;
 use App\Services\AuthService;
+use App\Services\CacheService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,37 +58,11 @@ class AuthController extends Controller
         return $this->sendResponse($result);
     }
 
-    public function register(RegisterUserRequest $request): array
+    public function register(RegisterUserRequest $request): JsonResponse
     {
-        $user = User::create($request->validated());
+        $result = $this->authService->register($request->validated());
 
-        $basic  = new \Vonage\Client\Credentials\Basic(env("VONAGE_KEY"), env("VONAGE_SECRET"));
-        $client = new \Vonage\Client($basic);
-
-        $response = $client->sms()->send(
-            new \Vonage\SMS\Message\SMS($request->phone, env('APP_NAME'), 'Your verification code: 123456')
-        );
-
-        $message = $response->current();
-
-        if ($message->getStatus() == 0) {
-            info("The message was sent successfully");
-        } else {
-            info("The message failed with status: " . $message->getStatus());
-        }
-
-//        $code = VerificationCode::create([
-//            'user_id' => $user->id,
-//        ]);
-//        Mail::to($user)->send(new Verification($code->value));
-
-        if($request->ref_code) {
-            $user->update([
-                'ref_id' => Ref::where('code', $request->ref_code)->first()->id
-            ]);
-        }
-
-        return ['success' => !!$user];
+        return $this->sendResponse($result);
     }
 
     public function verificateMail(string $code): \Illuminate\Http\RedirectResponse
@@ -110,76 +86,29 @@ class AuthController extends Controller
 
     public function checkPasswordCode(CheckPasswordCodeRequest $request): JsonResponse
     {
-        $result = $this->authService->checkPasswordCode($request->validated());
+        $result = $this->authService->checkPasswordCode();
 
         return $this->sendResponse($result);
     }
 
     public function checkUsername(CheckUsernameRequest $request): JsonResponse
     {
-        $result = $this->authService->checkUsername($request->validated());
+        $result = $this->authService->checkUsername();
 
         return $this->sendResponse($result);
     }
 
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $result = $this->authService->login($request->validated());
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'errors' => [
-                'email' => 'The provided credentials do not match our records.',
-            ]
-        ]);
+        return $this->sendResponse($result);
     }
 
     public function replenishments(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $replenishments = Auth::user()->transactions()->replenishments()->latest()->get();
         return TransactionResource::collection($replenishments);
-    }
-
-    public function storeReplenishment(Request $request): array
-    {
-        $transaction = Transaction::create([
-            'user_id' => auth()->id(),
-            'amount' => $request->amount,
-            'type' => Transaction::PURCHASE,
-            'description' => __('transactions.replenishment'),
-            'purchase_type' => Transaction::BALANCE,
-        ]);
-
-        $response = Http::withHeader('x-api-key', env('NOWPAYMENTS_API_KEY'))
-            ->post('https://api.nowpayments.io/v1/invoice', [
-                "price_amount" => $request->amount,
-                "price_currency" => "usd",
-                "order_id" => $transaction->id,
-                "order_description" => __('transactions.replenishment'),
-                "success_url" => env('FRONT_URL') . "?success=true&type=balance",
-                "cancel_url" => env('FRONT_URL') . "?success=false",
-            ]);
-
-        if($response->ok()) {
-            $data = $response->json();
-
-            $transaction->update(['payment_id' => $data['id']]);
-
-            return ['success' => true, 'url' => $data['invoice_url']];
-        } else {
-            $transaction->delete();
-
-            return ['success' => false, 'error' => 'Server error'];
-        }
     }
 
     public function nfts(): JsonResponse

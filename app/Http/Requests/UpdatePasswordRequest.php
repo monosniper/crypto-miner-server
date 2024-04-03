@@ -22,7 +22,7 @@ class UpdatePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required'],
+            'code' => ['required', 'exists:forgot_password_codes,value'],
             'password' => ['required'],
         ];
     }

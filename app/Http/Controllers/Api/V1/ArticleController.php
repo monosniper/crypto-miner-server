@@ -29,9 +29,9 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article): JsonResponse
+    public function show(string $id): JsonResponse
     {
-        $result = $this->articleService->getOne($article);
+        $result = $this->articleService->getOne($id);
 
         return $this->sendResponse($result);
     }

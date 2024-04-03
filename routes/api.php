@@ -8,12 +8,15 @@ use App\Http\Controllers\Api\V1\ConvertationController;
 use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\OrderController;
-use App\Http\Controllers\Api\V1\PaymentController;
+use App\Http\Controllers\Api\V1\ReplenishmentController;
 use App\Http\Controllers\Api\V1\ServerController;
+use App\Http\Controllers\Api\V1\UserNftController;
 use App\Http\Controllers\Api\V1\UserServerController;
 use App\Http\Controllers\Api\V1\SessionController;
 use App\Http\Controllers\Api\V1\TransferController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\UserSessionController;
+use App\Http\Controllers\Api\V1\WalletController;
 use App\Http\Controllers\Api\V1\WithdrawController;
 use App\Http\Middleware\AuthenticateOnceWithBasicAuth;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +28,8 @@ Route::domain('api.hogyx.io')->group(function () {
 
             Route::middleware(AuthenticateOnceWithBasicAuth::class)
                 ->prefix('me')
-                ->group(function () {
+                ->group(callback: function () {
                     Route::put('/', [UserController::class, 'update']);
-                    Route::put('nfts', [AuthController::class, 'nfts']);
                     Route::post('transfer', [TransferController::class, 'store']);
 
                     Route::post('/send-verification-mail', [AuthController::class, 'sendVerificationMail'])
@@ -35,10 +37,11 @@ Route::domain('api.hogyx.io')->group(function () {
 
                     // Static
                     Route::get('/', [UserController::class, 'me']);
-                    Route::get('wallet', [AuthController::class, 'wallet']);
+                    Route::get('session', UserSessionController::class);
+                    Route::get('nfts', UserNftController::class);
+                    Route::get('wallet', WalletController::class);
                     Route::get('notifications', NotificationController::class);
-                    Route::get('replenishments', [OrderController::class, 'replenishments']);
-                    Route::get('withdraws', [AuthController::class, 'withdraws']);
+                    Route::get('replenishments', ReplenishmentController::class);
 
                     Route::apiResource('servers', UserServerController::class)
                         ->only('index', 'show');
@@ -53,9 +56,6 @@ Route::domain('api.hogyx.io')->group(function () {
                         ->except('destroy');
                 });
 
-            Route::apiResource('servers', ServerController::class)
-                ->only('index', 'show');
-
             // Account
             Route::post('forgot-password', [AuthController::class, 'forgotPassword'])
                 ->middleware('throttle:3,1');
@@ -65,6 +65,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('check-username', [AuthController::class, 'checkUsername']);
 
             // Static
+            Route::get('servers', ServerController::class);
             Route::get('geo', [AppController::class, 'geo']);
             Route::get('coins', CoinController::class);
             Route::get('settings', [AppController::class, 'settings']);
@@ -86,9 +87,8 @@ Route::prefix('v1')
 
         Route::middleware(AuthenticateOnceWithBasicAuth::class)
             ->prefix('me')
-            ->group(function () {
+            ->group(callback: function () {
                 Route::put('/', [UserController::class, 'update']);
-                Route::put('nfts', [AuthController::class, 'nfts']);
                 Route::post('transfer', [TransferController::class, 'store']);
 
                 Route::post('/send-verification-mail', [AuthController::class, 'sendVerificationMail'])
@@ -96,10 +96,11 @@ Route::prefix('v1')
 
                 // Static
                 Route::get('/', [UserController::class, 'me']);
-                Route::get('wallet', [AuthController::class, 'wallet']);
+                Route::get('session', UserSessionController::class);
+                Route::get('nfts', UserNftController::class);
+                Route::get('wallet', WalletController::class);
                 Route::get('notifications', NotificationController::class);
-                Route::get('replenishments', [OrderController::class, 'replenishments']);
-                Route::get('withdraws', [AuthController::class, 'withdraws']);
+                Route::get('replenishments', ReplenishmentController::class);
 
                 Route::apiResource('servers', UserServerController::class)
                     ->only('index', 'show');
@@ -114,9 +115,6 @@ Route::prefix('v1')
                     ->except('destroy');
             });
 
-        Route::apiResource('servers', ServerController::class)
-            ->only('index', 'show');
-
         // Account
         Route::post('forgot-password', [AuthController::class, 'forgotPassword'])
             ->middleware('throttle:3,1');
@@ -126,6 +124,7 @@ Route::prefix('v1')
         Route::post('check-username', [AuthController::class, 'checkUsername']);
 
         // Static
+        Route::get('servers', ServerController::class);
         Route::get('geo', [AppController::class, 'geo']);
         Route::get('coins', CoinController::class);
         Route::get('settings', [AppController::class, 'settings']);
