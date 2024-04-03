@@ -8,7 +8,7 @@ use App\Models\Convertation;
 
 class ConvertationService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function getAll()
     {
         return ConvertationResource::collection(CacheService::getAuth(CacheService::CONVERTATIONS));
     }

@@ -17,8 +17,8 @@ class ConvertationResource extends JsonResource
         return [
             'id' => $this->id,
             'coin' => [
-                'from' => $this->from->slug,
-                'to' => $this->to->slug,
+                'from' => $this->from_id,
+                'to' => $this->to_id,
             ],
             'amount' => [
                 'from' => $this->amount_from,
