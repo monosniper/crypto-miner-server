@@ -28,6 +28,8 @@ class ConfigurationField extends Model
         'type',
     ];
 
+    protected $with = ['options'];
+
     public function options(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ConfigurationOption::class, 'field_id');

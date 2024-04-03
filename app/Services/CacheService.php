@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Models\Article;
 use App\Models\Coin;
+use App\Models\ConfigurationGroup;
 use App\Models\Nft;
 use App\Models\Order;
 use App\Models\Server;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class CacheService
 {
+    const CONFIGURATION = 'configuration';
     const SESSION = 'session';
     const USER = 'user';
     const WALLET = 'wallet';
@@ -51,6 +53,8 @@ class CacheService
                 fn () => Nft::all(),
             self::ARTICLES =>
                 fn () => Article::latest()->get(),
+            self::CONFIGURATION =>
+                fn () => ConfigurationGroup::all(),
             self::SERVERS =>
                 fn () => Server::all()->load(['possibilities', 'coins']),
             self::REPLENISHMENTS =>

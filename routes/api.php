@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AppController;
 use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
+use App\Http\Controllers\Api\V1\ConfigurationController;
 use App\Http\Controllers\Api\V1\ConvertationController;
 use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\NotificationController;
@@ -65,6 +66,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('check-username', [AuthController::class, 'checkUsername']);
 
             // Static
+            Route::get('configuration', ConfigurationController::class);
             Route::get('servers', ServerController::class);
             Route::get('geo', [AppController::class, 'geo']);
             Route::get('coins', CoinController::class);
@@ -124,6 +126,7 @@ Route::prefix('v1')
         Route::post('check-username', [AuthController::class, 'checkUsername']);
 
         // Static
+        Route::get('configuration', ConfigurationController::class);
         Route::get('servers', ServerController::class);
         Route::get('geo', [AppController::class, 'geo']);
         Route::get('coins', CoinController::class);

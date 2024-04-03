@@ -3,7 +3,7 @@ window.onload = () => {
         fetch("https://api.hogyx.io/v1/geo").then(rs => rs.json()).then(rs => {
             const gdpData = {}
 
-            rs.forEach(({country_code, total}) => {
+            rs.data.forEach(({country_code, total}) => {
                 gdpData[country_code] = total
             })
 
