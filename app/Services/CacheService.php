@@ -40,23 +40,24 @@ class CacheService
         );
     }
 
-    static public function getDefaultValue(string $name) {
+    static public function getDefaultValue(string $name): \Closure
+    {
         return [
-            self::SERVERS => Server::all()->load(['possibilities', 'coins']),
-            self::USER_SERVERS => auth()->user()->servers->load('server'),
-            self::COINS => Coin::all(),
-            self::NOTIFICATIONS => auth()->user()->notifications()->latest()->get(),
-            self::REPLENISHMENTS => auth()->user()->replenishments(),
-            self::USER_NFTS => auth()->user()->nfts(),
-            self::ORDERS => auth()->user()->orders(),
-            self::WALLET => auth()->user()->wallet(),
-            self::SESSION => auth()->user()->session,
-//            self::SESSION => auth()->user()->session()->load('log'),
-            self::WITHDRAWS => auth()->user()->withdraws()->latest()->get(),
-            self::CONVERTATIONS => auth()->user()->convertations()->latest()->get(),
-            self::NFTS => Nft::all(),
-            self::ARTICLES => Article::latest()->get(),
-            self::GEO => DB::select("
+            self::SERVERS => fn () => Server::all()->load(['possibilities', 'coins']),
+            self::COINS => fn () => Coin::all(),
+            self::USER_SERVERS => fn () => auth()->user()?->servers->load('server'),
+            self::NOTIFICATIONS => fn () => auth()->user()?->notifications()->latest()->get(),
+            self::REPLENISHMENTS => fn () => auth()->user()?->replenishments(),
+            self::USER_NFTS => fn () => auth()->user()?->nfts(),
+            self::ORDERS => fn () => auth()->user()?->orders(),
+            self::WALLET => fn () => auth()->user()?->wallet(),
+            self::SESSION => fn () => auth()->user()?->session,
+//            self::SESSION => auth()->user()?->session()->load('log'),
+            self::WITHDRAWS => fn () => auth()->user()?->withdraws()->latest()->get(),
+            self::CONVERTATIONS => fn () => auth()->user()?->convertations()->latest()->get(),
+            self::NFTS => fn () => Nft::all(),
+            self::ARTICLES => fn () => Article::latest()->get(),
+            self::GEO => fn () => DB::select("
                 SELECT country_code, count(country_code) as total FROM users WHERE country_code IS NOT NULL
                 GROUP BY country_code ORDER BY total DESC
             "),
@@ -65,23 +66,23 @@ class CacheService
 
     static public function getDefaultSingleValue(string $name, $id) {
         return [
-            self::ARTICLES => Article::find($id),
-            self::ORDERS => Order::find($id),
-            self::USER_SERVERS => UserServer::find($id),
-            self::USER_NFTS => Nft::find($id),
-            self::USER => User::find($id),
+            self::ARTICLES => fn () => Article::find($id),
+            self::ORDERS => fn () => Order::find($id),
+            self::USER_SERVERS => fn () => UserServer::find($id),
+            self::USER_NFTS => fn () => Nft::find($id),
+            self::USER => fn () => User::find($id),
         ][$name];
     }
 
     static public function get(string $name) {
-        return Cache::rememberForever($name, fn () => CacheService::getDefaultValue($name));
+        return Cache::rememberForever($name, CacheService::getDefaultValue($name));
     }
 
     static public function getAuth(string $name) {
-        return Cache::rememberForever('user.' . auth()->id() . '.' . $name, fn () => CacheService::getDefaultValue($name));
+        return Cache::rememberForever('user.' . auth()->id() . '.' . $name, CacheService::getDefaultValue($name));
     }
 
     static public function getSingle(string $name, $id) {
-        return Cache::rememberForever($name . '.' . $id, fn () => CacheService::getDefaultSingleValue($name, $id));
+        return Cache::rememberForever($name . '.' . $id, CacheService::getDefaultSingleValue($name, $id));
     }
 }

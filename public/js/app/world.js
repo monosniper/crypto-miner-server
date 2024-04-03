@@ -22,7 +22,7 @@ window.onload = () => {
                     },
                 },
                 onRegionTipShow: function(e, el, code){
-                    el.html(el.html()+' ('+gdpData[code] || 0+')');
+                    el.html(el.html()+' ('+(gdpData[code] || 0)+')');
                 }
             });
         })
