@@ -30,6 +30,11 @@ class ConfigurationField extends Model
 
     protected $with = ['options'];
 
+    public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ConfigurationGroup::class);
+    }
+
     public function options(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ConfigurationOption::class, 'field_id');

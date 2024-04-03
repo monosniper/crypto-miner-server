@@ -25,7 +25,7 @@ class ManagerPanelProvider extends PanelProvider
         return $panel
             ->id('manager')
             ->domain(env('PANEL_MANAGER_DOMAIN'))
-//            ->path(env('PANEL_MANAGER_PATH', ''))
+            ->path(env('PANEL_MANAGER_PATH', ''))
             ->brandName('Hogyx Manager Panel')
             ->favicon(asset('images/logo.svg'))
             ->login()

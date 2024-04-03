@@ -49,7 +49,7 @@ class ColdBaseResource extends Resource
             ->columns([
                 TextColumn::make('user')
                     ->label('Номер')
-                    ->icon(fn (OperatorReport $record): string => $record->user->country_code ? 'icon-' . $record->user->country_code : '')
+                    ->icon(fn (OperatorReport $record): string => $record->user->country_code ? 'icon-' . mb_strtolower($record->user->country_code) : '')
                     ->formatStateUsing(fn (User $state): View => view(
                         'filament.columns.tel',
                         ['state' => $state],

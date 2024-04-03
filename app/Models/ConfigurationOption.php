@@ -14,4 +14,9 @@ class ConfigurationOption extends Model
         'price',
         'field_id',
     ];
+
+    public function field(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ConfigurationField::class);
+    }
 }
