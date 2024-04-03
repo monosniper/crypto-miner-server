@@ -20,9 +20,9 @@ class UserServerResource extends JsonResource
             'last_work_at' => $this->last_work_at,
             'status' => $this->status,
             'name' => $this->name,
-            'logs' => $this->whenPivotLoadedAs('log', 'server_logs', $this->log?->logs),
-            'founds' => $this->whenPivotLoadedAs('log', 'server_logs', $this->log?->founds),
-            'server' => new ServerResource($this->server),
+//            'logs' => $this->whenPivotLoadedAs('log', 'server_logs', $this->log?->logs),
+//            'founds' => $this->whenPivotLoadedAs('log', 'server_logs', $this->log?->founds),
+//            'server' => new ServerResource($this->server),
         ];
     }
 }

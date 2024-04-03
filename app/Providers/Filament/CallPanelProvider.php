@@ -26,7 +26,7 @@ class CallPanelProvider extends PanelProvider
             ->id('call')
 
             ->domain(env('PANEL_CALL_DOMAIN'))
-            ->path(env('PANEL_CALL_PATH', ''))
+//            ->path(env('PANEL_CALL_PATH', ''))
             ->brandName('Hogyx Call Panel')
             ->favicon(asset('images/logo.svg'))
 

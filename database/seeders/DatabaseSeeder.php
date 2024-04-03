@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(
-            CoinSeeder::class,
+//            CoinSeeder::class,
+            ConfigurationSeeder::class,
         );
     }
 }

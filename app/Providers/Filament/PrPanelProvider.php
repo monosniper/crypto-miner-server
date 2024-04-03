@@ -26,7 +26,7 @@ class PrPanelProvider extends PanelProvider
 //            ->spa()
             ->id('pr')
             ->domain(env('PANEL_PR_DOMAIN'))
-            ->path(env('PANEL_PR_PATH', ''))
+//            ->path(env('PANEL_PR_PATH', ''))
             ->login()
             ->passwordReset()
 //            ->authPasswordBroker('teams')
