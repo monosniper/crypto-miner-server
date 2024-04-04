@@ -48,9 +48,6 @@ class UserObserver
             'token' => $this->generateToken(),
             'country_code' => $location->countryCode,
             'city' => $location->cityName,
-
-            // TODO: Remove it
-            'isVerificated' => true
         ]);
 
         CacheService::saveFor(CacheService::USER, $user->id, $user);

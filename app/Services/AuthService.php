@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\NftResource;
+use App\Jobs\SendVerificationMail;
 use App\Mail\ForgotPassword;
 use App\Mail\Verification;
 use App\Models\ForgotPasswordCode;
@@ -42,10 +43,7 @@ class AuthService
 //            info("The message failed with status: " . $message->getStatus());
 //        }
 
-        $code = VerificationCode::create([
-            'user_id' => $user->id,
-        ]);
-        Mail::to($user)->send(new Verification($code->value, $user->name));
+        SendVerificationMail::dispatch($user);
 
         return (bool) $user;
     }
