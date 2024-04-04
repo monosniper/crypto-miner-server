@@ -20,7 +20,7 @@ class AuthService
 
     public function register($data): bool
     {
-        if($data->ref_code) {
+        if($data['ref_code']) {
             $data['ref_id'] = Ref::where('code', $data->ref_code)->first()?->id;
         }
 
