@@ -22,7 +22,7 @@ class Verification extends Mailable
         public String $code,
         public String $name,
     ) {
-        $this->link = env("APP_URL") . "/v1/verificate/" . $code;
+        $this->link = config("app.url") . "/v1/verificate/" . $code;
     }
 
     /**

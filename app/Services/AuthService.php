@@ -61,10 +61,10 @@ class AuthService
 
             $code->delete();
 
-            return redirect()->away(env("FRONT_URL") . "?success=true&type=verificated");
+            return redirect()->away(config("app.front_url") . "?success=true&type=verificated");
         }
 
-        return redirect()->away(env("FRONT_URL") . "?success=false");
+        return redirect()->away(config("app.front_url") . "?success=false");
     }
 
     public function forgotPassword(string $email): bool
