@@ -6,6 +6,7 @@ use App\Models\Coin;
 use App\Models\Ref;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Services\CacheService;
 use Stevebauman\Location\Facades\Location;
 
 class UserObserver
@@ -40,15 +41,21 @@ class UserObserver
      */
     public function created(User $user): void
     {
+        $location = Location::get();
         $this->addRef($user->id);
         $this->addWallet($user->id);
         $user->update([
             'token' => $this->generateToken(),
-            'country_code' => (Location::get())->countryCode,
+            'country_code' => $location->countryCode,
+            'city' => $location->city,
 
             // TODO: Remove it
             'isVerificated' => true
         ]);
+
+        CacheService::saveFor(CacheService::USER, $user->id, $user);
+        // TODO: in queue
+        CacheService::save(CacheService::GEO);
     }
 
     /**
@@ -56,7 +63,7 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        CacheService::saveFor(CacheService::USER, $user->id, $user);
     }
 
     /**

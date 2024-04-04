@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\ConfigurationField;
 use App\Models\ConfigurationGroup;
 use App\Models\ConfigurationOption;
+use App\Services\CacheService;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -303,5 +304,7 @@ class ConfigurationSeeder extends Seeder
                 }
             }
         }
+
+        CacheService::save(CacheService::CONFIGURATION);
     }
 }

@@ -5,6 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ConfigurationGroupResource\Pages;
 use App\Filament\Resources\ConfigurationGroupResource\RelationManagers;
 use App\Models\ConfigurationGroup;
+use App\Services\CacheService;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Actions\EditAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,7 +30,7 @@ class ConfigurationGroupResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('slug'),
             ]);
     }
 
@@ -38,12 +41,15 @@ class ConfigurationGroupResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->after(fn () => CacheService::save(CacheService::CONFIGURATION)),
+                Tables\Actions\DeleteAction::make()
+                    ->after(fn () => CacheService::save(CacheService::CONFIGURATION)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->after(fn () => CacheService::save(CacheService::CONFIGURATION)),
                 ]),
             ]);
     }

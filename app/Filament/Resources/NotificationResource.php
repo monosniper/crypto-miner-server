@@ -59,6 +59,7 @@ class NotificationResource extends Resource
 //                Tables\Columns\TextColumn::make('user.name')
 //                    ->label('Пользователь')
 //                    ->sortable(),
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Заголовок')
                     ->searchable(),

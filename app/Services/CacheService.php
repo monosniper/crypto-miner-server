@@ -38,7 +38,25 @@ class CacheService
         Cache::forget($name);
         return Cache::put(
             $name,
-            $value ?: CacheService::getDefaultValue($name)
+            $value ?: CacheService::getDefaultValue($name)()
+        );
+    }
+
+    static public function saveFor(string $name, $id, $value = null): bool
+    {
+        Cache::forget($name);
+        return Cache::put(
+            $name . '.' . $id,
+            $value ?: CacheService::getDefaultValue($name)()
+        );
+    }
+
+    static public function saveForUser(string $name, $id, $value = null): bool
+    {
+        Cache::forget($name);
+        return Cache::put(
+            'user.' . $id . '.' . $name,
+            $value ?: CacheService::getDefaultValue($name)()
         );
     }
 

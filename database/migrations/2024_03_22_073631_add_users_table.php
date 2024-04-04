@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('phone')->nullable();
             $table->string('country_code')->nullable();
+            $table->string('city')->nullable();
             $table->boolean('isOperator')->default(false);
             $table->boolean('isManager')->default(false);
         });
@@ -30,6 +31,7 @@ return new class extends Migration
             'first_name',
             'last_name',
             'country_code',
+            'city',
             'phone',
             'isOperator',
         ]);

@@ -20,6 +20,10 @@ class AuthService
 
     public function register($data): bool
     {
+        if($data->ref_code) {
+            $data['ref_id'] = Ref::where('code', $data->ref_code)->first()?->id;
+        }
+
         $user = User::create($data);
 
 //        $basic  = new \Vonage\Client\Credentials\Basic(env("VONAGE_KEY"), env("VONAGE_SECRET"));
@@ -41,15 +45,6 @@ class AuthService
 //            'user_id' => $user->id,
 //        ]);
 //        Mail::to($user)->send(new Verification($code->value));
-
-        if($data->ref_code) {
-            $user->update([
-                'ref_id' => Ref::where('code', $data->ref_code)->first()->id
-            ]);
-        }
-
-        // TODO: in queue
-        CacheService::save(CacheService::GEO);
 
         return (bool) $user;
     }

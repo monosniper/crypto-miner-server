@@ -13,12 +13,16 @@ class Verification extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public String $link;
+
     /**
      * Create a new message instance.
      */
-    public function __construct(public String $code)
-    {
-        //
+    public function __construct(
+        public String $code,
+        public String $name,
+    ) {
+        $this->link = env("APP_URL") . "/v1/verificate/" . $code;
     }
 
     /**

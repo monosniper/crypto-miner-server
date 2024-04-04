@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ConfigurationFieldResource\Pages;
 use App\Filament\Resources\ConfigurationFieldResource\RelationManagers;
 use App\Models\ConfigurationField;
+use App\Services\CacheService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -52,12 +53,15 @@ class ConfigurationFieldResource extends Resource
                     ->relationship('group', 'slug')
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->after(fn () => CacheService::save(CacheService::CONFIGURATION)),
+                Tables\Actions\DeleteAction::make()
+                    ->after(fn () => CacheService::save(CacheService::CONFIGURATION)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->after(fn () => CacheService::save(CacheService::CONFIGURATION)),
                 ]),
             ]);
     }

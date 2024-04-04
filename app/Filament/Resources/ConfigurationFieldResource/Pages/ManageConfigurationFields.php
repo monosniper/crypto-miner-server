@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ConfigurationFieldResource\Pages;
 
 use App\Filament\Resources\ConfigurationFieldResource;
+use App\Services\CacheService;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -13,7 +14,8 @@ class ManageConfigurationFields extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->after(fn () => CacheService::save(CacheService::CONFIGURATION)),
         ];
     }
 }

@@ -45,6 +45,7 @@ class User extends Authenticatable implements FilamentUser
         'country_code',
         'isOperator',
         'isManager',
+        'city',
     ];
 
 //    protected $withCount = ['ref.users'];
