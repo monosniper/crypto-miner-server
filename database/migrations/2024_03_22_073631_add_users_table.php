@@ -31,9 +31,10 @@ return new class extends Migration
             'first_name',
             'last_name',
             'country_code',
-//            'city',
+            'city',
             'phone',
             'isOperator',
+            'isManager',
         ]);
     }
 };
