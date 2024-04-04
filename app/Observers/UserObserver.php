@@ -47,7 +47,7 @@ class UserObserver
         $user->update([
             'token' => $this->generateToken(),
             'country_code' => $location->countryCode,
-            'city' => $location->city,
+            'city' => $location->cityName,
 
             // TODO: Remove it
             'isVerificated' => true
