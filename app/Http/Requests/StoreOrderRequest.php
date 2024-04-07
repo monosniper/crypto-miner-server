@@ -33,7 +33,6 @@ class StoreOrderRequest extends FormRequest
                 'in:'.implode(',', Order::METHODS)
             ],
             'purchase_type' => [
-                'required_if:type,'.Order::PURCHASE,
                 'string',
                 'in:'.implode(',', Order::PURCHASE_TYPES)
             ],
