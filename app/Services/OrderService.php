@@ -45,7 +45,7 @@ class OrderService
         }
 
         $order = Order::create([
-            'purchase_id' => $data['purchase_id'],
+            'purchase_id' => $data['purchase_id'] ?? null,
             'method' => $method,
             'type' => $type,
             'purchase_type' => $purchase_type,
