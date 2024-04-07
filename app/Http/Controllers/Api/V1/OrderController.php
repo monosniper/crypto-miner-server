@@ -27,9 +27,9 @@ class OrderController extends Controller
         return $this->sendResponse($result);
     }
 
-    public function show(Order $order): JsonResponse
+    public function show($id): JsonResponse
     {
-        $result = $this->orderService->getOne($order);
+        $result = $this->orderService->getOne($id);
 
         return $this->sendResponse($result);
     }
