@@ -24,18 +24,24 @@ class OrderService
         $purchase_type = $data['purchase_type'] ?? Order::SERVER;
         $method = $data['method'] ?? Order::CRYPTO;
 
-        if($type === Order::PURCHASE) {
-            if($purchase_type === Order::SERVER) {
-                $server = Server::find($data['purchase_id']);
-                $description = __('transactions.buy_server');
-                $amount = $server->price;
-            } else {
-                $description = __('transactions.replenishment');
+        switch ($type) {
+            case Order::PURCHASE:
+                switch ($purchase_type) {
+                    case Order::SERVER:
+                        $server = Server::find($data['purchase_id']);
+                        $description = __('transactions.buy_server');
+                        $amount = $server->price;
+                        break;
+                    case Order::BALANCE:
+                        $description = __('transactions.replenishment');
+                        $amount = $data['amount'];
+                        break;
+                }
+                break;
+            case Order::DONATE:
                 $amount = $data['amount'];
-            }
-        } else {
-            $amount = $data['amount'];
-            $description = __('transactions.donate');
+                $description = __('transactions.donate');
+                break;
         }
 
         $order = Order::create([
@@ -53,6 +59,13 @@ class OrderService
 
     public function update($order, $data): bool
     {
-        return $order->update($data);
+        $method = $data['method'];
+
+        if($data['method'] !== $order->method) {
+            if($method)
+            return $order->update($data);
+        }
+
+
     }
 }
