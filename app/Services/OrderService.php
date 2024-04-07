@@ -21,9 +21,10 @@ class OrderService
     public function store($data): OrderResource
     {
         $type = $data['type'] ?? Order::PURCHASE;
+        $purchase_type = $data['purchase_type'] ?? Order::SERVER;
 
         if($type === Order::PURCHASE) {
-            if($data['purchase_type'] === Order::SERVER) {
+            if($purchase_type === Order::SERVER) {
                 $server = Server::find($data['purchase_id']);
                 $description = __('transactions.buy_server');
                 $amount = $server->price;
