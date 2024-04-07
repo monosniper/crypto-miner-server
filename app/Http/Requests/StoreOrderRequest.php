@@ -44,7 +44,6 @@ class StoreOrderRequest extends FormRequest
                 'numeric'
             ],
             'purchase_id' => [
-                'required_without:purchase_type',
                 'required_if:purchase_type,'.Order::SERVER,
                 'exists:servers,id',
             ],
