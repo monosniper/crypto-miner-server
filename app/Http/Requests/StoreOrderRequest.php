@@ -24,10 +24,19 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['string', 'in:'.implode(',', Order::TYPES)],
-            'method' => ['string', 'in:'.implode(',', Order::METHODS)],
-            'purchase_type' => ['required_if:type,'.Order::PURCHASE, 'string', 'in:'.implode(',', Order::PURCHASE_TYPES)],
-
+            'type' => [
+                'string',
+                'in:'.implode(',', Order::TYPES)
+            ],
+            'method' => [
+                'string',
+                'in:'.implode(',', Order::METHODS)
+            ],
+            'purchase_type' => [
+                'required_if:type,'.Order::PURCHASE,
+                'string',
+                'in:'.implode(',', Order::PURCHASE_TYPES)
+            ],
             'amount' => [
                 'required_if:purchase_type,'.Order::BALANCE,
                 'required_if:type,'.Order::DONATE,
