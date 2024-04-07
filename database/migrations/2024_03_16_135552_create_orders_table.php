@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('purchase_type', Order::PURCHASE_TYPES)->default(Order::SERVER);
             $table->enum('method', Order::METHODS)->default(Order::CRYPTO);
             $table->enum('status', Order::STATUSES)->default(Order::PENDING);
+            $table->string('checkout_url');
             $table->bigInteger('purchase_id')->nullable();
             $table->timestamps();
         });
