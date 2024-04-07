@@ -24,8 +24,8 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', 'string', 'in:'.implode(',', Order::TYPES)],
-            'method' => ['required', 'string', 'in:'.implode(',', Order::METHODS)],
+            'type' => ['string', 'in:'.implode(',', Order::TYPES)],
+            'method' => ['string', 'in:'.implode(',', Order::METHODS)],
             'purchase_type' => ['required_if:type,'.Order::PURCHASE, 'string', 'in:'.implode(',', Order::PURCHASE_TYPES)],
 
             'amount' => [
@@ -36,6 +36,7 @@ class StoreOrderRequest extends FormRequest
                 'numeric'
             ],
             'purchase_id' => [
+                'required_without:purchase_type',
                 'required_if:purchase_type,'.Order::SERVER,
                 'exists:servers,id',
             ],
