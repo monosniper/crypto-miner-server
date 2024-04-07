@@ -22,6 +22,7 @@ class OrderService
     {
         $type = $data['type'] ?? Order::PURCHASE;
         $purchase_type = $data['purchase_type'] ?? Order::SERVER;
+        $method = $data['method'] ?? Order::CRYPTO;
 
         if($type === Order::PURCHASE) {
             if($purchase_type === Order::SERVER) {
@@ -38,11 +39,13 @@ class OrderService
         }
 
         $order = Order::create([
-            ...$data,
+            'purchase_id' => $data['purchase_id'],
+            'method' => $method,
+            'type' => $type,
+            'purchase_type' => $purchase_type,
             'user_id' => auth()->id(),
             'amount' => $amount,
             'description' => $description,
-            'checkout_url' => 'https://app.hogyx.io',
         ]);
 
         return new OrderResource($order);
