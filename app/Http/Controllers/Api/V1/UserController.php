@@ -29,4 +29,11 @@ class UserController extends Controller
 
         return $this->sendResponse($result);
     }
+
+    public function ref(): JsonResponse
+    {
+        $result = $this->userService->ref();
+
+        return $this->sendResponse($result);
+    }
 }

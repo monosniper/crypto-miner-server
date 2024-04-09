@@ -8,6 +8,7 @@ use App\Models\Coin;
 use App\Models\ConfigurationGroup;
 use App\Models\Nft;
 use App\Models\Order;
+use App\Models\Ref;
 use App\Models\Server;
 use App\Models\User;
 use App\Models\UserServer;
@@ -19,6 +20,7 @@ class CacheService
     const CONFIGURATION = 'configuration';
     const SESSION = 'session';
     const USER = 'user';
+    const USER_REF = 'user_ref';
     const WALLET = 'wallet';
     const NOTIFICATIONS = 'notifications';
     const REPLENISHMENTS = 'replenishments';
@@ -65,6 +67,8 @@ class CacheService
         $user = auth()->user();
 
         return [
+            self::USER =>
+                fn () => $user->loadCount('session'),
             self::COINS =>
                 fn () => Coin::all(),
             self::NFTS =>
@@ -113,7 +117,19 @@ class CacheService
             self::USER_NFTS =>
                 fn () => Nft::find($id),
             self::USER =>
-                fn () => User::find($id),
+                fn () => User::find($id)->loadCount('session'),
+            self::USER_REF =>
+                function () use($id) {
+                    $ref = Ref::where('user_id', $id)->with(['users' => function ($query) {
+                        return $query->withSum(['orders as orders_sum' => fn($query) => $query->completed()], 'amount');
+                    }])->first();
+
+                    return [
+                        'ref_code' => $ref->code,
+                        'total_refs' => $ref->users->count(),
+                        'total_refs_amount' => $ref->totalDonates(),
+                    ];
+                },
         ][$name];
     }
 

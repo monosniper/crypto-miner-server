@@ -31,7 +31,7 @@ class Ref extends Model
         $total = 0;
 
         foreach ($this->users as $user) {
-            $total += $user->donates->sum('amount');
+            $total += $user->orders_sum;
         }
 
         return $total;

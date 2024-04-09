@@ -21,12 +21,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'token' => $this->token,
             'isVerificated' => $this->isVerificated,
-            'session' => (bool) $this->session,
-//            'session' => new SessionResource($this->session),
-//            'session' => Cache::get("sessions.".$this->id),
-//            'ref_code' => $this->ref->code,
-            'total_refs' => $this->ref->users()->count(),
-            'total_refs_amount' => $this->ref->totalDonates(),
+            'session' => (bool) $this->session_count,
             'coin_positions' => $this->coin_positions,
         ];
     }

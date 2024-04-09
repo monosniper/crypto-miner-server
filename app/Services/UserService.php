@@ -3,16 +3,24 @@
 namespace App\Services;
 
 use App\Http\Resources\UserResource;
-use App\Models\User;
 
 class UserService
 {
     public function update($data) {
-        return auth()->user()->update($data);
+        $rs = auth()->user()->update($data);
+
+        if($rs) CacheService::saveFor(CacheService::USER, auth()->id());
+
+        return $rs;
     }
 
     public function me(): UserResource
     {
         return new UserResource(CacheService::getSingle(CacheService::USER, auth()->id()));
+    }
+
+    public function ref()
+    {
+        return CacheService::getSingle(CacheService::USER_REF, auth()->id());
     }
 }

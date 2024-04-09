@@ -105,59 +105,6 @@ class AuthController extends Controller
         return $this->sendResponse($result);
     }
 
-    public function replenishments(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        $replenishments = Auth::user()->transactions()->replenishments()->latest()->get();
-        return TransactionResource::collection($replenishments);
-    }
-
-    public function nfts(): JsonResponse
-    {
-        $result = $this->authService->nfts();
-
-        return $this->sendResponse($result);
-    }
-
-    public function update(UpdateUserRequest $request): JsonResponse {
-        $user = Auth::user();
-
-        return response()->json(['success' => $user->update($request->validated())]);
-    }
-
-    public function me(): UserResource
-    {
-        return new UserResource(Auth::user());
-    }
-
-    public function wallet(): WalletResource
-    {
-        $wallet = Auth::user()->wallet;
-
-        return new WalletResource($wallet);
-    }
-
-    public function servers(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        $servers = Cache::remember('servers.'.auth()->id(), 86400, function () {
-            return auth()->user()->servers->load('server');
-        });
-        return UserServerResource::collection($servers);
-    }
-
-    public function server($id): UserServerResource
-    {
-        return Cache::remember('all.servers.'.$id, 86400, function () use($id) {
-            return new UserServerResource(UserServer::find($id)->load('log'));
-        });
-    }
-
-    public function invest(): array
-    {
-        return [
-            'url' => 'https://www.google.com'
-        ];
-    }
-
     public function checkToken(Request $request): array
     {
         $user = User::where('token', $request->token)->first();
@@ -167,11 +114,4 @@ class AuthController extends Controller
             'user_id' => $user?->id
         ];
     }
-
-    public function notifications(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return NotificationResource::collection(auth()->user()->notifications()->latest()->get());
-    }
-
-
 }

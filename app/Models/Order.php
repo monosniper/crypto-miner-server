@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\RateCast;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -60,4 +61,8 @@ class Order extends Model
         self::CRYPTO => self::CRYPTO,
         self::CARD => self::CARD,
     ];
+
+    public function scopeCompleted(Builder $query) {
+        return $query->where('status', self::COMPLETED);
+    }
 }

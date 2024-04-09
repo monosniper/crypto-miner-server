@@ -39,6 +39,7 @@ Route::domain('api.hogyx.io')->group(function () {
 
                     // Static
                     Route::get('/', [UserController::class, 'me']);
+                    Route::get('ref', [UserController::class, 'ref']);
                     Route::get('session', UserSessionController::class);
                     Route::get('nfts', UserNftController::class);
                     Route::get('wallet', WalletController::class);
@@ -100,6 +101,7 @@ Route::prefix('v1')
 
                 // Static
                 Route::get('/', [UserController::class, 'me']);
+                Route::get('ref', [UserController::class, 'ref']);
                 Route::get('session', UserSessionController::class);
                 Route::get('nfts', UserNftController::class);
                 Route::get('wallet', WalletController::class);

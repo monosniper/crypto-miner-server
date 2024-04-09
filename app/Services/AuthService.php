@@ -17,13 +17,14 @@ class AuthService
 {
     public function sendVerificationMail(): bool
     {
+        SendVerificationMail::dispatch(auth()->user());
         return true;
     }
 
     public function register($data): bool
     {
         if(isset($data['ref_code'])) {
-            $data['ref_id'] = Ref::where('code', $data->ref_code)->first()?->id;
+            $data['ref_id'] = Ref::where('code', $data['ref_code'])->first()?->id;
         }
 
         $user = User::create($data);
@@ -108,12 +109,5 @@ class AuthService
     public function checkUsername(): bool
     {
         return true;
-    }
-
-    public function nfts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        $nfts = Auth::user()->nfts;
-
-        return NftResource::collection($nfts);
     }
 }

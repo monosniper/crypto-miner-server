@@ -95,7 +95,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function replenishments(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class)->replenishments();
     }
 
     public function scopeOperators(Builder $query): Builder
@@ -149,11 +149,6 @@ class User extends Authenticatable implements FilamentUser
     public function refs(): HasManyThrough
     {
         return $this->hasManyThrough(User::class, Ref::class);
-    }
-
-    public function donates(): HasMany
-    {
-        return $this->hasMany(Donate::class);
     }
 
     public function team(): HasOne
