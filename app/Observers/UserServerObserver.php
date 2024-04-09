@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use App\Models\Convertation;
 use App\Models\UserServer;
+use App\Services\CacheService;
 use Carbon\Carbon;
 
 class UserServerObserver
@@ -31,7 +33,7 @@ class UserServerObserver
      */
     public function updated(UserServer $userServer): void
     {
-        //
+        $this->cache($userServer);
     }
 
     /**
@@ -39,7 +41,7 @@ class UserServerObserver
      */
     public function deleted(UserServer $userServer): void
     {
-        //
+        $this->cache($userServer);
     }
 
     /**
@@ -56,5 +58,10 @@ class UserServerObserver
     public function forceDeleted(UserServer $userServer): void
     {
         //
+    }
+
+    public function cache(UserServer $userServer): void
+    {
+        CacheService::saveForUser(CacheService::USER_SERVERS, $userServer->user_id, $userServer->user->servers);
     }
 }
