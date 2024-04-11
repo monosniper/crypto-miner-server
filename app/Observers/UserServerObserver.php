@@ -2,15 +2,15 @@
 
 namespace App\Observers;
 
-use App\Models\Convertation;
 use App\Models\UserServer;
 use App\Services\CacheService;
 use Carbon\Carbon;
+use Faker\Factory;
 
 class UserServerObserver
 {
     public function generateServerName(): string {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         $word = ucfirst($faker->word());
         $num = strtoupper($faker->bothify('?## ?? ###'));
@@ -42,22 +42,6 @@ class UserServerObserver
     public function deleted(UserServer $userServer): void
     {
         $this->cache($userServer);
-    }
-
-    /**
-     * Handle the UserServer "restored" event.
-     */
-    public function restored(UserServer $userServer): void
-    {
-        //
-    }
-
-    /**
-     * Handle the UserServer "force deleted" event.
-     */
-    public function forceDeleted(UserServer $userServer): void
-    {
-        //
     }
 
     public function cache(UserServer $userServer): void

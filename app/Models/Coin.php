@@ -20,7 +20,7 @@ class Coin extends Model implements HasMedia
         'hardLoad',
     ];
 
-    protected $with = ['media'];
+//    protected $with = ['media'];
 
     public function registerMediaCollections(): void
     {

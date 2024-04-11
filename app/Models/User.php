@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Casts\RateCast;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -69,18 +70,19 @@ class User extends Authenticatable implements FilamentUser
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'coin_positions' => 'array',
+        'orders_sum_amount' => RateCast::class,
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
         $access = [
-            'admin' => $this->isAdmin,
-            'pr' => (bool) $this->team,
-            'call' => (bool) $this->isOperator,
-            'manager' => (bool) $this->isManager,
+            'admin' => fn () => $this->isAdmin,
+            'pr' => fn () => (bool) $this->team,
+            'call' => fn () => (bool) $this->isOperator,
+            'manager' => fn () => (bool) $this->isManager,
         ];
 
-        return $access[$panel->getId()];
+        return $access[$panel->getId()]();
     }
 
     public function session(): HasOne

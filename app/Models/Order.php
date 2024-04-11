@@ -35,7 +35,6 @@ class Order extends Model
         self::PURCHASE => self::PURCHASE,
     ];
 
-    const RENEW_SERVER = 'renew_server';
     const SERVER = 'server';
     const BALANCE = 'balance';
 
@@ -64,5 +63,14 @@ class Order extends Model
 
     public function scopeCompleted(Builder $query) {
         return $query->where('status', self::COMPLETED);
+    }
+
+    public function scopeReplenishments(Builder $query) {
+        return $query->where('purchase_type', self::BALANCE);
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

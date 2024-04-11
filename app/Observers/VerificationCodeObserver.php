@@ -3,12 +3,13 @@
 namespace App\Observers;
 
 use App\Models\VerificationCode;
+use Faker\Factory;
 
 class VerificationCodeObserver
 {
     public function generateCode(): string
     {
-        return \Faker\Factory::create()->bothify('###?###??##?##???#?###?');
+        return Factory::create()->bothify('###?###??##?##???#?###?');
     }
 
     public function created(VerificationCode $code): void

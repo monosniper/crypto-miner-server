@@ -19,7 +19,9 @@ class TeamResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationLabel = 'Пиар команды';
+    protected static ?string $navigationLabel = 'Команды';
+
+    protected static ?string $navigationGroup = 'Пиар';
 
     public static function form(Form $form): Form
     {

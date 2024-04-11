@@ -121,7 +121,7 @@ class CacheService
             self::USER_REF =>
                 function () use($id) {
                     $ref = Ref::where('user_id', $id)->with(['users' => function ($query) {
-                        return $query->withSum(['orders as orders_sum' => fn($query) => $query->completed()], 'amount');
+                        return $query->withSum(['orders' => fn($query) => $query->completed()], 'amount');
                     }])->first();
 
                     return [

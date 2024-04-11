@@ -3,12 +3,13 @@
 namespace App\Observers;
 
 use App\Models\ForgotPasswordCode;
+use Faker\Factory;
 
 class ForgotPasswordObserver
 {
     public function generateCode(): string
     {
-        return \Faker\Factory::create()->bothify('###?###??##?##???#?###?');
+        return Factory::create()->bothify('###?###??##?##???#?###?');
     }
 
     public function created(ForgotPasswordCode $code): void

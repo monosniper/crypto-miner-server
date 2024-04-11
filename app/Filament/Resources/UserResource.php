@@ -58,9 +58,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->label('Почта')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('donates_amount_sum')
+                Tables\Columns\TextColumn::make('orders_sum_amount')
                     ->label('Сумма пополнений')
-                    ->state(fn (User $user) => $user->donates->sum('amount'))
+                    ->default(0)
                     ->money(),
                 Tables\Columns\IconColumn::make('isAdmin')
                     ->label('Админ')
@@ -99,6 +99,11 @@ class UserResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withSum('orders', 'amount');
     }
 
     public static function getPages(): array

@@ -49,11 +49,12 @@ class RefResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('users_count')
                     ->label('Кол-во рег-ий')
-                    ->sortable()
-                    ->counts('users'),
-                Tables\Columns\TextColumn::make('donates_total')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('orders_sum_amount')
                     ->label('Сумма пополнений')
-                    ->sortable()
+                    ->sortable(query: fn (Builder $query) => $query->with(['users' => function ($query) {
+                        $query->withSum(['orders' => fn($query) => $query->completed()], 'amount');
+                    }]))
                     ->state(fn (Ref $ref) => $ref->totalDonates())
                     ->money(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -87,6 +88,13 @@ class RefResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['user', 'users' => function($query) {
+            $query->withSum(['orders' => fn($query) => $query->completed()], 'amount');
+        }])->withCount('users');
     }
 
     public static function getPages(): array

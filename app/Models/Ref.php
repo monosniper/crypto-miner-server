@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\RateCast;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +32,7 @@ class Ref extends Model
         $total = 0;
 
         foreach ($this->users as $user) {
-            $total += $user->orders_sum;
+            $total += $user->orders_sum_amount;
         }
 
         return $total;

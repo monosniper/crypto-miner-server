@@ -90,7 +90,9 @@ Route::prefix('v1')
     ->group(function () {
         Route::post('users', [AuthController::class, 'register']);
 
-        Route::middleware(AuthenticateOnceWithBasicAuth::class)
+        Route::middleware([
+            AuthenticateOnceWithBasicAuth::class,
+        ])
             ->prefix('me')
             ->group(callback: function () {
                 Route::put('/', [UserController::class, 'update']);
@@ -140,13 +142,8 @@ Route::prefix('v1')
             ->only('index', 'show');
 
         // WebSockets
-        Route::post('check', [AuthController::class, 'checkToken']);
-        Route::put('user/servers/{userServer}', [SessionController::class, 'updateUserServer']);
-        Route::put('user/sessions/{session}/cache', [SessionController::class, 'cacheSession']);
+        Route::post('check-token', [AuthController::class, 'checkToken']);
+        Route::put('servers/{server}', [SessionController::class, 'updateUserServer']);
+        Route::put('sessions/{session}/cache', [SessionController::class, 'cacheSession']);
         Route::apiResource('sessions', SessionController::class);
-
-        Route::get('test', function () {
-            return new \App\Mail\Verification('hello', 'huy');
-            Mail::to('ravilto@vk.com')->send(new \App\Mail\Verification('hello', 'huy'));
-        });
     });

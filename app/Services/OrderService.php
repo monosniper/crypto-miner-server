@@ -61,11 +61,13 @@ class OrderService
     {
         $method = $data['method'];
 
-        if($data['method'] !== $order->method) {
-            if($method)
+        if($method !== $order->method) {
+            if($method === Order::CARD) {
+                // TODO: Generate card checkout_url
+            }
             return $order->update($data);
         }
 
-
+        return false;
     }
 }

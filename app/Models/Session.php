@@ -33,8 +33,8 @@ class Session extends Model
         return $this->belongsToMany(Coin::class, 'sessions_coins');
     }
 
-    public function user_servers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function servers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(UserServer::class, 'sessions_user_servers',);
+        return $this->belongsToMany(UserServer::class, 'sessions_servers');
     }
 }

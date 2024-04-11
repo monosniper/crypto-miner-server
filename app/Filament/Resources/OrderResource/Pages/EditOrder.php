@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\DonateResource\Pages;
+namespace App\Filament\Resources\OrderResource\Pages;
 
-use App\Filament\Resources\DonateResource;
+use App\Filament\Resources\OrderResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditDonate extends EditRecord
+class EditOrder extends EditRecord
 {
-    protected static string $resource = DonateResource::class;
+    protected static string $resource = OrderResource::class;
 
     protected function getHeaderActions(): array
     {

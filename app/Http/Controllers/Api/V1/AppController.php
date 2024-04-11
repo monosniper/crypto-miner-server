@@ -32,16 +32,6 @@ class AppController extends Controller
 //        Setting::set('pr_percent', 30);
 //        Setting::set('transfer_fee', 5);
 //        Setting::set('transfer_min', 10);
-//        Setting::set('partnership', [
-//            1 => [
-//                'title' => 'hello',
-//                'description' => 'world',
-//            ],
-//            2 => [
-//                'title' => 'hello 2',
-//                'description' => 'world 2',
-//            ],
-//        ]);
 //
 //        Setting::save();
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('amount');
             $table->text('description');
             $table->enum('type', Order::TYPES)->default(Order::PURCHASE);
-            $table->enum('purchase_type', Order::PURCHASE_TYPES)->default(Order::SERVER);
+            $table->enum('purchase_type', Order::PURCHASE_TYPES)->nullable();
             $table->enum('method', Order::METHODS)->default(Order::CRYPTO);
             $table->enum('status', Order::STATUSES)->default(Order::PENDING);
             $table->string('checkout_url')->nullable();

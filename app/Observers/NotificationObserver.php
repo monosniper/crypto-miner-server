@@ -10,7 +10,6 @@ class NotificationObserver
     public function cache(Notification $notification): void
     {
         foreach ($notification->users as $user) {
-
             CacheService::saveForUser(CacheService::NOTIFICATIONS, $user->id, $user->notifications);
         }
     }

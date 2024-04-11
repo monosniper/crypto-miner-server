@@ -102,6 +102,11 @@ class ConvertationResource extends Resource
         ];
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['from', 'to']);
+    }
+
     public static function getPages(): array
     {
         return [
