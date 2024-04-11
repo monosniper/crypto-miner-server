@@ -48,7 +48,7 @@ class PhonesResource extends Resource
                         foreach ($records as $record) {
                             $user = User::find($record['id']);
                             $user->report()->create([
-                                'operator_id' => 1002,
+                                'operator_id' => User::operators()->first()->id,
                                 'user_id' => $record['id']
                             ]);
                         }
