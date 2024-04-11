@@ -70,7 +70,7 @@ class HotBaseResource extends Resource
                         OperatorReport::STATUS_CALLED => __("operators.statuses.".OperatorReport::STATUS_CALLED),
                         OperatorReport::STATUS_NOT_ACCEPTED => __("operators.statuses.".OperatorReport::STATUS_NOT_ACCEPTED),
                     ]),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('user.created_at')
                     ->label('Дата рег.')
                     ->dateTime()
                     ->sortable(),
