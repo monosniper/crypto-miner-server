@@ -11,7 +11,7 @@ class UserService
         $user = auth()->user();
         $rs = $user->update($data);
 
-        if($data['email'] !== $user->email) {
+        if(isset($data['email']) && $data['email'] !== $user->email) {
             SendVerificationMail::dispatch($user);
         }
 
