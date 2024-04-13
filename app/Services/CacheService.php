@@ -51,7 +51,7 @@ class CacheService
         SaveCache::dispatch('user.' . $id . '.' . $name, $name, $id, $value, auth()->user());
     }
 
-    static public function getDefaultValue(string $name, ?User $user): \Closure
+    static public function getDefaultValue(string $name, User $user = null): \Closure
     {
         if($user === null) $user = auth()->user();
 

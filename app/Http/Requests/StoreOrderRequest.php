@@ -37,9 +37,7 @@ class StoreOrderRequest extends FormRequest
                 'in:'.implode(',', Order::PURCHASE_TYPES)
             ],
             'amount' => [
-                'required_if:purchase_type,'.Order::BALANCE,
-                'required_if:type,'.Order::DONATE,
-                'exclude_if:purchase_type,'.Order::SERVER,
+                'required',
                 'min:1',
                 'numeric'
             ],
