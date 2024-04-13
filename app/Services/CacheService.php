@@ -35,28 +35,28 @@ class CacheService
     const NFTS = 'nfts';
     const ARTICLES = 'articles';
 
-    static public function save(string $name, $value = null): bool
+    static public function save(string $name, $value = null)
     {
         Cache::forget($name);
-        return Cache::put(
+        Cache::put(
             $name,
             $value ?: CacheService::getDefaultValue($name)()
         );
     }
 
-    static public function saveFor(string $name, $id, $value = null): bool
+    static public function saveFor(string $name, $id, $value = null)
     {
         Cache::forget($name);
-        return Cache::put(
+        Cache::put(
             $name . '.' . $id,
             $value ?: CacheService::getDefaultValue($name)()
         );
     }
 
-    static public function saveForUser(string $name, $id, $value = null): bool
+    static public function saveForUser(string $name, $id, $value = null)
     {
         Cache::forget($name);
-        return Cache::put(
+        Cache::put(
             'user.' . $id . '.' . $name,
             $value ?: CacheService::getDefaultValue($name)()
         );

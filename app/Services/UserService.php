@@ -3,13 +3,19 @@
 namespace App\Services;
 
 use App\Http\Resources\UserResource;
+use App\Jobs\SendVerificationMail;
 
 class UserService
 {
     public function update($data) {
-        $rs = auth()->user()->update($data);
+        $user = auth()->user();
+        $rs = $user->update($data);
 
-        if($rs) CacheService::saveFor(CacheService::USER, auth()->id());
+        if($data['email'] !== $user->email) {
+            SendVerificationMail::dispatch($user);
+        }
+
+        if($rs) CacheService::saveFor(CacheService::USER, $user->id);
 
         return $rs;
     }
