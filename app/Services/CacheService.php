@@ -38,22 +38,22 @@ class CacheService
 
     static public function save(string $name, $value = null): void
     {
-        SaveCache::dispatch(name: $name, value: $value);
+        SaveCache::dispatch(name: $name, value: $value, user: auth()->user());
     }
 
     static public function saveFor(string $name, $id, $value = null): void
     {
-        SaveCache::dispatch($name . '.' . $id, $name, $id, $value);
+        SaveCache::dispatch($name . '.' . $id, $name, $id, $value, auth()->user());
     }
 
     static public function saveForUser(string $name, $id, $value = null): void
     {
-        SaveCache::dispatch('user.' . $id . '.' . $name, $name, $id, $value);
+        SaveCache::dispatch('user.' . $id . '.' . $name, $name, $id, $value, auth()->user());
     }
 
-    static public function getDefaultValue(string $name): \Closure
+    static public function getDefaultValue(string $name, ?User $user): \Closure
     {
-        $user = auth()->user();
+        if($user === null) $user = auth()->user();
 
         return [
             self::USER =>

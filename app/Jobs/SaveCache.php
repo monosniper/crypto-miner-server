@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
 use App\Services\CacheService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,6 +23,7 @@ class SaveCache implements ShouldQueue
         public string $name,
         public ?string $id,
         public $value,
+        public ?User $user
     ) {}
 
     /**
@@ -33,7 +35,7 @@ class SaveCache implements ShouldQueue
         Cache::forget($path);
         Cache::put(
             $path,
-            $this->value ?: CacheService::getDefaultValue($this->name)()
+            $this->value ?: CacheService::getDefaultValue($this->name, $this->user)()
         );
     }
 }
