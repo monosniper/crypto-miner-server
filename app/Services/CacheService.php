@@ -67,7 +67,7 @@ class CacheService
             self::CONFIGURATION =>
                 fn () => ConfigurationGroup::all(),
             self::SERVERS =>
-                fn () => Server::all()->load(['possibilities', 'coins']),
+                fn () => Server::with('coins')->get(),
             self::REPLENISHMENTS =>
                 fn () => $user?->replenishments,
             self::USER_NFTS =>
