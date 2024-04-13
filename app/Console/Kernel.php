@@ -19,8 +19,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command(RatesRequest::class)->hourly();
-        $schedule->command(UserServersInspector::class)->daily();
-        $schedule->command(SessionsInspector::class)->everyTenSeconds();
+//        $schedule->command(UserServersInspector::class)->daily();
+        $schedule->command(SessionsInspector::class)->everyMinute();
         $schedule->command(PaymentChecker::class)->hourly();
     }
 

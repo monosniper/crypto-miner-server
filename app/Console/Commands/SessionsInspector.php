@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Server;
 use App\Models\Session;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class SessionsInspector extends Command
@@ -27,7 +28,7 @@ class SessionsInspector extends Command
      */
     public function handle(): void
     {
-        $sessions = Session::whereNotNull('end_at')->where('end_at', '<', \Carbon\Carbon::now())->get();
+        $sessions = Session::whereNotNull('end_at')->where('end_at', '<', Carbon::now())->get();
 
         foreach ($sessions as $session) if($session->end_at) $session->delete();
     }

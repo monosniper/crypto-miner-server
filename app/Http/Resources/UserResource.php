@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'phone' => $this->phone,
+            'countryCode' => $this->country_code,
             'isVerificated' => $this->isVerificated,
             'session' => (bool) $this->session_count,
             'coin_positions' => $this->coin_positions,

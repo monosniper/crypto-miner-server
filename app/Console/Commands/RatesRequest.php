@@ -64,7 +64,6 @@ class RatesRequest extends Command implements Isolatable
                 // Graph today
                 $request = new Request('GET', "https://min-api.cryptocompare.com/data/v2/histohour?fsym=$coin->slug&tsym=USD&limit=23", $headers);
                 $res = $client->sendAsync($request)->wait();
-                info($res->getBody());
                 $graph_today_data = json_decode($res->getBody())->Data->Data;
 
                 $graph_today = [];
@@ -79,7 +78,8 @@ class RatesRequest extends Command implements Isolatable
 
                 $coin->save();
             } catch (\Exception $err) {
-                info("HELLLOOO");
+                info("Error request:rates");
+                info($err);
                 info($coin->slug);
             }
         }

@@ -38,7 +38,7 @@ class CacheService
 
     static public function save(string $name, $value = null): void
     {
-        SaveCache::dispatch(name: $name, value: $value, user: auth()->user());
+        SaveCache::dispatch(name: $name, value: $value);
     }
 
     static public function saveFor(string $name, $id, $value = null): void
