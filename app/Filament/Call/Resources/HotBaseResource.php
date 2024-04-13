@@ -120,7 +120,7 @@ class HotBaseResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::hot()->count();
+        return static::getModel()::hot()->where('operator_id', auth()->id())->count();
     }
 
     public static function getPages(): array

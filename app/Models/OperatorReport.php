@@ -60,6 +60,6 @@ class OperatorReport extends Model
 
     public function operator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'operator_id');
     }
 }

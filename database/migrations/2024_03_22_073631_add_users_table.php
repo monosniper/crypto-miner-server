@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->boolean('isOperator')->default(false);
             $table->boolean('isManager')->default(false);
+            $table->boolean('isArchive')->default(false);
         });
     }
 
@@ -35,6 +36,7 @@ return new class extends Migration
             'phone',
             'isOperator',
             'isManager',
+            'isArchive',
         ]);
     }
 };

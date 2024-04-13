@@ -73,6 +73,11 @@ class User extends Authenticatable implements FilamentUser
         'orders_sum_amount' => RateCast::class,
     ];
 
+    public function scopeNotArchive(Builder $query): Builder
+    {
+        return $query->where('isArchive', false);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         $access = [
@@ -173,9 +178,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsTo(Nft::class, 'avatar_nft_id');
     }
 
-    public function report(): BelongsTo
+    public function report(): HasOne
     {
-        return $this->belongsTo(OperatorReport::class);
+        return $this->hasOne(OperatorReport::class);
     }
 
     public function notifications(): BelongsToMany
