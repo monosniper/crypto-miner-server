@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Jobs\SaveCache;
 use App\Models\Article;
 use App\Models\Coin;
 use App\Models\ConfigurationGroup;
@@ -35,31 +36,19 @@ class CacheService
     const NFTS = 'nfts';
     const ARTICLES = 'articles';
 
-    static public function save(string $name, $value = null)
+    static public function save(string $name, $value = null): void
     {
-        Cache::forget($name);
-        Cache::put(
-            $name,
-            $value ?: CacheService::getDefaultValue($name)()
-        );
+        SaveCache::dispatch(name: $name, value: $value);
     }
 
-    static public function saveFor(string $name, $id, $value = null)
+    static public function saveFor(string $name, $id, $value = null): void
     {
-        Cache::forget($name);
-        Cache::put(
-            $name . '.' . $id,
-            $value ?: CacheService::getDefaultValue($name)()
-        );
+        SaveCache::dispatch($name . '.' . $id, $name, $id, $value);
     }
 
-    static public function saveForUser(string $name, $id, $value = null)
+    static public function saveForUser(string $name, $id, $value = null): void
     {
-        Cache::forget($name);
-        Cache::put(
-            'user.' . $id . '.' . $name,
-            $value ?: CacheService::getDefaultValue($name)()
-        );
+        SaveCache::dispatch('user.' . $id . '.' . $name, $name, $id, $value);
     }
 
     static public function getDefaultValue(string $name): \Closure

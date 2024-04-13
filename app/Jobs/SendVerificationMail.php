@@ -28,6 +28,8 @@ class SendVerificationMail implements ShouldQueue
      */
     public function handle(): void
     {
+        $this->user->update(['isVerificated' => false]);
+
         $code = VerificationCode::create([
             'user_id' => $this->user->id,
         ]);

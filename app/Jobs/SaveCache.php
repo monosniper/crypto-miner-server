@@ -18,8 +18,9 @@ class SaveCache implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
+        public ?string $path,
         public string $name,
-        public string $id,
+        public ?string $id,
         public $value,
     ) {}
 
@@ -28,9 +29,10 @@ class SaveCache implements ShouldQueue
      */
     public function handle(): void
     {
-        Cache::forget($this->name);
+        $path = $this->path ?? $this->name;
+        Cache::forget($path);
         Cache::put(
-            $this->name,
+            $path,
             $this->value ?: CacheService::getDefaultValue($this->name)()
         );
     }

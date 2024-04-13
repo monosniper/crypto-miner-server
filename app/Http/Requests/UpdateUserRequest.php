@@ -24,9 +24,9 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'coin_positions' => ['array'],
-            'name' => ['string', 'unique:users,name,'.auth()->id()],
             'first_name' => ['string'],
             'last_name' => ['string'],
+            'name' => ['string', 'unique:users,name,'.auth()->id()],
             'phone' => ['string', 'unique:users,phone,'.auth()->id()],
             'email' => ['string', 'email', 'unique:users,email,'.auth()->id()],
         ];
