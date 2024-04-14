@@ -14,7 +14,7 @@ class ConfigurationGroup extends Model
         'priority',
     ];
 
-    protected $with = ['fields'];
+//    protected $with = ['fields'];
 
     public function fields(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

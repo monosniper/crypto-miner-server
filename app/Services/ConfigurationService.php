@@ -2,16 +2,14 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
 use App\Http\Resources\ConfigurationResource;
 use App\Models\ConfigurationOption;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ConfigurationService
+class ConfigurationService extends CachableService
 {
-    public function get(): AnonymousResourceCollection
-    {
-        return ConfigurationResource::collection(CacheService::get(CacheService::CONFIGURATION));
-    }
+    protected string $resource = ConfigurationResource::class;
+    protected CacheName $cacheName = CacheName::CONFIGURATION;
 
     static public function calculatePrice(array $configuration): int {
         $price = 0;

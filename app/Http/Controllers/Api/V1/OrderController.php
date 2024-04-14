@@ -13,37 +13,34 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    private OrderService $orderService;
-
-    public function __construct(OrderService $orderService)
-    {
-        $this->orderService = $orderService;
-    }
+    public function __construct(
+        protected OrderService $service
+    ) {}
 
     public function index(): JsonResponse
     {
-        $result = $this->orderService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }
 
     public function show($id): JsonResponse
     {
-        $result = $this->orderService->getOne($id);
+        $result = $this->service->getOne($id);
 
         return $this->sendResponse($result);
     }
 
     public function update(Order $order, UpdateOrderRequest $request): JsonResponse
     {
-        $result = $this->orderService->update($order, $request->validated());
+        $result = $this->service->update($order, $request->validated());
 
         return $this->sendResponse($result);
     }
 
     public function store(StoreOrderRequest $request): JsonResponse
     {
-        $result = $this->orderService->store($request->validated());
+        $result = $this->service->store($request->validated());
 
         return $this->sendResponse($result);
     }

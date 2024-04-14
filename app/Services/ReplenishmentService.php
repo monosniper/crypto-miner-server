@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\OrderResource;
 
-class ReplenishmentService
+class ReplenishmentService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return OrderResource::collection(CacheService::getAuth(CacheService::REPLENISHMENTS));
-    }
+    protected string $resource = OrderResource::class;
+    protected CacheName $cacheName = CacheName::REPLENISHMENTS;
+    protected CacheType $cacheType = CacheType::AUTH;
 }

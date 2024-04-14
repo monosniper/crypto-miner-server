@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \App\Models\Configuration as Configuration;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ConfigurationField extends Model
 {
@@ -29,18 +31,18 @@ class ConfigurationField extends Model
         'type',
     ];
 
-    protected $with = ['options'];
+//    protected $with = ['options'];
 
     protected $casts = [
         'type' => Configuration::class
     ];
 
-    public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function group(): BelongsTo
     {
         return $this->belongsTo(ConfigurationGroup::class);
     }
 
-    public function options(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function options(): HasMany
     {
         return $this->hasMany(ConfigurationOption::class, 'field_id');
     }

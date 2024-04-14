@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\SessionResource;
 
-class UserSessionService
+class UserSessionService extends CachableService
 {
-    public function get(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return SessionResource::collection(CacheService::getAuth(CacheService::SESSION));
-    }
+    protected string $resource = SessionResource::class;
+    protected CacheName $cacheName = CacheName::SESSION;
+    protected CacheType $cacheType = CacheType::AUTH;
 }

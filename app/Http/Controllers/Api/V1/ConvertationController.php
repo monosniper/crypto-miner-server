@@ -9,23 +9,20 @@ use Illuminate\Http\Request;
 
 class ConvertationController extends Controller
 {
-    private ConvertationService $convertationService;
-
-    public function __construct(ConvertationService $convertationService)
-    {
-        $this->convertationService = $convertationService;
-    }
+    public function __construct(
+        protected ConvertationService $service
+    ) {}
 
     public function index(): JsonResponse
     {
-        $result = $this->convertationService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }
 
     public function store(Request $request): JsonResponse
     {
-        $result = $this->convertationService->store($request->all());
+        $result = $this->service->store($request->all());
 
         return $this->sendResponse($result);
     }

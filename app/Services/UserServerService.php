@@ -2,19 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\UserServerResource;
-use App\Models\UserServer;
-use Illuminate\Support\Facades\Cache;
 
-class UserServerService
+class UserServerService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return UserServerResource::collection(CacheService::getAuth(CacheService::USER_SERVERS));
-    }
-
-    public function getOne(string $id): UserServerResource
-    {
-        return new UserServerResource(CacheService::getSingle(CacheService::USER_SERVERS, $id));
-    }
+    protected string $resource = UserServerResource::class;
+    protected CacheName $cacheName = CacheName::USER_SERVERS;
+    protected CacheType $cacheType = CacheType::AUTH;
 }

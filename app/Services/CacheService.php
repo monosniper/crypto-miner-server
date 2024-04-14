@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Enums\CacheName;
 use App\Jobs\SaveCache;
 use App\Models\Article;
 use App\Models\Coin;
@@ -14,40 +15,24 @@ use App\Models\Ref;
 use App\Models\Server;
 use App\Models\User;
 use App\Models\UserServer;
+use Closure;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CacheService
 {
-    const PRESETS = 'presets';
-    const CONFIGURATION = 'configuration.php';
-    const SESSION = 'session';
-    const USER = 'user';
-    const USER_REF = 'user_ref';
-    const WALLET = 'wallet';
-    const NOTIFICATIONS = 'notifications';
-    const REPLENISHMENTS = 'replenishments';
-    const USER_NFTS = 'user_nfts';
-    const USER_SERVERS = 'user_servers';
-    const WITHDRAWS = 'withdraws';
-    const CONVERTATIONS = 'convertations';
-    const ORDERS = 'orders';
-    const SERVERS = 'servers';
-    const COINS = 'coins';
-    const GEO = 'geo';
-    const NFTS = 'nfts';
-    const ARTICLES = 'articles';
-
-    static public function save(string $name, $value = null): void
+    static public function save(CacheName $cacheName, $value = null): void
     {
         SaveCache::dispatch([
-            'name' => $name,
+            'name' => $cacheName->value,
             'value' => $value,
         ]);
     }
 
-    static public function saveFor(string $name, $id, $value = null): void
+    static public function saveFor(CacheName $cacheName, $id, $value = null): void
     {
+        $name = $cacheName->value;
+
         SaveCache::dispatch([
             'path' => $name . '.' . $id,
             'name' => $name,
@@ -56,8 +41,10 @@ class CacheService
         ]);
     }
 
-    static public function saveForUser(string $name, $id, $value = null): void
+    static public function saveForUser(CacheName $cacheName, $id, $value = null): void
     {
+        $name = $cacheName->value;
+
         SaveCache::dispatch([
             'path' => 'user.' . $id . '.' . $name,
             'name' => $name,
@@ -66,44 +53,44 @@ class CacheService
         ]);
     }
 
-    static public function getDefaultValue(string $name, User $user = null): \Closure
+    static public function getDefaultValue(string $name, User $user = null): Closure
     {
         if($user === null) $user = auth()->user();
 
         return [
-            self::USER =>
+            CacheName::USER->value =>
                 fn () => $user->loadCount('session'),
-            self::COINS =>
+            CacheName::COINS->value =>
                 fn () => Coin::all(),
-            self::NFTS =>
+            CacheName::NFTS->value =>
                 fn () => Nft::all(),
-            self::PRESETS =>
+            CacheName::PRESETS->value =>
                 fn () => Preset::with('coins')->get(),
-            self::ARTICLES =>
+            CacheName::ARTICLES->value =>
                 fn () => Article::latest()->get(),
-            self::CONFIGURATION =>
+            CacheName::CONFIGURATION->value =>
                 fn () => ConfigurationGroup::all(),
-            self::SERVERS =>
+            CacheName::SERVERS->value =>
                 fn () => Server::with('coins')->get(),
-            self::REPLENISHMENTS =>
+            CacheName::REPLENISHMENTS->value =>
                 fn () => $user?->replenishments,
-            self::USER_NFTS =>
+            CacheName::USER_NFTS->value =>
                 fn () => $user?->nfts,
-            self::ORDERS =>
+            CacheName::ORDERS->value =>
                 fn () => $user?->orders,
-            self::WALLET =>
+            CacheName::WALLET->value =>
                 fn () => $user?->wallet,
-            self::SESSION =>
+            CacheName::SESSION->value =>
                 fn () => $user?->session->load('log'),
-            self::USER_SERVERS =>
+            CacheName::USER_SERVERS->value =>
                 fn () => $user?->servers->load('server'),
-            self::WITHDRAWS =>
+            CacheName::WITHDRAWS->value =>
                 fn () => $user?->withdraws()->latest()->get(),
-            self::CONVERTATIONS =>
+            CacheName::CONVERTATIONS->value =>
                 fn () => $user?->convertations()->latest()->get(),
-            self::NOTIFICATIONS =>
+            CacheName::NOTIFICATIONS->value =>
                 fn () => $user?->notifications()->latest()->get(),
-            self::GEO =>
+            CacheName::GEO->value =>
                 fn () => DB::select("
                     SELECT country_code, count(country_code) as total FROM users WHERE country_code IS NOT NULL
                     GROUP BY country_code ORDER BY total DESC
@@ -111,20 +98,20 @@ class CacheService
         ][$name];
     }
 
-    static public function getDefaultSingleValue(string $name, $id): \Closure
+    static public function getDefaultSingleValue(string $name, $id): Closure
     {
         return [
-            self::ARTICLES =>
+            CacheName::ARTICLES->value =>
                 fn () => Article::find($id),
-            self::ORDERS =>
+            CacheName::ORDERS->value =>
                 fn () => Order::find($id),
-            self::USER_SERVERS =>
+            CacheName::USER_SERVERS->value =>
                 fn () => UserServer::find($id),
-            self::USER_NFTS =>
+            CacheName::USER_NFTS->value =>
                 fn () => Nft::find($id),
-            self::USER =>
+            CacheName::USER->value =>
                 fn () => User::find($id)->loadCount('session'),
-            self::USER_REF =>
+            CacheName::USER_REF->value =>
                 function () use($id) {
                     $ref = Ref::where('user_id', $id)->with(['users' => function ($query) {
                         return $query->withSum(['orders' => fn($query) => $query->completed()], 'amount');
@@ -139,15 +126,18 @@ class CacheService
         ][$name];
     }
 
-    static public function get(string $name) {
-        return Cache::rememberForever($name, CacheService::getDefaultValue($name));
+    static public function get(CacheName $cacheName) {
+        $value = $cacheName->value;
+        return Cache::rememberForever($value, CacheService::getDefaultValue($value));
     }
 
-    static public function getAuth(string $name) {
-        return Cache::rememberForever('user.' . auth()->id() . '.' . $name, CacheService::getDefaultValue($name));
+    static public function getAuth(CacheName $cacheName) {
+        $value = $cacheName->value;
+        return Cache::rememberForever('user.' . auth()->id() . '.' . $value, CacheService::getDefaultValue($value));
     }
 
-    static public function getSingle(string $name, $id) {
-        return Cache::rememberForever($name . '.' . $id, CacheService::getDefaultSingleValue($name, $id));
+    static public function getSingle(CacheName $cacheName, $id) {
+        $value = $cacheName->value;
+        return Cache::rememberForever($value . '.' . $id, CacheService::getDefaultSingleValue($value, $id));
     }
 }

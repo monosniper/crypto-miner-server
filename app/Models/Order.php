@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use App\Casts\RateCast;
+use App\Enums\OrderMethod;
+use App\Enums\OrderPurchaseType;
+use App\Enums\OrderStatus;
+use App\Enums\OrderType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -24,53 +29,28 @@ class Order extends Model
         'configuration_id',
     ];
 
-    protected $casts = [
-        'amount' => RateCast::class,
-    ];
-
-    const DONATE = 'donate';
-    const PURCHASE = 'purchase';
-
-    const TYPES = [
-        self::DONATE => self::DONATE,
-        self::PURCHASE => self::PURCHASE,
-    ];
-
-    const SERVER = 'server';
-    const BALANCE = 'balance';
-
-    const COMPLETED = 'finished';
-    const FAILED = 'failed';
-    const PENDING = 'waiting';
-
-    const PURCHASE_TYPES = [
-        self::SERVER => self::SERVER,
-        self::BALANCE => self::BALANCE,
-    ];
-
-    const STATUSES = [
-        self::COMPLETED => self::COMPLETED,
-        self::FAILED => self::FAILED,
-        self::PENDING => self::PENDING,
-    ];
-
-    const CRYPTO = 'crypto';
-    const CARD = 'card';
-
-    const METHODS = [
-        self::CRYPTO => self::CRYPTO,
-        self::CARD => self::CARD,
-    ];
-
-    public function scopeCompleted(Builder $query) {
-        return $query->where('status', self::COMPLETED);
+    protected function casts(): array
+    {
+        return [
+            'amount' => RateCast::class,
+            'status' => OrderStatus::class,
+            'type' => OrderType::class,
+            'purchase_type' => OrderPurchaseType::class,
+            'method' => OrderMethod::class,
+        ];
     }
 
-    public function scopeReplenishments(Builder $query) {
-        return $query->where('purchase_type', self::BALANCE);
+    public function scopeCompleted(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatus::COMPLETED);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function scopeReplenishments(Builder $query): Builder
+    {
+        return $query->where('purchase_type', OrderPurchaseType::BALANCE);
+    }
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

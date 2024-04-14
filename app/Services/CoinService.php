@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
 use App\Http\Resources\CoinResource;
 
-class CoinService
+class CoinService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return CoinResource::collection(CacheService::get(CacheService::COINS));
-    }
+    protected string $resource = CoinResource::class;
+    protected CacheName $cacheName = CacheName::COINS;
 }

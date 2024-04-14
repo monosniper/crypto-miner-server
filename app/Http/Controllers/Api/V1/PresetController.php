@@ -9,19 +9,13 @@ use Illuminate\Http\Request;
 
 class PresetController extends Controller
 {
-    private PresetService $presetService;
+    public function __construct(
+        protected PresetService $service
+    ) {}
 
-    public function __construct(PresetService $presetService)
-    {
-        $this->presetService = $presetService;
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
     public function __invoke(): JsonResponse
     {
-        $result = $this->presetService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }

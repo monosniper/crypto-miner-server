@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
 use App\Http\Resources\UserResource;
 use App\Jobs\SendVerificationMail;
 
@@ -22,11 +23,11 @@ class UserService
 
     public function me(): UserResource
     {
-        return new UserResource(CacheService::getSingle(CacheService::USER, auth()->id()));
+        return new UserResource(CacheService::getSingle(CacheName::USER, auth()->id()));
     }
 
     public function ref()
     {
-        return CacheService::getSingle(CacheService::USER_REF, auth()->id());
+        return CacheService::getSingle(CacheName::USER_REF, auth()->id());
     }
 }

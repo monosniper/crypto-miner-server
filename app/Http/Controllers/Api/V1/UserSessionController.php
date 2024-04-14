@@ -4,19 +4,17 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserSessionService;
+use Illuminate\Http\JsonResponse;
 
 class UserSessionController extends Controller
 {
-    private UserSessionService $userSessionService;
+    public function __construct(
+        protected UserSessionService $service
+    ) {}
 
-    public function __construct(UserSessionService $userSessionService)
+    public function __invoke(): JsonResponse
     {
-        $this->userSessionService = $userSessionService;
-    }
-
-    public function __invoke(): \Illuminate\Http\JsonResponse
-    {
-        $result = $this->userSessionService->get();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }

@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\WalletResource;
 
-class WalletService
+class WalletService extends CachableService
 {
-    public function get(): WalletResource
-    {
-        return new WalletResource(CacheService::getAuth(CacheService::WALLET));
-    }
+    protected string $resource = WalletResource::class;
+    protected CacheName $cacheName = CacheName::WALLET;
+    protected CacheType $cacheType = CacheType::AUTH;
 }

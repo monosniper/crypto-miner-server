@@ -9,30 +9,27 @@ use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    private UserService $userService;
-
-    public function __construct(UserService $userService)
-    {
-        $this->userService = $userService;
-    }
+    public function __construct(
+        protected UserService $service
+    ) {}
 
     public function update(UpdateUserRequest $request): JsonResponse
     {
-        $result = $this->userService->update($request->validated());
+        $result = $this->service->update($request->validated());
 
         return $this->sendResponse($result);
     }
 
     public function me(): JsonResponse
     {
-        $result = $this->userService->me();
+        $result = $this->service->me();
 
         return $this->sendResponse($result);
     }
 
     public function ref(): JsonResponse
     {
-        $result = $this->userService->ref();
+        $result = $this->service->ref();
 
         return $this->sendResponse($result);
     }

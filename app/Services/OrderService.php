@@ -2,23 +2,18 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\OrderResource;
 use App\Models\Configuration;
 use App\Models\Order;
 use App\Models\Preset;
-use App\Models\Server;
 
-class OrderService
+class OrderService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return OrderResource::collection(CacheService::getAuth(CacheService::ORDERS));
-    }
-
-    public function getOne($id): OrderResource
-    {
-        return new OrderResource(CacheService::getSingle(CacheService::ORDERS, $id));
-    }
+    protected string $resource = OrderResource::class;
+    protected CacheName $cacheName = CacheName::ORDERS;
+    protected CacheType $cacheType = CacheType::AUTH;
 
     public function store($data): OrderResource
     {

@@ -70,7 +70,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('check-username', [AuthController::class, 'checkUsername']);
 
             // Static
-            Route::get('configuration.php', ConfigurationController::class);
+            Route::get('configuration', ConfigurationController::class);
             Route::get('servers', ServerController::class);
             Route::get('presets', PresetController::class);
             Route::get('geo', [AppController::class, 'geo']);

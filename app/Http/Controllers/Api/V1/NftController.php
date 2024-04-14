@@ -8,16 +8,13 @@ use Illuminate\Http\JsonResponse;
 
 class NftController extends Controller
 {
-    private NFTService $nftService;
-
-    public function __construct(NFTService $nftService)
-    {
-        $this->nftService = $nftService;
-    }
+    public function __construct(
+        protected NFTService $service
+    ) {}
 
     public function __invoke(): JsonResponse
     {
-        $result = $this->nftService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }

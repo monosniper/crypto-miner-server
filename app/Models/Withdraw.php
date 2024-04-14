@@ -3,23 +3,15 @@
 namespace App\Models;
 
 use App\Casts\RateCast;
+use App\Enums\WithdrawStatus;
+use App\Enums\WithdrawType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Withdraw extends Model
 {
     use HasFactory;
-
-    const TYPE_COIN = 'coin';
-    const TYPE_NFT = 'nft';
-
-    const TYPES = [self::TYPE_COIN, self::TYPE_NFT];
-
-    const STATUS_PENDING = 'pending';
-    const STATUS_SUCCESS = 'success';
-    const STATUS_FAILED = 'failed';
-
-    const STATUSES = [self::STATUS_PENDING, self::STATUS_SUCCESS, self::STATUS_FAILED];
 
     protected $fillable = [
         'user_id',
@@ -30,16 +22,21 @@ class Withdraw extends Model
         'type',
     ];
 
-    protected $casts = [
-        'amount' => RateCast::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'amount' => RateCast::class,
+            'status' => WithdrawStatus::class,
+            'type' => WithdrawType::class,
+        ];
+    }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function nft(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function nft(): BelongsTo
     {
         return $this->belongsTo(Nft::class);
     }

@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\ConvertationDto;
+use App\Enums\CacheName;
 use App\Http\Resources\ConvertationResource;
 use App\Models\Coin;
 use App\Models\Convertation;
 
-class ConvertationService
+class ConvertationService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return ConvertationResource::collection(CacheService::getAuth(CacheService::CONVERTATIONS));
-    }
+    protected string $resource = ConvertationResource::class;
+    protected CacheName $cacheName = CacheName::CONVERTATIONS;
 
     public function store($data): bool
     {
@@ -37,13 +37,13 @@ class ConvertationService
 
         $amount_to -= $amount_to / 100 * setting('comission_fee');
 
-        $convertation = Convertation::create([
-            'user_id' => $user->id,
-            'from_id' => $coin_from_id,
-            'to_id' => $coin_to_id,
-            'amount_from' => $amount,
-            'amount_to' => $amount_to,
-        ]);
+        $convertation = Convertation::create(new ConvertationDto(
+            user_id: $user->id,
+            from_id: $coin_from_id,
+            to_id: $coin_to_id,
+            amount_from: $amount,
+            amount_to: $amount_to,
+        ));
 
         $balance[$coin_from->slug] -= $amount;
         $balance[$coin_to->slug] += $amount_to;

@@ -4,19 +4,17 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserNftService;
+use Illuminate\Http\JsonResponse;
 
 class UserNftController extends Controller
 {
-    private UserNftService $userNftService;
+    public function __construct(
+        protected UserNftService $service
+    ) {}
 
-    public function __construct(UserNftService $userNftService)
+    public function __invoke(): JsonResponse
     {
-        $this->userNftService = $userNftService;
-    }
-
-    public function __invoke(): \Illuminate\Http\JsonResponse
-    {
-        $result = $this->userNftService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }

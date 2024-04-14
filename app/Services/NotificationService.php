@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\NotificationResource;
 
-class NotificationService
+class NotificationService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return NotificationResource::collection(CacheService::getAuth(CacheService::NOTIFICATIONS));
-    }
+    protected string $resource = NotificationResource::class;
+    protected CacheName $cacheName = CacheName::NOTIFICATIONS;
+    protected CacheType $cacheType = CacheType::AUTH;
 }

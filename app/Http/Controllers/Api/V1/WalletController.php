@@ -4,19 +4,17 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Services\WalletService;
+use Illuminate\Http\JsonResponse;
 
 class WalletController extends Controller
 {
-    private WalletService $walletService;
+    public function __construct(
+        protected WalletService $service
+    ) {}
 
-    public function __construct(WalletService $walletService)
+    public function __invoke(): JsonResponse
     {
-        $this->walletService = $walletService;
-    }
-
-    public function __invoke(): \Illuminate\Http\JsonResponse
-    {
-        $result = $this->walletService->get();
+        $result = $this->service->getOne();
 
         return $this->sendResponse($result);
     }

@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
 use App\Http\Resources\NftResource;
 
-class NFTService
+class NFTService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return NftResource::collection(CacheService::get(CacheService::NFTS));
-    }
+    protected string $resource = NftResource::class;
+    protected CacheName $cacheName = CacheName::NFTS;
 }

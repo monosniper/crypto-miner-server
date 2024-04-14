@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OperatorReport extends Model
 {
@@ -22,17 +24,14 @@ class OperatorReport extends Model
         'isArchive',
     ];
 
-    const STATUS_CALLED = 'called';
-    const STATUS_NOT_CALLED = 'not_called';
-    const STATUS_NOT_ACCEPTED = 'not_accepted';
+    protected function casts(): array
+    {
+        return [
+            'status' => Report::class,
+        ];
+    }
 
-    const REPORT_STATUSES = [
-        self::STATUS_CALLED,
-        self::STATUS_NOT_CALLED,
-        self::STATUS_NOT_ACCEPTED,
-    ];
-
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -58,7 +57,7 @@ class OperatorReport extends Model
         return $query->where('isArchive', true);
     }
 
-    public function operator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function operator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'operator_id');
     }

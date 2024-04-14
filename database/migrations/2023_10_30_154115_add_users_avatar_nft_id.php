@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Nft;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\Nft::class, 'avatar_nft_id')->nullable();
+            $table->foreignIdFor(Nft::class, 'avatar_nft_id')->nullable();
         });
     }
 

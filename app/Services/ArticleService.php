@@ -2,17 +2,15 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\ArticleResource;
 
-class ArticleService
+class ArticleService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return ArticleResource::collection(CacheService::get(CacheService::ARTICLES));
-    }
 
-    public function getOne(string $id): ArticleResource
-    {
-        return new ArticleResource(CacheService::getSingle(CacheService::ARTICLES, $id));
-    }
+    protected string $resource = ArticleResource::class;
+    protected CacheType $cacheType = CacheType::DEFAULT;
+    protected CacheName $cacheName = CacheName::CONVERTATIONS;
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\OperatorReport;
+use App\Enums\Report;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class, 'operator_id');
             $table->foreignIdFor(User::class);
-            $table->enum('status', OperatorReport::REPORT_STATUSES)->default(OperatorReport::STATUS_NOT_CALLED);
+            $table->enum('status', Report::values())->default(Report::NOT_CALLED);
             $table->text('comment')->nullable();
             $table->integer('amount')->default(0);
             $table->boolean('isHot')->default(true);

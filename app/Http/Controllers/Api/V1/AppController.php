@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use anlutro\LaravelSettings\Facades\Setting;
+use App\Enums\CacheName;
 use App\Http\Controllers\Controller;
 use App\Services\CacheService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -12,9 +14,9 @@ use Illuminate\Support\Facades\DB;
 class AppController extends Controller
 {
 
-    public function geo(): \Illuminate\Http\JsonResponse
+    public function geo(): JsonResponse
     {
-        $result = CacheService::get(CacheService::GEO);
+        $result = CacheService::get(CacheName::GEO);
 
         return $this->sendResponse($result);
     }

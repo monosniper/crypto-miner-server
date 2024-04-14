@@ -9,19 +9,13 @@ use Illuminate\Http\JsonResponse;
 
 class ServerController extends Controller
 {
-    private ServerService $serverService;
+    public function __construct(
+        protected ServerService $service
+    ) {}
 
-    public function __construct(ServerService $serverService)
-    {
-        $this->serverService = $serverService;
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
     public function __invoke(): JsonResponse
     {
-        $result = $this->serverService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }

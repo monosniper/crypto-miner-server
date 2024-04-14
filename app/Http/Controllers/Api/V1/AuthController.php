@@ -44,63 +44,60 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    private AuthService $authService;
-
-    public function __construct(AuthService $authService)
-    {
-        $this->authService = $authService;
-    }
+    public function __construct(
+        protected AuthService $service
+    ) {}
 
     public function sendVerificationMail(): JsonResponse
     {
-        $result = $this->authService->sendVerificationMail();
+        $result = $this->service->sendVerificationMail();
 
         return $this->sendResponse($result);
     }
 
     public function register(RegisterUserRequest $request): JsonResponse
     {
-        $result = $this->authService->register($request->validated());
+        $result = $this->service->register($request->validated());
 
         return $this->sendResponse($result);
     }
 
     public function verificateMail(string $code): \Illuminate\Http\RedirectResponse
     {
-        return $this->authService->verificateMail($code);
+        return $this->service->verificateMail($code);
     }
 
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
-        $result = $this->authService->forgotPassword($request->validated());
+        $result = $this->service->forgotPassword($request->validated());
 
         return $this->sendResponse($result);
     }
 
     public function updatePassword(UpdatePasswordRequest $request): JsonResponse
     {
-        $result = $this->authService->updatePassword($request->validated());
+        $result = $this->service->updatePassword($request->validated());
 
         return $this->sendResponse($result);
     }
 
     public function checkPasswordCode(CheckPasswordCodeRequest $request): JsonResponse
     {
-        $result = $this->authService->checkPasswordCode();
+        $result = $this->service->checkPasswordCode();
 
         return $this->sendResponse($result);
     }
 
     public function checkUsername(CheckUsernameRequest $request): JsonResponse
     {
-        $result = $this->authService->checkUsername();
+        $result = $this->service->checkUsername();
 
         return $this->sendResponse($result);
     }
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $result = $this->authService->login($request->validated());
+        $result = $this->service->login($request->validated());
 
         return $this->sendResponse($result);
     }

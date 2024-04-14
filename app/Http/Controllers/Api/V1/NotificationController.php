@@ -4,19 +4,17 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
+use Illuminate\Http\JsonResponse;
 
 class NotificationController extends Controller
 {
-    private NotificationService $notificationService;
+    public function __construct(
+        protected NotificationService $service
+    ) {}
 
-    public function __construct(NotificationService $notificationService)
+    public function __invoke(): JsonResponse
     {
-        $this->notificationService = $notificationService;
-    }
-
-    public function __invoke(): \Illuminate\Http\JsonResponse
-    {
-        $result = $this->notificationService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }

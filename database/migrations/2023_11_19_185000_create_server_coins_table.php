@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Coin;
+use App\Models\Server;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('server_coins', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Server::class);
-            $table->foreignIdFor(\App\Models\Coin::class);
+            $table->foreignIdFor(Server::class);
+            $table->foreignIdFor(Coin::class);
             $table->timestamps();
         });
     }

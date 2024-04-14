@@ -9,29 +9,20 @@ use Illuminate\Http\JsonResponse;
 
 class ArticleController extends Controller
 {
-    private ArticleService $articleService;
+    public function __construct(
+        protected ArticleService $service
+    ) {}
 
-    public function __construct(ArticleService $articleService)
-    {
-        $this->articleService = $articleService;
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): JsonResponse
     {
-        $result = $this->articleService->getAll();
+        $result = $this->service->getAll();
 
         return $this->sendResponse($result);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id): JsonResponse
     {
-        $result = $this->articleService->getOne($id);
+        $result = $this->service->getOne($id);
 
         return $this->sendResponse($result);
     }

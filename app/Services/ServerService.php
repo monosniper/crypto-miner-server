@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
 use App\Http\Resources\ServerResource;
 
-class ServerService
+class ServerService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return ServerResource::collection(CacheService::get(CacheService::SERVERS));
-    }
+    protected string $resource = ServerResource::class;
+    protected CacheName $cacheName = CacheName::SERVERS;
 }

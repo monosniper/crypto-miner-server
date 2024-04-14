@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
 use App\Http\Resources\PresetResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class PresetService
+class PresetService extends CachableService
 {
-    public function getAll(): AnonymousResourceCollection
-    {
-        return PresetResource::collection(CacheService::get(CacheService::PRESETS));
-    }
+    protected string $resource = PresetResource::class;
+    protected CacheName $cacheName = CacheName::PRESETS;
 }

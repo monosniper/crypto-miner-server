@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\OrderMethod;
+use App\Enums\OrderPurchaseType;
+use App\Enums\OrderStatus;
+use App\Enums\OrderType;
 use App\Models\Configuration;
-use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,10 +23,10 @@ return new class extends Migration
             $table->foreignIdFor(Configuration::class)->nullable();
             $table->bigInteger('amount');
             $table->text('description');
-            $table->enum('type', Order::TYPES)->default(Order::PURCHASE);
-            $table->enum('purchase_type', Order::PURCHASE_TYPES)->nullable();
-            $table->enum('method', Order::METHODS)->default(Order::CRYPTO);
-            $table->enum('status', Order::STATUSES)->default(Order::PENDING);
+            $table->enum('type', OrderType::values())->default(OrderType::PURCHASE);
+            $table->enum('purchase_type', OrderPurchaseType::values())->nullable();
+            $table->enum('method', OrderMethod::values())->default(OrderMethod::CRYPTO);
+            $table->enum('status', OrderStatus::values())->default(OrderStatus::PENDING);
             $table->string('checkout_url')->nullable();
             $table->bigInteger('purchase_id')->nullable();
             $table->timestamps();

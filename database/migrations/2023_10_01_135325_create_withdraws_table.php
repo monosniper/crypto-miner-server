@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Coin;
+use App\Enums\WithdrawStatus;
+use App\Enums\WithdrawType;
 use App\Models\Nft;
 use App\Models\User;
-use App\Models\Withdraw;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,10 +21,10 @@ return new class extends Migration
             $table->foreignIdFor(Nft::class)->nullable();
             $table->string('wallet', 1000);
             $table->bigInteger('amount')->nullable();
-            $table->enum('type', Withdraw::TYPES)
-                ->default(Withdraw::TYPE_COIN);
-            $table->enum('status', Withdraw::STATUSES)
-                ->default(Withdraw::STATUS_PENDING);
+            $table->enum('type', WithdrawType::values())
+                ->default(WithdrawType::COIN);
+            $table->enum('status', WithdrawStatus::values())
+                ->default(WithdrawStatus::PENDING);
             $table->timestamps();
         });
     }

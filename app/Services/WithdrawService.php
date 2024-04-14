@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\WithdrawResource;
 use App\Models\Withdraw;
-use Illuminate\Support\Facades\Auth;
 
-class WithdrawService
+class WithdrawService extends CachableService
 {
-    public function getAll(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        return WithdrawResource::collection(CacheService::getAuth(CacheService::WITHDRAWS));
-    }
+    protected string $resource = WithdrawResource::class;
+    protected CacheName $cacheName = CacheName::WITHDRAWS;
+    protected CacheType $cacheType = CacheType::AUTH;
 
     public function store($data): WithdrawResource
     {

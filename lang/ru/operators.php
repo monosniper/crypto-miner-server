@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\OperatorReport;
+use App\Enums\Report;
 
 return [
     'statuses' => [
-        OperatorReport::STATUS_CALLED => 'Звонили',
-        OperatorReport::STATUS_NOT_CALLED => 'Не звонили',
-        OperatorReport::STATUS_NOT_ACCEPTED => 'Не ответили',
+        Report::CALLED->value => 'Звонили',
+        Report::NOT_CALLED->value => 'Не звонили',
+        Report::NOT_ACCEPTED->value => 'Не ответили',
     ],
 ];
