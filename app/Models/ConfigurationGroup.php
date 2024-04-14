@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ConfigurationGroup extends Model
 {
@@ -14,9 +15,9 @@ class ConfigurationGroup extends Model
         'priority',
     ];
 
-//    protected $with = ['fields'];
+    protected $with = ['fields'];
 
-    public function fields(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function fields(): HasMany
     {
         return $this->hasMany(ConfigurationField::class, 'group_id');
     }

@@ -31,7 +31,7 @@ class ConfigurationField extends Model
         'type',
     ];
 
-//    protected $with = ['options'];
+    protected $with = ['options'];
 
     protected $casts = [
         'type' => Configuration::class
