@@ -2,27 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\ConfigurationType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use \App\Models\Configuration as Configuration;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ConfigurationField extends Model
 {
     use HasFactory;
-
-    const SELECT = 'select';
-    const TEXT = 'text';
-    const COINS = 'coins';
-    const COMMENT = 'comment';
-
-    const TYPES = [
-        self::SELECT => self::SELECT,
-        self::TEXT => self::TEXT,
-        self::COINS => self::COINS,
-        self::COMMENT => self::COMMENT,
-    ];
 
     protected $fillable = [
         'slug',
@@ -33,9 +21,12 @@ class ConfigurationField extends Model
 
     protected $with = ['options'];
 
-    protected $casts = [
-        'type' => Configuration::class
-    ];
+    protected function casts(): array
+    {
+        return [
+            'type' => ConfigurationType::class,
+        ];
+    }
 
     public function group(): BelongsTo
     {

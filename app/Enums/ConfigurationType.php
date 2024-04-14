@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Configuration : string
+enum ConfigurationType : string
 {
     use BaseEnum;
 
