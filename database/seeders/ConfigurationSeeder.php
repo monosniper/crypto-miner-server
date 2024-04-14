@@ -173,7 +173,7 @@ class ConfigurationSeeder extends Seeder
 
         $data = [
             [
-                'slug' => 'configuration',
+                'slug' => 'configuration.php',
                 'priority' => 0,
                 'fields' => [
                     [
@@ -240,7 +240,7 @@ class ConfigurationSeeder extends Seeder
                         'options' => $ipv
                     ],
                     [
-                        'slug' => 'count',
+                        'slug' => 'ip_count',
                         'priority' => 1,
                         'options' => $ip_count
                     ],
@@ -278,28 +278,32 @@ class ConfigurationSeeder extends Seeder
         ];
 
         foreach ($data as $group) {
-            $_group = ConfigurationGroup::create([
-                'slug' => $group['slug'],
-                'priority' => $group['priority'],
-            ]);
+            $_group = new ConfigurationGroup();
+
+            $_group->slug = $group['slug'];
+            $_group->priority = $group['priority'];
+
+            $_group->saveQuietly();
 
             if(isset($group['fields'])) {
                 foreach ($group['fields'] as $field) {
-                    $_field = ConfigurationField::create([
+                    $_field = $_group->fields()->createQuietly([
                         'slug' => $field['slug'],
                         'priority' => $field['priority'],
                         'type' => $field['type'] ?? 'select',
-                        'group_id' => $_group->id,
                     ]);
 
                     if(isset($field['options'])) {
+                        $options = [];
+
                         foreach ($field['options'] as $option) {
-                            ConfigurationOption::create([
+                            $options[] = [
                                 'title' => $option['title'],
                                 'price' => $option['price'] ?? 0,
-                                'field_id' => $_field->id,
-                            ]);
+                            ];
                         }
+
+                        $_field->options()->createManyQuietly($options);
                     }
                 }
             }

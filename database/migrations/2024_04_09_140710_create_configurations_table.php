@@ -14,11 +14,9 @@ return new class extends Migration
     {
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('price');
-            $table->boolean('nft')->default(false);
-            $table->boolean('isHot')->default(false);
-            $table->enum('type', Server::TYPES);
+            $table->foreignIdFor(Server::class)->nullable();
+            $table->json('value');
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }

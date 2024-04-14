@@ -9,6 +9,7 @@ use App\Models\Coin;
 use App\Models\ConfigurationGroup;
 use App\Models\Nft;
 use App\Models\Order;
+use App\Models\Preset;
 use App\Models\Ref;
 use App\Models\Server;
 use App\Models\User;
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\DB;
 
 class CacheService
 {
-    const CONFIGURATION = 'configuration';
+    const PRESETS = 'presets';
+    const CONFIGURATION = 'configuration.php';
     const SESSION = 'session';
     const USER = 'user';
     const USER_REF = 'user_ref';
@@ -38,17 +40,30 @@ class CacheService
 
     static public function save(string $name, $value = null): void
     {
-        SaveCache::dispatch(name: $name, value: $value);
+        SaveCache::dispatch([
+            'name' => $name,
+            'value' => $value,
+        ]);
     }
 
     static public function saveFor(string $name, $id, $value = null): void
     {
-        SaveCache::dispatch($name . '.' . $id, $name, $id, $value, auth()->user());
+        SaveCache::dispatch([
+            'path' => $name . '.' . $id,
+            'name' => $name,
+            'value' => $value,
+            'user' => auth()->user(),
+        ]);
     }
 
     static public function saveForUser(string $name, $id, $value = null): void
     {
-        SaveCache::dispatch('user.' . $id . '.' . $name, $name, $id, $value, auth()->user());
+        SaveCache::dispatch([
+            'path' => 'user.' . $id . '.' . $name,
+            'name' => $name,
+            'value' => $value,
+            'user' => auth()->user(),
+        ]);
     }
 
     static public function getDefaultValue(string $name, User $user = null): \Closure
@@ -62,6 +77,8 @@ class CacheService
                 fn () => Coin::all(),
             self::NFTS =>
                 fn () => Nft::all(),
+            self::PRESETS =>
+                fn () => Preset::with('coins')->get(),
             self::ARTICLES =>
                 fn () => Article::latest()->get(),
             self::CONFIGURATION =>

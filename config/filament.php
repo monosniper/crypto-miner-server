@@ -7,7 +7,7 @@ return [
     | Broadcasting
     |--------------------------------------------------------------------------
     |
-    | By uncommenting the Laravel Echo configuration, you may connect Filament
+    | By uncommenting the Laravel Echo configuration.php, you may connect Filament
     | to any Pusher-compatible websockets server.
     |
     | This will allow your users to receive real-time notifications.

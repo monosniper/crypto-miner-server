@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ConfigurationField;
 use App\Models\Order;
+use App\Rules\KeysIn;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -37,14 +39,25 @@ class StoreOrderRequest extends FormRequest
                 'in:'.implode(',', Order::PURCHASE_TYPES)
             ],
             'amount' => [
-                'required',
+                'required_if:type,'.Order::DONATE,
+                'required_if:purchase_type,'.Order::BALANCE,
                 'min:1',
                 'numeric'
+            ],
+            'configuration' => [
+                'exclude_with:purchase_id',
+                'required_if:purchase_type,'.Order::SERVER,
+                'array',
+                new KeysIn(ConfigurationField::pluck('slug')->toArray())
+            ],
+            'configuration.*' => [
+                'exists:configuration_options,title',
             ],
             'purchase_id' => [
                 'required_if:type,'.Order::PURCHASE,
                 'required_if:purchase_type,'.Order::SERVER,
-                'exists:servers,id',
+                'exclude_with:configuration',
+                'exists:presets,id',
             ],
         ];
     }

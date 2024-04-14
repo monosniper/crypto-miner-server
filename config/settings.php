@@ -39,7 +39,7 @@ return [
 	// Name of the table used.
 	'table' => 'settings',
 	// If you want to use custom column names in database store you could
-	// set them in this configuration
+	// set them in this configuration.php
 	'keyColumn' => 'key',
 	'valueColumn' => 'value',
 

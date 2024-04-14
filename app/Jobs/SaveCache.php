@@ -15,16 +15,22 @@ class SaveCache implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public string $name;
+    public ?string $path;
+    public mixed $value;
+    public ?User $user;
+
     /**
      * Create a new job instance.
      */
     public function __construct(
-        public ?string $path,
-        public string $name,
-        public ?string $id,
-        public $value,
-        public ?User $user
-    ) {}
+        public array $options,
+    ) {
+        $this->path = $this->options['path'] ?? null;
+        $this->name = $this->options['name'];
+        $this->value = $this->options['value'];
+        $this->user = $this->options['user'] ?? null;
+    }
 
     /**
      * Execute the job.

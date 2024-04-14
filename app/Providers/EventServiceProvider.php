@@ -14,6 +14,7 @@ use App\Models\ForgotPasswordCode;
 use App\Models\Nft;
 use App\Models\Notification;
 use App\Models\Order;
+use App\Models\Preset;
 use App\Models\Ref;
 use App\Models\Server;
 use App\Models\Session;
@@ -30,6 +31,7 @@ use App\Observers\ForgotPasswordObserver;
 use App\Observers\NftObserver;
 use App\Observers\NotificationObserver;
 use App\Observers\OrderObserver;
+use App\Observers\PresetObserver;
 use App\Observers\RefObserver;
 use App\Observers\ServerObserver;
 use App\Observers\SessionObserver;
@@ -74,6 +76,7 @@ class EventServiceProvider extends ServiceProvider
         ConfigurationGroup::observe(ConfigurationObserver::class);
         ConfigurationField::observe(ConfigurationObserver::class);
         ConfigurationOption::observe(ConfigurationObserver::class);
+        Preset::observe(PresetObserver::class);
     }
 
     /**

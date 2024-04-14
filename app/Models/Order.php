@@ -21,6 +21,7 @@ class Order extends Model
         'status',
         'checkout_url',
         'method',
+        'configuration_id',
     ];
 
     protected $casts = [

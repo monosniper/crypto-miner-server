@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use App\Models\Configuration;
 use App\Services\CacheService;
+use App\Services\ConfigurationService;
 
 class ConfigurationObserver
 {
@@ -11,9 +13,10 @@ class ConfigurationObserver
         CacheService::save(CacheService::CONFIGURATION);
     }
 
-    public function created(): void
+    public function created(Configuration $configuration): void
     {
-        CacheService::save(CacheService::CONFIGURATION);
+        $configuration->price = ConfigurationService::calculatePrice($configuration->value);
+        $configuration->save();
     }
 
     public function deleted(): void

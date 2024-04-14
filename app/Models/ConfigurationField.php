@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use \App\Models\Configuration as Configuration;
 
 class ConfigurationField extends Model
 {
@@ -29,6 +30,10 @@ class ConfigurationField extends Model
     ];
 
     protected $with = ['options'];
+
+    protected $casts = [
+        'type' => Configuration::class
+    ];
 
     public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

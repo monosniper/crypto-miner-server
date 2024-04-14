@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Configuration;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -16,6 +17,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Configuration::class)->nullable();
             $table->bigInteger('amount');
             $table->text('description');
             $table->enum('type', Order::TYPES)->default(Order::PURCHASE);

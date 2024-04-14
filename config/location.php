@@ -112,7 +112,7 @@ return [
     | Kloudend ~ ipapi.co Configuration
     |--------------------------------------------------------------------------
     |
-    | The configuration for the Kloudend driver.
+    | The configuration.php for the Kloudend driver.
     |
     */
 

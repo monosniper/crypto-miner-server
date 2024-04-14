@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Http\Resources\OrderResource;
+use App\Models\Configuration;
 use App\Models\Order;
+use App\Models\Preset;
 use App\Models\Server;
 
 class OrderService
@@ -28,9 +30,18 @@ class OrderService
             case Order::PURCHASE:
                 switch ($purchase_type) {
                     case Order::SERVER:
-                        $server = Server::find($data['purchase_id']);
-                        $description = __('transactions.buy_server');
-                        $amount = $server->price;
+                        if (isset($data['purchase_id'])) {
+                            $preset = Preset::find($data['purchase_id']);
+                            $description = __('transactions.buy_server');
+                            $amount = $preset->price;
+                        } else if (isset($data['configuration'])) {
+                            $configuration = Configuration::create([
+                                'value' => $data['configuration'],
+                            ]);
+                            $description = __('transactions.buy_server');
+                            $amount = $configuration->price;
+                        }
+
                         break;
                     case Order::BALANCE:
                         $description = __('transactions.replenishment');
@@ -52,6 +63,7 @@ class OrderService
             'user_id' => auth()->id(),
             'amount' => $amount,
             'description' => $description,
+            'configuration_id' => $configuration?->id,
         ]);
 
         return new OrderResource($order);

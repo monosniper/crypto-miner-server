@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\ConvertationController;
 use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\PresetController;
 use App\Http\Controllers\Api\V1\ReplenishmentController;
 use App\Http\Controllers\Api\V1\ServerController;
 use App\Http\Controllers\Api\V1\UserNftController;
@@ -69,8 +70,9 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('check-username', [AuthController::class, 'checkUsername']);
 
             // Static
-            Route::get('configuration', ConfigurationController::class);
+            Route::get('configuration.php', ConfigurationController::class);
             Route::get('servers', ServerController::class);
+            Route::get('presets', PresetController::class);
             Route::get('geo', [AppController::class, 'geo']);
             Route::get('coins', CoinController::class);
             Route::get('settings', [AppController::class, 'settings']);

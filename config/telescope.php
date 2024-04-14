@@ -36,7 +36,7 @@ return [
     | Telescope Storage Driver
     |--------------------------------------------------------------------------
     |
-    | This configuration options determines the storage driver that will
+    | This configuration.php options determines the storage driver that will
     | be used to store Telescope's data. In addition, you may set any
     | custom options as needed by the particular driver you choose.
     |
@@ -57,7 +57,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This option may be used to disable all Telescope watchers regardless
-    | of their individual configuration, which simply provides a single
+    | of their individual configuration.php, which simply provides a single
     | and convenient way to enable or disable Telescope data storage.
     |
     */
