@@ -44,6 +44,10 @@ class ConvertationResource extends Resource
                     ->label('Кол-во')
                     ->required()
                     ->numeric(),
+                Forms\Components\TextInput::make('amount_to')
+                    ->label('Кол-во')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -95,13 +99,6 @@ class ConvertationResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->with(['from', 'to']);
@@ -112,7 +109,6 @@ class ConvertationResource extends Resource
         return [
             'index' => Pages\ListConvertations::route('/'),
             'create' => Pages\CreateConvertation::route('/create'),
-            'edit' => Pages\EditConvertation::route('/{record}/edit'),
         ];
     }
 }

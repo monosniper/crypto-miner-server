@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheName;
 use App\Models\Coin;
 use App\Models\Ref;
 use App\Models\User;
@@ -36,9 +37,6 @@ class UserObserver
         ]);
     }
 
-    /**
-     * Handle the User "created" event.
-     */
     public function created(User $user): void
     {
         $location = Location::get();
@@ -50,39 +48,16 @@ class UserObserver
             'city' => $location->cityName,
         ]);
 
-        CacheService::saveFor(CacheService::USER, $user->id, $user);
-        // TODO: in queue
-        CacheService::save(CacheService::GEO);
+        CacheService::saveFor(CacheName::USER, $user->id, $user);
+        CacheService::save(CacheName::GEO);
     }
 
-    /**
-     * Handle the User "updated" event.
-     */
     public function updated(User $user): void
     {
-        CacheService::saveFor(CacheService::USER, $user->id, $user);
+        CacheService::saveFor(CacheName::USER, $user->id, $user);
     }
 
-    /**
-     * Handle the User "deleted" event.
-     */
     public function deleted(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "restored" event.
-     */
-    public function restored(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "force deleted" event.
-     */
-    public function forceDeleted(User $user): void
     {
         //
     }

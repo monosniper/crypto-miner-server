@@ -8,6 +8,10 @@ use App\Jobs\SendVerificationMail;
 
 class UserService
 {
+    public function __construct(
+        protected CacheService $cacheService
+    ) {}
+
     public function update($data) {
         $user = auth()->user();
         $rs = $user->update($data);
@@ -16,18 +20,18 @@ class UserService
             SendVerificationMail::dispatch($user);
         }
 
-        if($rs) CacheService::saveFor(CacheService::USER, $user->id);
+        if($rs) CacheService::saveFor(CacheName::USER, $user->id);
 
         return $rs;
     }
 
     public function me(): UserResource
     {
-        return new UserResource(CacheService::getSingle(CacheName::USER, auth()->id()));
+        return new UserResource($this->cacheService->getSingle(CacheName::USER, auth()->id()));
     }
 
     public function ref()
     {
-        return CacheService::getSingle(CacheName::USER_REF, auth()->id());
+        return $this->cacheService->getSingle(CacheName::USER_REF, auth()->id());
     }
 }

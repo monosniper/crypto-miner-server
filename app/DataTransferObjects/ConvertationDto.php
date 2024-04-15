@@ -2,13 +2,13 @@
 
 namespace App\DataTransferObjects;
 
-class ConvertationDto
+readonly class ConvertationDto
 {
     public function __construct(
-        public readonly int $user_id,
-        public readonly int $from_id,
-        public readonly int $to_id,
-        public readonly int $amount_from,
-        public readonly int $amount_to,
+        public int $user_id,
+        public int $from_id,
+        public int $to_id,
+        public int $amount_from,
+        public int $amount_to,
     ) {}
 }

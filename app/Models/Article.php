@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\CacheName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Article extends Model implements HasMedia
+class Article extends CachableModel implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
+
+    protected CacheName $cacheName = CacheName::ARTICLES;
 
     protected $fillable = [
         'title',

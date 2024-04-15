@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Enums\CacheName;
 use App\Enums\CacheType;
+use App\Enums\OrderMethod;
+use App\Enums\OrderPurchaseType;
+use App\Enums\OrderType;
 use App\Http\Resources\OrderResource;
 use App\Models\Configuration;
 use App\Models\Order;
@@ -17,14 +20,14 @@ class OrderService extends CachableService
 
     public function store($data): OrderResource
     {
-        $type = $data['type'] ?? Order::PURCHASE;
-        $purchase_type = $data['purchase_type'] ?? Order::SERVER;
-        $method = $data['method'] ?? Order::CRYPTO;
+        $type = $data['type'] ?? OrderType::PURCHASE;
+        $purchase_type = $data['purchase_type'] ?? OrderPurchaseType::SERVER;
+        $method = $data['method'] ?? OrderMethod::CRYPTO;
 
         switch ($type) {
-            case Order::PURCHASE:
+            case OrderType::PURCHASE:
                 switch ($purchase_type) {
-                    case Order::SERVER:
+                    case OrderPurchaseType::SERVER:
                         if (isset($data['purchase_id'])) {
                             $preset = Preset::find($data['purchase_id']);
                             $description = __('transactions.buy_server');
@@ -38,13 +41,13 @@ class OrderService extends CachableService
                         }
 
                         break;
-                    case Order::BALANCE:
+                    case OrderPurchaseType::BALANCE:
                         $description = __('transactions.replenishment');
                         $amount = $data['amount'];
                         break;
                 }
                 break;
-            case Order::DONATE:
+            case OrderType::DONATE:
                 $amount = $data['amount'];
                 $description = __('transactions.donate');
                 break;
@@ -68,8 +71,8 @@ class OrderService extends CachableService
     {
         $method = $data['method'];
 
-        if($method !== $order->method) {
-            if($method === Order::CARD) {
+        if($method !== $order->method->value) {
+            if($method === OrderMethod::CARD) {
                 // TODO: Generate card checkout_url
             }
             return $order->update($data);

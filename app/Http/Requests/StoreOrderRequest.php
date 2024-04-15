@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\OrderMethod;
+use App\Enums\OrderPurchaseType;
+use App\Enums\OrderType;
 use App\Models\ConfigurationField;
-use App\Models\Order;
 use App\Rules\KeysIn;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,25 +30,25 @@ class StoreOrderRequest extends FormRequest
         return [
             'type' => [
                 'string',
-                'in:'.implode(',', Order::TYPES)
+                'in:'.implode(',', OrderType::values())
             ],
             'method' => [
                 'string',
-                'in:'.implode(',', Order::METHODS)
+                'in:'.implode(',', OrderMethod::values())
             ],
             'purchase_type' => [
                 'string',
-                'in:'.implode(',', Order::PURCHASE_TYPES)
+                'in:'.implode(',', OrderPurchaseType::values())
             ],
             'amount' => [
-                'required_if:type,'.Order::DONATE,
-                'required_if:purchase_type,'.Order::BALANCE,
+                'required_if:type,'.OrderType::DONATE->value,
+                'required_if:purchase_type,'.OrderPurchaseType::BALANCE->value,
                 'min:1',
                 'numeric'
             ],
             'configuration' => [
                 'exclude_with:purchase_id',
-                'required_if:purchase_type,'.Order::SERVER,
+                'required_if:purchase_type,'.OrderPurchaseType::SERVER->value,
                 'array',
                 new KeysIn(ConfigurationField::pluck('slug')->toArray())
             ],
@@ -54,8 +56,8 @@ class StoreOrderRequest extends FormRequest
                 'exists:configuration_options,title',
             ],
             'purchase_id' => [
-                'required_if:type,'.Order::PURCHASE,
-                'required_if:purchase_type,'.Order::SERVER,
+                'required_if:type,'.OrderType::PURCHASE->value,
+                'required_if:purchase_type,'.OrderPurchaseType::SERVER->value,
                 'exclude_with:configuration',
                 'exists:presets,id',
             ],

@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\SessionStart;
-use App\Listeners\ProcessSession;
-use App\Models\Article;
-use App\Models\Coin;
+use App\Models\Configuration;
 use App\Models\ConfigurationField;
 use App\Models\ConfigurationGroup;
 use App\Models\ConfigurationOption;
@@ -23,8 +20,7 @@ use App\Models\UserServer;
 use App\Models\VerificationCode;
 use App\Models\Wallet;
 use App\Models\Withdraw;
-use App\Observers\ArticleObserver;
-use App\Observers\CoinObserver;
+use App\Observers\ConfigurationGroupObserver;
 use App\Observers\ConfigurationObserver;
 use App\Observers\ConvertationObserver;
 use App\Observers\ForgotPasswordObserver;
@@ -67,15 +63,14 @@ class EventServiceProvider extends ServiceProvider
         Wallet::observe(WalletObserver::class);
         Withdraw::observe(WithdrawObserver::class);
         Notification::observe(NotificationObserver::class);
-        Convertation::observe(ConvertationObserver::class);
-        Article::observe(ArticleObserver::class);
         Server::observe(ServerObserver::class);
         Order::observe(OrderObserver::class);
         Nft::observe(NftObserver::class);
-        Coin::observe(CoinObserver::class);
-        ConfigurationGroup::observe(ConfigurationObserver::class);
-        ConfigurationField::observe(ConfigurationObserver::class);
-        ConfigurationOption::observe(ConfigurationObserver::class);
+        Convertation::observe(ConvertationObserver::class);
+        Configuration::observe(ConfigurationObserver::class);
+        ConfigurationGroup::observe(ConfigurationGroupObserver::class);
+        ConfigurationField::observe(ConfigurationGroupObserver::class);
+        ConfigurationOption::observe(ConfigurationGroupObserver::class);
         Preset::observe(PresetObserver::class);
     }
 

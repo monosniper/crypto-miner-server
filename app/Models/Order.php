@@ -45,6 +45,11 @@ class Order extends Model
         return $query->where('status', OrderStatus::COMPLETED);
     }
 
+    public function scopeWaiting(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatus::PENDING);
+    }
+
     public function scopeReplenishments(Builder $query): Builder
     {
         return $query->where('purchase_type', OrderPurchaseType::BALANCE);

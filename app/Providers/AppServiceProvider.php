@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Contracts\Miner;
+use App\Services\CacheService;
 use App\Services\DefaultGenerator;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('verification', function (Request $request) {
             return Limit::perMinute(1)->by($request->user()->email);
         });
-    }
 
+        $this->app->singleton(CacheService::class);
+    }
 }

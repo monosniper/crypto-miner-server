@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheName;
 use App\Models\Notification;
 use App\Services\CacheService;
 
@@ -10,7 +11,7 @@ class NotificationObserver
     public function cache(Notification $notification): void
     {
         foreach ($notification->users as $user) {
-            CacheService::saveForUser(CacheService::NOTIFICATIONS, $user->id, $user->notifications);
+            CacheService::saveForUser(CacheName::NOTIFICATIONS, $user->id, $user->notifications);
         }
     }
 

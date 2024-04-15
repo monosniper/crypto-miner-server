@@ -14,4 +14,8 @@ class Configuration extends Model
         'value',
         'price',
     ];
+
+    protected $casts = [
+        'value' => 'array'
+    ];
 }

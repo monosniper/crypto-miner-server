@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheName;
 use App\Models\Convertation;
 use App\Services\CacheService;
 
@@ -9,7 +10,11 @@ class ConvertationObserver
 {
     public function cache(Convertation $convertation): void
     {
-        CacheService::saveForUser(CacheService::CONVERTATIONS, $convertation->user_id, $convertation->user->convertations);
+        CacheService::saveForUser(
+            CacheName::CONVERTATIONS,
+            $convertation->user_id,
+            $convertation->user->convertations
+        );
     }
 
     public function updated(Convertation $convertation): void

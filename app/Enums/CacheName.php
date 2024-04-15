@@ -4,8 +4,9 @@ namespace App\Enums;
 
 enum CacheName: string
 {
+    case NULL = 'null';
     case PRESETS = 'presets';
-    case CONFIGURATION = 'configuration.php';
+    case CONFIGURATION = 'configuration';
     case SESSION = 'session';
     case USER = 'user';
     case USER_REF = 'user_ref';

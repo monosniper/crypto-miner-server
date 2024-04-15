@@ -12,12 +12,14 @@ class CachableService
 
     private array $types;
 
-    public function __construct() {
+    public function __construct(
+        protected CacheService $service
+    ) {
         $this->types = [
             CacheType::DEFAULT->value =>
-                fn ($name) => CacheService::get($name),
+                fn ($name) => $this->service->get($name),
             CacheType::AUTH->value =>
-                fn ($name) => CacheService::getAuth($name),
+                fn ($name) => $this->service->getAuth($name),
         ];
     }
 
@@ -30,8 +32,8 @@ class CachableService
     {
         return $this->resource::make(
             $id
-                ? CacheService::getSingle($this->cacheName, $id)
-                : CacheService::get($this->cacheName)
+                ? $this->service->getSingle($this->cacheName, $id)
+                : $this->service->get($this->cacheName)
         );
     }
 }

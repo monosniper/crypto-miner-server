@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheName;
 use App\Models\Withdraw;
 use App\Services\CacheService;
 
@@ -9,7 +10,11 @@ class WithdrawObserver
 {
     public function cache(Withdraw $withdraw): void
     {
-        CacheService::saveForUser(CacheService::WITHDRAWS, $withdraw->user_id, $withdraw->user->withdraws);
+        CacheService::saveForUser(
+            CacheName::WITHDRAWS,
+            $withdraw->user_id,
+            $withdraw->user->withdraws
+        );
     }
 
     public function updated(Withdraw $withdraw): void

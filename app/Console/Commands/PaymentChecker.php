@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Order;
 use App\Models\ServerLog;
 use App\Models\Transaction;
 use App\Models\UserServer;
@@ -30,6 +31,13 @@ class PaymentChecker extends Command
      */
     public function handle()
     {
+        $waitingOrders = Order::waiting()->get();
+
+        foreach ($waitingOrders as $order) {
+
+        }
+
+
         $transactions = Transaction::waiting()->get();
 
         foreach ($transactions as $transaction) {

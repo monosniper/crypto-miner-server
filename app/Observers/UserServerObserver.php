@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheName;
 use App\Models\UserServer;
 use App\Services\CacheService;
 use Carbon\Carbon;
@@ -46,6 +47,10 @@ class UserServerObserver
 
     public function cache(UserServer $userServer): void
     {
-        CacheService::saveForUser(CacheService::USER_SERVERS, $userServer->user_id, $userServer->user->servers);
+        CacheService::saveForUser(
+            CacheName::USER_SERVERS,
+            $userServer->user_id,
+            $userServer->user->servers
+        );
     }
 }

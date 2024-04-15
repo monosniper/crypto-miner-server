@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\RateCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,11 +17,6 @@ class Convertation extends Model
         'amount_from',
         'amount_to',
     ];
-
-//    protected $casts = [
-//        'amount_from' => RateCast::class,
-//        'amount_to' => RateCast::class,
-//    ];
 
     public function from(): BelongsTo
     {

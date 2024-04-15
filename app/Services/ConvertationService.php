@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DataTransferObjects\ConvertationDto;
 use App\Enums\CacheName;
+use App\Enums\CacheType;
 use App\Http\Resources\ConvertationResource;
 use App\Models\Coin;
 use App\Models\Convertation;
@@ -12,6 +13,7 @@ class ConvertationService extends CachableService
 {
     protected string $resource = ConvertationResource::class;
     protected CacheName $cacheName = CacheName::CONVERTATIONS;
+    protected CacheType $cacheType = CacheType::AUTH;
 
     public function store($data): bool
     {

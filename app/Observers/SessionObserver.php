@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Cache;
 
 class SessionObserver
 {
-    /**
-     * Handle the Session "created" event.
-     */
     public function created(Session $session): void
     {
         Cache::put('sessions.'.$session->user->id, new SessionResource($session));
@@ -28,17 +25,11 @@ class SessionObserver
         $session->user->notify($notification->id);
     }
 
-    /**
-     * Handle the Session "updated" event.
-     */
     public function updated(Session $session): void
     {
         //
     }
 
-    /**
-     * Handle the Session "deleted" event.
-     */
     public function deleted(Session $session): void
     {
         $servers = $session->user_servers;
@@ -106,21 +97,5 @@ class SessionObserver
         Cache::put('servers.'.$user->id, $user->servers);
 
         $session->user->notify($notification->id);
-    }
-
-    /**
-     * Handle the Session "restored" event.
-     */
-    public function restored(Session $session): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Session "force deleted" event.
-     */
-    public function forceDeleted(Session $session): void
-    {
-        //
     }
 }

@@ -6,4 +6,5 @@ enum CacheType: string
 {
     case DEFAULT = 'default';
     case AUTH = 'auth';
+    case SINGLE = 'single';
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Order;
+use App\Enums\OrderMethod;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,7 +25,7 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'method' => [
-                'required', 'string', 'in:'.implode(',', Order::METHODS),
+                'required', 'string', 'in:'.implode(',', OrderMethod::values()),
 //                'not_in:'.implode(',', array_filter(fn ($method) $method !== $order->method, Order::METHODS))
             ]
         ];
