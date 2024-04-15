@@ -28,15 +28,15 @@ class OrderService extends CachableService
             case OrderType::PURCHASE:
                 switch ($purchase_type) {
                     case OrderPurchaseType::SERVER:
+                        $description = __('transactions.buy_server');
+
                         if (isset($data['purchase_id'])) {
                             $preset = Preset::find($data['purchase_id']);
-                            $description = __('transactions.buy_server');
                             $amount = $preset->price;
                         } else if (isset($data['configuration'])) {
                             $configuration = Configuration::create([
                                 'value' => $data['configuration'],
                             ]);
-                            $description = __('transactions.buy_server');
                             $amount = $configuration->price;
                         }
 
@@ -44,6 +44,7 @@ class OrderService extends CachableService
                     case OrderPurchaseType::BALANCE:
                         $description = __('transactions.replenishment');
                         $amount = $data['amount'];
+
                         break;
                 }
                 break;

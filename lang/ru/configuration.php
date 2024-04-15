@@ -14,5 +14,7 @@ return [
         'port' => 'Порт',
         'traffic' => 'Трафик',
         'notifications' => 'Уведомления',
+        'coins' => 'Монеты',
+        'canFarmNft' => 'Может фармить НФТ',
     ]
 ];

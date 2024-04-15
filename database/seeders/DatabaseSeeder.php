@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(
 //            CoinSeeder::class,
-            ConfigurationSeeder::class,
+//            ConfigurationSeeder::class,
+//            SettingsSeeder::class,
         );
     }
 }

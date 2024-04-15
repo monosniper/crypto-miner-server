@@ -104,6 +104,11 @@ class ConfigurationSeeder extends Seeder
             [ 'title' => '6', 'price' => 20 ],
         ];
 
+        $canFarmNft = [
+            [ 'title' => 'Нет', 'price' => 0 ],
+            [ 'title' => 'Да', 'price' => 40 ],
+        ];
+
         $ip_count = [
             [ 'title' => '1', 'price' => 0 ],
             [ 'title' => '2', 'price' => 5 ],
@@ -263,15 +268,34 @@ class ConfigurationSeeder extends Seeder
                         'priority' => 0,
                         'options' => $notifications
                     ],
+                    [
+                        'slug' => 'canFarmNft',
+                        'priority' => 1,
+                        'options' => $canFarmNft
+                    ],
                 ]
             ],
             [
                 'slug' => 'coins',
                 'priority' => 5,
+                'fields' => [
+                    [
+                        'slug' => 'coins',
+                        'priority' => 0,
+                        'type' => 'coins'
+                    ],
+                ]
             ],
             [
                 'slug' => 'comment',
                 'priority' => 6,
+                'fields' => [
+                    [
+                        'slug' => 'comment',
+                        'priority' => 0,
+                        'type' => 'comment'
+                    ],
+                ]
             ],
         ];
 

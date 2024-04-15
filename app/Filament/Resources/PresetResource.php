@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PresetResource\Pages;
+use App\Models\Coin;
 use App\Models\ConfigurationField;
 use App\Models\Preset;
 use Filament\Forms;
@@ -21,31 +22,46 @@ class PresetResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $exclude = [
+            'type',
+            'comment',
+        ];
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->label('Название')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('price')
-                    ->label('Цена за месяц')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-                Forms\Components\Toggle::make('nft')
-                    ->label('Может фармить НФТ')
-                    ->required(),
                 Forms\Components\Toggle::make('isHot')
                     ->label('Рекомендовано')
                     ->required(),
                 ...array_map(function ($field) {
-                    return Forms\Components\Select::make("configuration.{$field['slug']}")
+                    $select = Forms\Components\Select::make("configuration.{$field['slug']}")
                         ->label(__('configuration.fields.'.$field['slug']))
                         ->searchable(['slug'])
-                        ->options(array_map(function ($option) {
-                            return "{$option['title']} (\${$option['price']})";
-                        }, $field['options']));
-                }, array_filter(ConfigurationField::with('options')->get()->toArray(), fn ($field) => $field['slug'] !== 'type'))
+                        ->options(function () use ($field) {
+                            $options = [];
+
+                            if($field['type'] !== 'coins') {
+                                foreach ($field['options'] as $option) {
+                                    $options[$option['title']] = "{$option['title']} (\${$option['price']})";
+                                }
+                            } else if($field['type'] === 'coins') {
+                                $coins = Coin::whereNot('slug', 'USDT')->pluck('id', 'name');
+                                foreach ($coins as $name => $id) {
+                                    $price = setting('coin_prices')[$id];
+                                    $options[$id] = "$name (\${$price})";
+                                }
+                            }
+
+                            return $options;
+                        });
+                    if($field['type'] === 'coins') {
+                        $select = $select->multiple();
+                    }
+                    return $select;
+                }, array_filter(ConfigurationField::with('options')->get()->toArray(), fn ($field) => !in_array($field['slug'], $exclude)))
             ]);
     }
 
@@ -60,9 +76,6 @@ class PresetResource extends Resource
                     ->label('Цена')
                     ->money()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('canFarmNft')
-                    ->label('НФТ')
-                    ->boolean(),
                 Tables\Columns\IconColumn::make('isHot')
                     ->label('Рекомендовано')
                     ->boolean(),

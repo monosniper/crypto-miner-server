@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Configuration;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,12 +16,8 @@ return new class extends Migration
         Schema::create('servers', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('price');
-            $table->integer('year_price');
-            $table->float('work_time')->nullable();
-            $table->boolean('nft')->default(false);
-            $table->boolean('isHot')->default(false);
-            $table->enum('type', \App\Models\Server::TYPES);
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Configuration::class);
             $table->timestamps();
         });
     }

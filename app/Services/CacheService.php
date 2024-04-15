@@ -28,7 +28,7 @@ class CacheService
         return new ObjectArray([
             [ CacheName::COINS, fn () => Coin::with('media')->get() ],
             [ CacheName::NFTS, fn () => Nft::all() ],
-            [ CacheName::PRESETS, fn () => Preset::with('coins')->get() ],
+            [ CacheName::PRESETS, fn () => Preset::all() ],
             [ CacheName::ARTICLES, fn () => Article::latest()->get() ],
             [ CacheName::CONFIGURATION, fn () => ConfigurationGroup::all() ],
             [ CacheName::SERVERS, fn () => Server::with('coins')->get() ],

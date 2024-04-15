@@ -16,11 +16,9 @@ class PresetResource extends JsonResource
     {
         return [
             'title' => $this->title,
-            'configuration.php' => $this->configuration,
+            'configuration' => $this->configuration,
             'price' => $this->price,
             'isHot' => $this->isHot,
-            'canFarmNft' => $this->canFarmNft,
-            'coins' => $this->coins->pluck('slug'),
         ];
     }
 }

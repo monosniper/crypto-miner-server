@@ -14,16 +14,10 @@ class Preset extends Model
         'title',
         'configuration',
         'isHot',
-        'canFarmNft',
         'price',
     ];
 
     protected $casts = [
         'configuration' => 'array'
     ];
-
-    public function coins(): BelongsToMany
-    {
-        return $this->belongsToMany(Coin::class, 'preset_coin');
-    }
 }

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('presets', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->boolean('canFarmNft')->default(true);
             $table->boolean('isHot')->default(false);
             $table->json('configuration');
             $table->integer('price')->nullable();

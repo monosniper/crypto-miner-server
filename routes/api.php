@@ -13,7 +13,6 @@ use App\Http\Controllers\Api\V1\PresetController;
 use App\Http\Controllers\Api\V1\ReplenishmentController;
 use App\Http\Controllers\Api\V1\ServerController;
 use App\Http\Controllers\Api\V1\UserNftController;
-use App\Http\Controllers\Api\V1\UserServerController;
 use App\Http\Controllers\Api\V1\SessionController;
 use App\Http\Controllers\Api\V1\TransferController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -21,7 +20,6 @@ use App\Http\Controllers\Api\V1\UserSessionController;
 use App\Http\Controllers\Api\V1\WalletController;
 use App\Http\Controllers\Api\V1\WithdrawController;
 use App\Http\Middleware\AuthenticateOnceWithBasicAuth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::domain('api.hogyx.io')->group(function () {
@@ -47,8 +45,8 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('notifications', NotificationController::class);
                     Route::get('replenishments', ReplenishmentController::class);
 
-                    Route::apiResource('servers', UserServerController::class)
-                        ->only('index', 'show');
+                    Route::apiResource('servers', ServerController::class)
+                        ->only('index', 'show', 'update');
 
                     Route::apiResource('withdraws', WithdrawController::class)
                         ->only('index', 'store');
@@ -71,7 +69,6 @@ Route::domain('api.hogyx.io')->group(function () {
 
             // Static
             Route::get('configuration', ConfigurationController::class);
-            Route::get('servers', ServerController::class);
             Route::get('presets', PresetController::class);
             Route::get('geo', [AppController::class, 'geo']);
             Route::get('coins', CoinController::class);
@@ -112,8 +109,8 @@ Route::prefix('v1')
                 Route::get('notifications', NotificationController::class);
                 Route::get('replenishments', ReplenishmentController::class);
 
-                Route::apiResource('servers', UserServerController::class)
-                    ->only('index', 'show');
+                Route::apiResource('servers', ServerController::class)
+                    ->only('index', 'show', 'update');
 
                 Route::apiResource('withdraws', WithdrawController::class)
                     ->only('index', 'store');
@@ -135,7 +132,7 @@ Route::prefix('v1')
 
         // Static
         Route::get('configuration', ConfigurationController::class);
-        Route::get('servers', ServerController::class);
+        Route::get('presets', PresetController::class);
         Route::get('geo', [AppController::class, 'geo']);
         Route::get('coins', CoinController::class);
         Route::get('settings', [AppController::class, 'settings']);

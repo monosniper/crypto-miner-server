@@ -31,7 +31,6 @@ class CoinSeeder extends Seeder
             ['name' => 'Polkadot', 'slug' => 'DOT'],
             ['name' => 'Litecoin', 'slug' => 'LTC'],
             ['name' => 'Wrapped Bitcoin', 'slug' => 'WBTC'],
-            ['name' => 'Shiba Inu', 'slug' => 'SHIB'],
             ['name' => 'Stellar', 'slug' => 'XLM'],
         ];
 

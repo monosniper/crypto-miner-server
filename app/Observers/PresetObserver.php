@@ -9,19 +9,26 @@ use App\Services\ConfigurationService;
 
 class PresetObserver
 {
-    public function cache(): void
+    protected function cache(): void
     {
         CacheService::save(CacheName::PRESETS);
     }
 
-    public function created(Preset $preset): void
+    protected function calculatePrice(Preset $preset): void
     {
         $preset->price = ConfigurationService::calculatePrice($preset->configuration);
-        $preset->save();
+        $preset->saveQuietly();
     }
 
-    public function updated(): void
+    public function created(Preset $preset): void
     {
+        $this->calculatePrice($preset);
+        $this->cache();
+    }
+
+    public function updated(Preset $preset): void
+    {
+        $this->calculatePrice($preset);
         $this->cache();
     }
 
