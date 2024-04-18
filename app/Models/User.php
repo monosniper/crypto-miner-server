@@ -131,15 +131,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function servers(): HasMany
     {
-        return $this->hasMany(UserServer::class);
-
-//        return $this->belongsToMany(Server::class, 'users_servers')
-//            ->with(['possibilities', 'coins', 'media'])
-//            ->withPivot([
-//                'active_until',
-//                'status',
-//                'name',
-//            ]);
+        return $this->hasMany(Server::class);
     }
 
     public function wallet(): hasOne

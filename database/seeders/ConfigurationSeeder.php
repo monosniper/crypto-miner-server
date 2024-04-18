@@ -30,9 +30,9 @@ class ConfigurationSeeder extends Seeder
         ];
 
         $ram = [
-            [ 'title' => '1 Gb', 'price' => 10 ],
-            [ 'title' => '2 Gb', 'price' => 15 ],
-            [ 'title' => '4 Gb', 'price' => 35 ],
+//            [ 'title' => '1 Gb', 'price' => 10 ],
+//            [ 'title' => '2 Gb', 'price' => 15 ],
+//            [ 'title' => '4 Gb', 'price' => 35 ],
             [ 'title' => '8 Gb', 'price' => 70 ],
             [ 'title' => '12 Gb', 'price' => 100 ],
             [ 'title' => '16 Gb', 'price' => 150 ],
@@ -70,14 +70,14 @@ class ConfigurationSeeder extends Seeder
         ];
 
         $gpu = [
-            [ 'title' => 'Radeon RX 580 4Gb', 'price' => 60 ],
-            [ 'title' => 'GeForce GTX 1050 Ti 4GB', 'price' => 50 ],
+//            [ 'title' => 'GeForce GTX 1050 Ti 4GB', 'price' => 50 ],
+//            [ 'title' => 'Radeon RX 580 4Gb', 'price' => 60 ],
+//            [ 'title' => 'GTX 1060 1506MHz PCI-E 3.0', 'price' => 80 ],
+            [ 'title' => 'Radeon RX 5700', 'price' => 120 ],
             [ 'title' => 'RX 5700 XT 1605MHz', 'price' => 150 ],
-            [ 'title' => 'Radeon VII 1400MHz PCI-E 3.0', 'price' => 280 ],
-            [ 'title' => 'GTX 1060 1506MHz PCI-E 3.0', 'price' => 80 ],
-            [ 'title' => 'Radeon RX 5700', 'price' => 140 ],
             [ 'title' => 'GTX 1070 Founders Edition 8GB', 'price' => 160 ],
             [ 'title' => 'RTX 2060 OC 6G', 'price' => 260 ],
+            [ 'title' => 'Radeon VII 1400MHz PCI-E 3.0', 'price' => 280 ],
             [ 'title' => 'RTX 3080', 'price' => 300 ],
             [ 'title' => 'RTX 3080 TI', 'price' => 450 ],
             [ 'title' => 'RTX 3090', 'price' => 600 ],

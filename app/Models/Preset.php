@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Preset extends Model
 {
@@ -12,12 +12,13 @@ class Preset extends Model
 
     protected $fillable = [
         'title',
-        'configuration',
+        'configuration_id',
         'isHot',
         'price',
     ];
 
-    protected $casts = [
-        'configuration' => 'array'
-    ];
+    public function configuration(): BelongsTo
+    {
+        return $this->belongsTo(Configuration::class);
+    }
 }

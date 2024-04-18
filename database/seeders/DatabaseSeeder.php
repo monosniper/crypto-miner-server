@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(
 //            CoinSeeder::class,
 //            ConfigurationSeeder::class,
-//            SettingsSeeder::class,
+            SettingsSeeder::class,
         );
     }
 }

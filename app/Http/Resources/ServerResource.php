@@ -17,11 +17,8 @@ class ServerResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'price' => $this->price,
-            'nft' => $this->nft,
-            'isHot' => $this->isHot,
-            'type' => $this->type,
-            'coins' => $this->coins->pluck('slug'),
+            'status' => $this->status,
+            'configuration' => new ConfigurationResource($this->configuration),
         ];
     }
 }

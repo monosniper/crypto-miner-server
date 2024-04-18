@@ -9,38 +9,11 @@ use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\ConvertationResource;
-use App\Http\Resources\NftResource;
-use App\Http\Resources\NotificationResource;
-use App\Http\Resources\ServerResource;
-use App\Http\Resources\TransactionResource;
-use App\Http\Resources\UserResource;
-use App\Http\Resources\UserServerResource;
-use App\Http\Resources\WalletResource;
-use App\Http\Resources\WithdrawResource;
-use App\Mail\ForgotPassword;
-use App\Mail\Verification;
-use App\Models\Coin;
-use App\Models\Convertation;
-use App\Models\ForgotPasswordCode;
-use App\Models\Ref;
-use App\Models\Server;
-use App\Models\ServerLog;
-use App\Models\Transaction;
 use App\Models\User;
-use App\Models\UserServer;
-use App\Models\VerificationCode;
 use App\Services\AuthService;
-use App\Services\CacheService;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -62,7 +35,7 @@ class AuthController extends Controller
         return $this->sendResponse($result);
     }
 
-    public function verificateMail(string $code): \Illuminate\Http\RedirectResponse
+    public function verificateMail(string $code): RedirectResponse
     {
         return $this->service->verificateMail($code);
     }

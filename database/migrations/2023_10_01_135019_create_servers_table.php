@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ServerStatus;
 use App\Models\Configuration;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -16,6 +17,7 @@ return new class extends Migration
         Schema::create('servers', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->enum('status', ServerStatus::values())->default(ServerStatus::IDLE);
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Configuration::class);
             $table->timestamps();

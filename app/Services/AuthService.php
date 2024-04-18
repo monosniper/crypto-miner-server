@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Resources\NftResource;
 use App\Jobs\SendVerificationMail;
 use App\Mail\ForgotPassword;
-use App\Mail\Verification;
 use App\Models\ForgotPasswordCode;
 use App\Models\Ref;
 use App\Models\User;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Configuration;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->boolean('isHot')->default(false);
-            $table->json('configuration');
+            $table->foreignIdFor(Configuration::class);
             $table->integer('price')->nullable();
             $table->timestamps();
         });

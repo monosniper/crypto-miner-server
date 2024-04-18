@@ -31,7 +31,7 @@ class CacheService
             [ CacheName::PRESETS, fn () => Preset::all() ],
             [ CacheName::ARTICLES, fn () => Article::latest()->get() ],
             [ CacheName::CONFIGURATION, fn () => ConfigurationGroup::all() ],
-            [ CacheName::SERVERS, fn () => Server::with('coins')->get() ],
+            [ CacheName::SERVERS, fn () => $user?->servers()->with('configuration')->get() ],
             [ CacheName::USER, fn () => $user->loadCount('session') ],
             [ CacheName::REPLENISHMENTS, fn () => $user?->replenishments ],
             [ CacheName::USER_NFTS, fn () => $user?->nfts ],
@@ -53,6 +53,7 @@ class CacheService
             [ CacheName::ORDERS, fn () => Order::find($id) ],
             [ CacheName::USER_SERVERS, fn () => UserServer::find($id) ],
             [ CacheName::USER_NFTS, fn () => Nft::find($id) ],
+            [ CacheName::SERVERS, fn () => Server::with('configuration')->find($id) ],
             [ CacheName::USER, fn () => User::withCount('session')->find($id) ],
             [ CacheName::USER_REF, fn () => RefDto::from((new RefQuery)($id)) ],
         ]);
