@@ -11,7 +11,7 @@ readonly class ConfigurationDto
     static public function from(array $data): ConfigurationDto
     {
         return new self(
-            value: $data['coniguration'],
+            value: $data['configuration'],
         );
     }
 }

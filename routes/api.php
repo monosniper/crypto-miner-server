@@ -45,6 +45,8 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::get('notifications', NotificationController::class);
                     Route::get('replenishments', ReplenishmentController::class);
 
+                    Route::get('payed/{order}', [OrderController::class, 'payed']);
+
                     Route::apiResource('servers', ServerController::class)
                         ->only('index', 'show', 'update');
 
@@ -57,6 +59,10 @@ Route::domain('api.hogyx.io')->group(function () {
                     Route::apiResource('orders', OrderController::class)
                         ->except('destroy');
                 });
+
+            // Other
+            Route::post('orders/accept', [OrderController::class, 'markCompleted']);
+            Route::post('orders/reject', [OrderController::class, 'markRejected']);
 
             // Account
             Route::post('forgot-password', [AuthController::class, 'forgotPassword'])

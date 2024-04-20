@@ -8,10 +8,11 @@ use App\Enums\CacheType;
 use App\Http\Resources\ConvertationResource;
 use App\Models\Coin;
 use App\Models\Convertation;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ConvertationService extends CachableService
 {
-    protected string $resource = ConvertationResource::class;
+    protected string|AnonymousResourceCollection $resource = ConvertationResource::class;
     protected CacheName $cacheName = CacheName::CONVERTATIONS;
     protected CacheType $cacheType = CacheType::AUTH;
 
@@ -39,7 +40,7 @@ class ConvertationService extends CachableService
 
         $amount_to -= $amount_to / 100 * setting('comission_fee');
 
-        $convertation = Convertation::create(new ConvertationDto(
+        $convertation = Convertation::create((array) new ConvertationDto(
             user_id: $user->id,
             from_id: $coin_from_id,
             to_id: $coin_to_id,

@@ -7,21 +7,41 @@ use App\DataTransferObjects\ServerDto;
 use App\Enums\CacheName;
 use App\Enums\CacheType;
 use App\Enums\OrderMethod;
+use App\Enums\OrderPurchaseType;
+use App\Enums\OrderStatus;
+use App\Enums\OrderType;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Server;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Http;
 
 class OrderService extends CachableService
 {
-    protected string $resource = OrderResource::class;
+    protected string|AnonymousResourceCollection $resource = OrderResource::class;
     protected CacheName $cacheName = CacheName::ORDERS;
     protected CacheType $cacheType = CacheType::AUTH;
 
     public function store($data): OrderResource
     {
         return new OrderResource(
-            Order::create(OrderDto::from($data))
+            Order::create((array) OrderDto::from($data))
         );
+    }
+
+    public function payed(Order $order): bool
+    {
+        $data = [
+            'code' => config('app.payment_bot.project_code'),
+            'amount' => $order->amount,
+            'metadata' => [
+                'order_id' => $order->id,
+            ],
+        ];
+
+        Http::post(config('app.payment_bot.api_url'), $data);
+
+        return true;
     }
 
     public function update($order, $data): bool
@@ -38,7 +58,43 @@ class OrderService extends CachableService
         return false;
     }
 
+    public function markCompleted($data): bool
+    {
+        $order = Order::find($data['metadata']['order_id']);
+
+        return $order->update([
+            'status' => OrderStatus::COMPLETED,
+        ]);
+    }
+
+    public function markRejected($data): bool
+    {
+        $order = Order::find($data['metadata']['order_id']);
+
+        return $order->update([
+            'status' => OrderStatus::FAILED,
+        ]);
+    }
+
     static public function processOrder(Order $order): void {
-        Server::create(ServerDto::fromOrder($order));
+        switch ($order->type) {
+            case OrderType::PURCHASE:
+                switch ($order->purchase_type) {
+                    case OrderPurchaseType::SERVER:
+                        Server::create((array) ServerDto::fromOrder($order));
+
+                        break;
+
+                    case OrderPurchaseType::BALANCE:
+                        $order->user->wallet->incrementBalance($order->amount);
+
+                        break;
+                }
+
+                break;
+
+            case OrderType::DONATE:
+                break;
+        }
     }
 }

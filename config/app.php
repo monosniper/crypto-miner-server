@@ -5,6 +5,11 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    'payment_bot' => [
+        'api_url' =>  env('PAYMENT_BOT_API_URL', ''),
+        'project_code' =>  env('PAYMENT_BOT_PROJECT_CODE', ''),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

@@ -23,4 +23,9 @@ class Wallet extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function incrementBalance(int $amount): void {
+        $this->balance['USDT'] += $amount;
+        $this->save();
+    }
 }

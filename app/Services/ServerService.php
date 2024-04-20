@@ -6,10 +6,11 @@ use App\Enums\CacheName;
 use App\Enums\CacheType;
 use App\Http\Resources\ServerResource;
 use App\Models\Server;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ServerService extends CachableService
 {
-    protected string $resource = ServerResource::class;
+    protected string|AnonymousResourceCollection $resource = ServerResource::class;
     protected CacheName $cacheName = CacheName::SERVERS;
     protected CacheType $cacheType = CacheType::AUTH;
 

@@ -7,10 +7,11 @@ use App\Http\Resources\ConfigurationResource;
 use App\Models\Coin;
 use App\Models\ConfigurationField;
 use App\Queries\PricesQuery;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ConfigurationService extends CachableService
 {
-    protected string $resource = ConfigurationResource::class;
+    protected string|AnonymousResourceCollection $resource = ConfigurationResource::class;
     protected CacheName $cacheName = CacheName::CONFIGURATION;
 
     static public function calculatePrice(array $configuration): int {

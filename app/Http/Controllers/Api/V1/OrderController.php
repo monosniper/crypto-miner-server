@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MarkOrderRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\TransactionResource;
@@ -45,8 +46,24 @@ class OrderController extends Controller
         return $this->sendResponse($result);
     }
 
-    public function replenishments() {
-        $replenishments = Auth::user()->transactions()->replenishments()->latest()->get();
-        return TransactionResource::collection($replenishments);
+    public function payed(Order $order): JsonResponse
+    {
+        $result = $this->service->payed($order);
+
+        return $this->sendResponse($result);
+    }
+
+    public function markCompleted(MarkOrderRequest $request): JsonResponse
+    {
+        $result = $this->service->markCompleted($request->validated());
+
+        return $this->sendResponse($result);
+    }
+
+    public function markRejected(MarkOrderRequest $request): JsonResponse
+    {
+        $result = $this->service->markRejected($request->validated());
+
+        return $this->sendResponse($result);
     }
 }

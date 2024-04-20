@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Cache;
 
 class CacheService
 {
+    public int $ttl = 86400;
+
     protected function multiple(?User $user): ObjectArray
     {
         return new ObjectArray([
@@ -37,6 +39,7 @@ class CacheService
             [ CacheName::USER_NFTS, fn () => $user?->nfts ],
             [ CacheName::ORDERS, fn () => $user?->orders ],
             [ CacheName::WALLET, fn () => $user?->wallet ],
+            [ CacheName::SERVERS, fn () => $user?->servers ],
             [ CacheName::SESSION, fn () => $user?->session()->with('log')->first() ],
             [ CacheName::USER_SERVERS, fn () => $user?->servers()->with('server')->get() ],
             [ CacheName::WITHDRAWS, fn () => $user?->withdraws()->latest()->get() ],
@@ -98,23 +101,26 @@ class CacheService
     }
 
     public function get(CacheName $cacheName) {
-        return Cache::rememberForever(
+        return Cache::remember(
             $cacheName->value,
+            $this->ttl,
             $this->getDefaultValue($cacheName)
         );
     }
 
     public function getAuth(CacheName $cacheName) {
-        return Cache::rememberForever(
+        return Cache::remember(
             'user.' . auth()->id() . '.' . $cacheName->value,
+            $this->ttl,
             $this->getDefaultValue($cacheName)
         );
     }
 
     public function getSingle(CacheName $cacheName, $id) {
-        return Cache::rememberForever(
+        return Cache::remember(
             $cacheName->value . '.' . $id,
-            $this->getDefaultSingleValue($cacheName, $id)
+            $this->ttl,
+            $this->getDefaultSingleValue($cacheName, $id),
         );
     }
 }

@@ -13,7 +13,7 @@ class CreatePreset extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $configuration = Configuration::create(ConfigurationDto::from($data));
+        $configuration = Configuration::create((array) ConfigurationDto::from($data));
 
         $data['configuration_id'] = $configuration->id;
 

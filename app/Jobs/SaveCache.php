@@ -45,7 +45,8 @@ class SaveCache implements ShouldQueue
         Cache::forget($path);
         Cache::put(
             $path,
-            $this->value ?: $this->service->getDefaultValue($this->name, $this->user)()
+            $this->value ?: $this->service->getDefaultValue($this->name, $this->user)(),
+            $this->service->ttl,
         );
     }
 }
