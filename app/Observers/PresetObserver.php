@@ -16,7 +16,7 @@ class PresetObserver
 
     protected function calculatePrice(Preset $preset): void
     {
-        $preset->price = ConfigurationService::calculatePrice($preset->configuration);
+        $preset->price = ConfigurationService::calculatePrice($preset->configuration->value);
         $preset->saveQuietly();
     }
 
