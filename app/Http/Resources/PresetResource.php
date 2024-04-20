@@ -16,7 +16,7 @@ class PresetResource extends JsonResource
     {
         return [
             'title' => $this->title,
-            'configuration' => $this->configuration,
+            'configuration' => $this->configuration->value,
             'price' => $this->price,
             'isHot' => $this->isHot,
         ];

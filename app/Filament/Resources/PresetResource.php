@@ -37,7 +37,7 @@ class PresetResource extends Resource
                     ->label('Рекомендовано')
                     ->required(),
                 ...array_map(function ($field) {
-                    $select = Forms\Components\Select::make("configuration.value.{$field['slug']}")
+                    $select = Forms\Components\Select::make("configuration.{$field['slug']}")
                         ->label(__('configuration.fields.'.$field['slug']))
                         ->searchable(['slug'])
                         ->options(function () use ($field) {
