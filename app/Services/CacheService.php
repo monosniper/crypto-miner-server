@@ -90,10 +90,10 @@ class CacheService
         ]);
     }
 
-    static public function saveForUser(CacheName $cacheName, $id, $value = null): void
+    static public function saveForUser(CacheName $cacheName, $id, $value = null, $record_id = null): void
     {
         SaveCache::dispatch([
-            'path' => 'user.' . $id . '.' . $cacheName->value,
+            'path' => 'user.' . $id . '.' . $cacheName->value . ($record_id ? ('.' . $record_id) : ''),
             'name' => $cacheName,
             'value' => $value,
             'user' => auth()->user(),
