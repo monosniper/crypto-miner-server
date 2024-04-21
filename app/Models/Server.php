@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Server extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'title',
         'status',
@@ -25,5 +23,10 @@ class Server extends Model
     public function configuration(): BelongsTo
     {
         return $this->belongsTo(Configuration::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
