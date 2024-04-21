@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\DB;
 
 class AppController extends Controller
 {
+    public function __construct(
+        private readonly CacheService $cacheService,
+    ) {}
 
     public function geo(): JsonResponse
     {
-        $result = CacheService::get(CacheName::GEO);
+        $result = $this->cacheService->get(CacheName::GEO);
 
         return $this->sendResponse($result);
     }
