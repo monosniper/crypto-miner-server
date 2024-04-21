@@ -31,15 +31,18 @@ class ConvertationResource extends Resource
                     ->label('Пользователь')
                     ->relationship(name: 'user', titleAttribute: 'name')
                     ->searchable(['name'])
-                    ->required(),
+                    ->required()
+                    ->preload(),
                 Forms\Components\Select::make('from_id')
                     ->label('Монета 1')
                     ->relationship(name: 'from', titleAttribute: 'name')
-                    ->required(),
+                    ->required()
+                    ->preload(),
                 Forms\Components\Select::make('to_id')
                     ->label('Монета 2')
                     ->relationship(name: 'to', titleAttribute: 'name')
-                    ->required(),
+                    ->required()
+                    ->preload(),
                 Forms\Components\TextInput::make('amount_from')
                     ->label('Кол-во')
                     ->required()
