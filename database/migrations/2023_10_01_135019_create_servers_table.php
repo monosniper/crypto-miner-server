@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('servers', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->enum('status', ServerStatus::values())->default(ServerStatus::IDLE);
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Configuration::class);

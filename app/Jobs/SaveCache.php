@@ -42,11 +42,9 @@ class SaveCache implements ShouldQueue
     public function handle(): void
     {
         $path = $this->path ?? $this->name->value;
+        $value = $this->value ?: $this->service->getDefaultValue($this->name, $this->user)();
+        info("CACHE: " . $path . json_encode($value));
         Cache::forget($path);
-        Cache::put(
-            $path,
-            $this->value ?: $this->service->getDefaultValue($this->name, $this->user)(),
-            $this->service->ttl,
-        );
+        Cache::put($path, $value, $this->service->ttl);
     }
 }
