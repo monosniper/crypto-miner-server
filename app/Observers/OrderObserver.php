@@ -20,7 +20,7 @@ class OrderObserver
 
         CacheService::saveFor(
             CacheName::ORDERS,
-            $order->user_id,
+            $order->id,
             $order
         );
     }
