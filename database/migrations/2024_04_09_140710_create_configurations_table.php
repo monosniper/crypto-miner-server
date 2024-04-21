@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Server::class)->nullable();
             $table->json('value');
             $table->integer('price')->nullable();
             $table->timestamps();

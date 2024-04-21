@@ -22,6 +22,12 @@ class ServerObserver
         CacheService::saveForUser(
             CacheName::SERVERS,
             $server->user_id,
+            $server->user->servers
+        );
+
+        CacheService::saveFor(
+            CacheName::SERVERS,
+            $server->id,
             $server
         );
     }

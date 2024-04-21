@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Configuration extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'server_id',
         'value',
         'price',
     ];
