@@ -79,8 +79,6 @@ class OrderService extends CachableService
     static public function processOrder(Order $order): void {
         info('$order->type: '.$order->type->value);
         info('$order->purchase_type: '.$order->purchase_type->value);
-        info('$order->type == OrderType::PURCHASE: '.$order->type == OrderType::PURCHASE);
-        info('$order->purchase_type == OrderPurchaseType::SERVER: '.$order->purchase_type == OrderPurchaseType::SERVER);
         switch ($order->type) {
             case OrderType::PURCHASE:
                 switch ($order->purchase_type) {

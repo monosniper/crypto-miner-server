@@ -35,8 +35,6 @@ class ServerObserver
     {
         $server->title = $this->generateServerName();
         $server->save();
-
-        $this->cache($server);
     }
 
     public function deleted(Server $server): void
