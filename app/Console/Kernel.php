@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(RatesRequest::class)->hourly();
 //        $schedule->command(UserServersInspector::class)->daily();
         $schedule->command(SessionsInspector::class)->everyMinute();
-        $schedule->command(PaymentChecker::class)->hourly();
+//        $schedule->command(PaymentChecker::class)->hourly();
     }
 
     /**
