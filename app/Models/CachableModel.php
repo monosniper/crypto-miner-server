@@ -17,28 +17,37 @@ class CachableModel extends Model
         parent::__construct($attributes);
     }
 
-    protected function cache(): void
+    protected function cache(bool $delete = false): void
     {
-        (new ObjectArray([
+        $cachers = new ObjectArray([
             [
                 CacheType::DEFAULT,
                 fn () => CacheService::save($this->cacheName)
             ],
             [
                 CacheType::SINGLE,
-                fn () => CacheService::saveFor($this->cacheName, $this->id, $this)
+                fn ($delete) => CacheService::{$delete ? 'forgetFor' : 'saveFor'}($this->cacheName, $this->id, $this)
             ],
             [
                 CacheType::AUTH,
                 fn () => CacheService::saveForUser($this->cacheName, ...$this->getCacheValue())
             ],
-        ]))->get($this->cacheType)();
+        ]);
+
+        foreach ($this->cacheTypes as $cacheType) {
+            $cachers->get($cacheType)($delete);
+        }
     }
 
     protected static function booted(): void
     {
         static::created(fn ($model) => $model->cacheOnCreate ? $model->cache() : null);
         static::updated(fn ($model) => $model->cacheOnUpdate ? $model->cache() : null);
-        static::deleted(fn ($model) => $model->cacheOnDelete ? $model->cache() : null);
+        static::deleted(fn ($model) => $model->cacheOnDelete ? $model->cache(delete: true) : null);
+    }
+
+    protected function getCacheValue(): array
+    {
+        return [];
     }
 }

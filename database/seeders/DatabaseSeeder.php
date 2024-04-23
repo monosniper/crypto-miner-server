@@ -11,10 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(
-//            CoinSeeder::class,
-//            ConfigurationSeeder::class,
+        $this->call([
+            CoinSeeder::class,
+            ConfigurationSeeder::class,
             SettingsSeeder::class,
-        );
+        ]);
     }
 }

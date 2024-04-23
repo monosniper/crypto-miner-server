@@ -40,12 +40,14 @@ class UserObserver
     public function created(User $user): void
     {
         $location = Location::get();
+        $randomManagerId = User::activeManagers()->inRandomOrder()->first()->id;
         $this->addRef($user->id);
         $this->addWallet($user->id);
         $user->update([
             'token' => $this->generateToken(),
             'country_code' => $location->countryCode,
             'city' => $location->cityName,
+            'manager_id' => $randomManagerId,
         ]);
 
         CacheService::saveFor(CacheName::USER, $user->id, $user);

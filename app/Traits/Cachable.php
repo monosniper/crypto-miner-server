@@ -11,6 +11,9 @@ trait Cachable
     protected string|AnonymousResourceCollection $resource;
     protected CacheName $cacheName = CacheName::NULL;
     protected CacheType $cacheType = CacheType::DEFAULT;
+    protected array $cacheTypes = [
+        CacheType::DEFAULT
+    ];
     protected bool $cacheOnCreate = true;
     protected bool $cacheOnUpdate = true;
     protected bool $cacheOnDelete = true;

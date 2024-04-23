@@ -2,13 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\CacheName;
+use App\Enums\CacheType;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Convertation extends Model
+class Convertation extends CachableModel
 {
-    use HasFactory;
+
+    protected CacheName $cacheName = CacheName::CONVERTATIONS;
+    protected array $cacheTypes = [
+        CacheType::AUTH
+    ];
+
+    protected function getCacheValue(): array
+    {
+        return [
+            $this->user_id,
+            $this->user->convertations
+        ];
+    }
 
     protected $fillable = [
         'user_id',

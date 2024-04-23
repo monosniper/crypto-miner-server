@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use App\Enums\Report;
+use App\Enums\ReportStatus;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OperatorReport extends Model
 {
-    use HasFactory;
-
     protected $table = 'operators_reports';
 
     protected $fillable = [
@@ -27,7 +24,7 @@ class OperatorReport extends Model
     protected function casts(): array
     {
         return [
-            'status' => Report::class,
+            'status' => ReportStatus::class,
         ];
     }
 

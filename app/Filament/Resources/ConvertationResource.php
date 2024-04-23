@@ -47,10 +47,6 @@ class ConvertationResource extends Resource
                     ->label('Кол-во')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('amount_to')
-                    ->label('Кол-во')
-                    ->required()
-                    ->numeric(),
             ]);
     }
 

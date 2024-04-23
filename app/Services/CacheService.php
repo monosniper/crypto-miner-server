@@ -90,6 +90,17 @@ class CacheService
         ]);
     }
 
+    static public function forgetFor(CacheName $cacheName, $id, $value = null): void
+    {
+        SaveCache::dispatch([
+            'path' => $cacheName->value . '.' . $id,
+            'name' => $cacheName,
+            'value' => $value,
+            'user' => auth()->user(),
+            'delete' => true
+        ]);
+    }
+
     static public function saveForUser(CacheName $cacheName, $id, $value = null, $record_id = null): void
     {
         SaveCache::dispatch([

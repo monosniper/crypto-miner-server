@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use App\Enums\CacheName;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Coin extends CachableModel implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use InteractsWithMedia;
 
     protected CacheName $cacheName = CacheName::COINS;
 

@@ -95,9 +95,7 @@ Route::prefix('v1')
     ->group(function () {
         Route::post('users', [AuthController::class, 'register']);
 
-        Route::middleware([
-            AuthenticateOnceWithBasicAuth::class,
-        ])
+        Route::middleware(AuthenticateOnceWithBasicAuth::class)
             ->prefix('me')
             ->group(callback: function () {
                 Route::put('/', [UserController::class, 'update']);

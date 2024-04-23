@@ -2,8 +2,14 @@
 
 namespace App\Filament\Call\Resources;
 
+use App\Enums\CallStatus;
+use App\Filament\Actions\OperatorArchiveAction;
+use App\Filament\Actions\OperatorArchiveBulkAction;
+use App\Filament\Actions\ReportBulkAction;
 use App\Filament\Call\Resources\ColdBaseResource\Pages;
 use App\Filament\Call\Resources\ColdBaseResource\RelationManagers;
+use App\Filament\Rows\CallRow;
+use App\Models\Call;
 use App\Models\ColdBase;
 use App\Models\OperatorReport;
 use App\Models\User;
@@ -24,16 +30,16 @@ use Illuminate\View\View;
 
 class ColdBaseResource extends Resource
 {
-    protected static ?string $model = OperatorReport::class;
+    protected static ?string $model = Call::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-stop-circle';
 
-    protected static ?string $navigationLabel = 'Холодная база';
+    protected static ?string $navigationLabel = 'Холодная';
 
-    protected static ?string $navigationGroup = 'Колл-центр';
+    protected static ?string $label = 'Холодная база';
+    protected static ?string $pluralLabel = 'Холодная база';
 
-    protected static ?string $label = 'Номера';
-    protected static ?string $pluralLabel = 'Номера';
+    protected static ?string $navigationGroup = 'База';
 
     protected static ?int $navigationSort = 2;
 
@@ -46,46 +52,18 @@ class ColdBaseResource extends Resource
                 ->cold()
                 ->where('operator_id', auth()->id())
             )
-            ->columns([
-                TextColumn::make('user')
-                    ->label('Номер')
-                    ->icon(fn (OperatorReport $record): string => $record->user->country_code ? 'icon-' . mb_strtolower($record->user->country_code) : '')
-                    ->formatStateUsing(fn (User $state): View => view(
-                        'filament.columns.tel',
-                        ['state' => $state],
-                    ))
-                    ->searchable(),
-                TextColumn::make('comment')
-                    ->label('Комментарий')
-                    ->limit(50)
-                    ->html()
-                    ->searchable(),
-                TextInputColumn::make('amount')
-                    ->label('Сумма донатов')
-                    ->type('number')
-                    ->sortable(),
-                SelectColumn::make('status')
-                    ->label('Статус')
-                    ->options([
-                        OperatorReport::STATUS_NOT_CALLED => __("operators.statuses.".OperatorReport::STATUS_NOT_CALLED),
-                        OperatorReport::STATUS_CALLED => __("operators.statuses.".OperatorReport::STATUS_CALLED),
-                        OperatorReport::STATUS_NOT_ACCEPTED => __("operators.statuses.".OperatorReport::STATUS_NOT_ACCEPTED),
-                    ]),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Дата рег.')
-                    ->dateTime()
-                    ->sortable(),
-            ])
+            ->columns(CallRow::make())
             ->filters([
-                SelectFilter::make('status')
-                    ->label('Статус')
-                    ->options([
-                        OperatorReport::STATUS_CALLED => __("operators.statuses.".OperatorReport::STATUS_CALLED),
-                        OperatorReport::STATUS_NOT_CALLED => __("operators.statuses.".OperatorReport::STATUS_NOT_CALLED),
-                        OperatorReport::STATUS_NOT_ACCEPTED => __("operators.statuses.".OperatorReport::STATUS_NOT_ACCEPTED),
-                    ]),
+//                SelectFilter::make('status')
+//                    ->label('Статус')
+//                    ->options([
+//                        OperatorReport::STATUS_CALLED => __("operators.statuses.".OperatorReport::STATUS_CALLED),
+//                        OperatorReport::STATUS_NOT_CALLED => __("operators.statuses.".OperatorReport::STATUS_NOT_CALLED),
+//                        OperatorReport::STATUS_NOT_ACCEPTED => __("operators.statuses.".OperatorReport::STATUS_NOT_ACCEPTED),
+//                    ]),
             ])
             ->actions([
+                OperatorArchiveAction::make(),
                 Tables\Actions\EditAction::make('comment')
                     ->label('Комментарий')
                     ->form([
@@ -98,16 +76,8 @@ class ColdBaseResource extends Resource
                     ])
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('to_archive')
-                    ->label('В архив')
-                    ->action(function (Collection $records) {
-                        foreach ($records as $record) {
-                            $item = OperatorReport::find($record['id']);
-                            $item->update([
-                                'isArchive' => true
-                            ]);
-                        }
-                    })
+                OperatorArchiveBulkAction::make(),
+                ReportBulkAction::make(),
             ]);
     }
 
@@ -116,9 +86,22 @@ class ColdBaseResource extends Resource
         return false;
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->notAnyArchive()
+            ->cold()
+            ->whereDoesntHave('reports')
+            ->where('operator_id', auth()->id());
+    }
+
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::cold()->count();
+        return static::getModel()
+            ::notAnyArchive()
+            ->cold()
+            ->whereDoesntHave('reports')
+            ->count();
     }
 
     public static function getPages(): array

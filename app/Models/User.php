@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\RateCast;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -46,6 +47,7 @@ class User extends Authenticatable implements FilamentUser
         'isOperator',
         'isManager',
         'city',
+        'manager_id',
     ];
 
 //    protected $withCount = ['ref.users'];
@@ -77,6 +79,44 @@ class User extends Authenticatable implements FilamentUser
         return $query->where('isArchive', false);
     }
 
+    public function scopeNotAdmin(Builder $query): Builder
+    {
+        return $query->where('isAdmin', false);
+    }
+
+    public function scopeNotOperator(Builder $query): Builder
+    {
+        return $query->where('isOperator', false);
+    }
+
+    public function scopeNotManager(Builder $query): Builder
+    {
+        return $query->where('isManager', false);
+    }
+
+    public function scopeNotCall(Builder $query): Builder
+    {
+        return $query->whereDoesntHave(
+            'call.operator',
+        )->whereDoesntHave(
+            'call',
+            fn (Builder $query) => $query->where('isManagerArchive', true)
+        );
+    }
+
+    public function scopeOperators(Builder $query): Builder
+    {
+        return $query->where('isOperator', true);
+    }
+
+    public function scopeActiveManagers(Builder $query): Builder
+    {
+        return $query->where([
+            ['isManagerActive', true],
+            ['isManager', true],
+        ]);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         $access = [
@@ -102,16 +142,6 @@ class User extends Authenticatable implements FilamentUser
     public function replenishments(): HasMany
     {
         return $this->hasMany(Order::class)->replenishments();
-    }
-
-    public function scopeOperators(Builder $query): Builder
-    {
-        return $query->where('isOperator', true);
-    }
-
-    public function scopeManagers(Builder $query): Builder
-    {
-        return $query->where('isManager', true);
     }
 
     public function withdraws(): HasMany
@@ -185,6 +215,18 @@ class User extends Authenticatable implements FilamentUser
             'user_id' => $this->id,
             'notification_id' => $notification_id
         ]);
+    }
+
+    public function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['first_name'] . ' ' . $attributes['last_name'],
+        );
+    }
+
+    public function call(): HasOne
+    {
+        return $this->hasOne(Call::class);
     }
 }
 
