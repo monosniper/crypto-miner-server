@@ -117,6 +117,13 @@ class User extends Authenticatable implements FilamentUser
         ]);
     }
 
+    public function scopeManagers(Builder $query): Builder
+    {
+        return $query->where([
+            ['isManager', true],
+        ]);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         $access = [

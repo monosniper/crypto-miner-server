@@ -96,14 +96,8 @@ class ManagerResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return User::managers();
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+        return parent::getEloquentQuery()
+            ->managers();
     }
 
     public static function getPages(): array
