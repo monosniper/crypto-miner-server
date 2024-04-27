@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('isHot')->default(true);
             $table->boolean('isArchive')->default(false);
             $table->boolean('isManagerArchive')->default(false);
+            $table->boolean('isNew')->default(true);
             $table->timestamps();
         });
     }

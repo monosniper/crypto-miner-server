@@ -2,8 +2,8 @@
 
 namespace App\Filament\Manager\Resources;
 
+use App\Enums\ReportStatus;
 use App\Filament\Actions\ArchiveAction;
-use App\Filament\Actions\ArchiveBulkAction;
 use App\Filament\Actions\SetOperatorBulkGroupAction;
 use App\Filament\Manager\Resources\ColdBaseResource\Pages;
 use App\Models\Call;
@@ -44,10 +44,10 @@ class ColdBaseResource extends Resource
                 //
             ])
             ->actions([
-                ArchiveAction::make(),
+                (new ArchiveAction())()
             ])
             ->bulkActions([
-                ArchiveBulkAction::make(),
+                (new ArchiveAction(isBulk: true))(),
                 SetOperatorBulkGroupAction::make(false)
                     ->label('Переназначить оператора'),
                 SetOperatorBulkGroupAction::make()
@@ -64,7 +64,10 @@ class ColdBaseResource extends Resource
     {
         return parent::getEloquentQuery()
             ->notAnyArchive()
-            ->whereDoesntHave('reports')
+            ->whereDoesntHave(
+                'reports',
+                fn (Builder $query) => $query->whereNot('status', ReportStatus::ACCEPTED)
+            )
             ->whereHas('user', fn(Builder $query) => $query->where('manager_id', auth()->id()))
             ->cold();
     }
@@ -73,7 +76,10 @@ class ColdBaseResource extends Resource
     {
         return static::getModel()
             ::notAnyArchive()
-            ->whereDoesntHave('reports')
+            ->whereDoesntHave(
+                'reports',
+                fn (Builder $query) => $query->whereNot('status', ReportStatus::ACCEPTED)
+            )
             ->whereHas('user', fn(Builder $query) => $query->where('manager_id', auth()->id()))
             ->cold()
             ->count();

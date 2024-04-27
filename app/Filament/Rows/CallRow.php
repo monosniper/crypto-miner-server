@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 
 class CallRow
@@ -22,7 +23,11 @@ class CallRow
                     'filament.columns.tel',
                     ['state' => $state],
                 ))
-                ->searchable(),
+                ->searchable(
+                    query: fn(Builder $query, string $search): Builder =>
+                        $query->whereHas('user', fn (Builder $query) =>
+                            $query->where('phone','%like%', $search))
+                ),
             TextColumn::make('comment')
                 ->label('Комментарий')
                 ->limit(30)

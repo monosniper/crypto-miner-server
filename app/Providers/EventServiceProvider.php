@@ -12,6 +12,7 @@ use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Preset;
 use App\Models\Ref;
+use App\Models\Report;
 use App\Models\Server;
 use App\Models\Session;
 use App\Models\User;
@@ -27,6 +28,7 @@ use App\Observers\NotificationObserver;
 use App\Observers\OrderObserver;
 use App\Observers\PresetObserver;
 use App\Observers\RefObserver;
+use App\Observers\ReportObserver;
 use App\Observers\ServerObserver;
 use App\Observers\SessionObserver;
 use App\Observers\UserObserver;
@@ -69,6 +71,7 @@ class EventServiceProvider extends ServiceProvider
         ConfigurationField::observe(ConfigurationGroupObserver::class);
         ConfigurationOption::observe(ConfigurationGroupObserver::class);
         Preset::observe(PresetObserver::class);
+        Report::observe(ReportObserver::class);
     }
 
     /**

@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Manager\Resources\ReportResource\Pages;
+namespace App\Filament\Call\Resources\ReportResource\Pages;
 
-use App\Enums\ReportStatus;
-use App\Filament\Actions\ProcessReportAction;
-use App\Filament\Manager\Resources\ReportResource;
+use App\Filament\Actions\RecallReportAction;
+use App\Filament\Call\Resources\ReportResource;
 use App\Filament\Rows\ReportRaw;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
@@ -20,9 +19,8 @@ class ViewReport extends ViewRecord
 
     protected function getHeaderActions(): array
     {
-        return $this->getRecord()->status === ReportStatus::SENT ? [
-            (new ProcessReportAction())(),
-            (new ProcessReportAction(false))(),
-        ] : [];
+        return [
+            (new RecallReportAction(isTable: false))()
+        ];
     }
 }

@@ -9,11 +9,4 @@ use Filament\Resources\Pages\ListRecords;
 class ListHotBases extends ListRecords
 {
     protected static string $resource = HotBaseResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
 }

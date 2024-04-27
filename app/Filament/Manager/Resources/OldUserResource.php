@@ -2,28 +2,26 @@
 
 namespace App\Filament\Manager\Resources;
 
-use App\Enums\ReportStatus;
 use App\Filament\Actions\ArchiveAction;
 use App\Filament\Actions\SetOperatorBulkGroupAction;
-use App\Filament\Manager\Resources\CallResource\Pages;
+use App\Filament\Manager\Resources\OldUserResource\Pages;
 use App\Models\User;
 use App\Queries\UserReportsQuery;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
-class CallResource extends Resource
+class OldUserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Новые';
+    protected static ?string $navigationLabel = 'Старые';
 
-    protected static ?string $label = 'Новые пользователи';
-    protected static ?string $pluralLabel = 'Новые пользователи';
+    protected static ?string $label = 'Старые пользователи';
+    protected static ?string $pluralLabel = 'Старые пользователи';
 
     protected static ?string $navigationGroup = 'Пользователи';
 
@@ -65,10 +63,12 @@ class CallResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->notStaff()
+            ->notAdmin()
+            ->notOperator()
+            ->notManager()
             ->where('manager_id', auth()->id())
-            ->whereNotIn('id', (new UserReportsQuery())())
-            ->notCall();
+            ->notCall()
+            ->whereIn('id', (new UserReportsQuery())());
     }
 
     public static function getNavigationBadge(): ?string
@@ -79,7 +79,7 @@ class CallResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCalls::route('/'),
+            'index' => Pages\ListOldUsers::route('/'),
         ];
     }
 }

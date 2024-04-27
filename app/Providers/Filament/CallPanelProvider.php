@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Call\Pages\Dashboard;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -36,15 +37,13 @@ class CallPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Emerald,
             ])
-            ->discoverResources(in: app_path('Filament/Call/Resources'), for: 'App\\Filament\\Call\\Resources')
-            ->discoverPages(in: app_path('Filament/Call/Pages'), for: 'App\\Filament\\Call\\Pages')
+            ->widgets([])
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->discoverResources(in: app_path('Filament/Call/Resources'), for: 'App\\Filament\\Call\\Resources')
+            ->discoverPages(in: app_path('Filament/Call/Pages'), for: 'App\\Filament\\Call\\Pages')
             ->discoverWidgets(in: app_path('Filament/Call/Widgets'), for: 'App\\Filament\\Call\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

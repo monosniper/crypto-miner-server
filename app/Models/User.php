@@ -74,6 +74,11 @@ class User extends Authenticatable implements FilamentUser
         'orders_sum_amount' => RateCast::class,
     ];
 
+    public function scopeNotStaff(Builder $query): Builder
+    {
+        return $query->notAdmin()->notOperator()->notManager();
+    }
+
     public function scopeNotArchive(Builder $query): Builder
     {
         return $query->where('isArchive', false);
@@ -234,6 +239,21 @@ class User extends Authenticatable implements FilamentUser
     public function call(): HasOne
     {
         return $this->hasOne(Call::class);
+    }
+
+    public function calls(): hasMany
+    {
+        return $this->hasMany(Call::class, 'operator_id');
+    }
+
+    public function myReports(): hasMany
+    {
+        return $this->hasMany(Report::class, 'operator_id');
+    }
+
+    public function reports(): hasManyThrough
+    {
+        return $this->hasManyThrough(Report::class, Call::class);
     }
 }
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Actions;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Illuminate\Database\Eloquent\Collection;
@@ -12,7 +13,8 @@ class SetOperatorBulkGroupAction
     static public function make($isHot = true, $isCall = true): BulkActionGroup {
         return BulkActionGroup::make([
             ...array_map(function (array $operator) use($isHot, $isCall) {
-                $full_name = $operator['first_name'] . ' ' . $operator['last_name'];
+                $full_name = $operator['first_name'] . ' ' . $operator['last_name']
+                    . ( Carbon::parse($operator['created_at'])->diffInWeeks(Carbon::now()) < 1 ? ' (Новый)' : '' );
 
                 return BulkAction::make('set_operator_'.($isHot ? 'hot' : 'cold').'_'.$operator['id'])
                     ->label($full_name)

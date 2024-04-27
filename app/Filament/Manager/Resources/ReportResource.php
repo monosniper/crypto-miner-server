@@ -4,10 +4,8 @@ namespace App\Filament\Manager\Resources;
 
 use App\Enums\ReportStatus;
 use App\Filament\Manager\Resources\ReportResource\Pages;
-use App\Models\Call;
 use App\Models\Report;
 use Filament\Resources\Resource;
-use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;

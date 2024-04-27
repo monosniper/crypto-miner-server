@@ -2,6 +2,7 @@
 
 namespace App\Filament\Call\Resources;
 
+use App\Filament\Actions\ArchiveAction;
 use App\Filament\Call\Resources\ArchiveResource\Pages;
 use App\Filament\Rows\CallRow;
 use App\Models\Call;
@@ -38,18 +39,18 @@ class ArchiveResource extends Resource
 //                        OperatorReport::STATUS_NOT_ACCEPTED => __("operators.statuses.".OperatorReport::STATUS_NOT_ACCEPTED),
 //                    ]),
             ])
-            ->actions([])
+            ->actions([
+                (new ArchiveAction(
+                    false,
+                    isOperator: true
+                ))()
+            ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('from_archive')
-                    ->label('Вытащить из архива')
-                    ->action(function (Collection $records) {
-                        foreach ($records as $record) {
-                            $item = OperatorReport::find($record['id']);
-                            $item->update([
-                                'isArchive' => false
-                            ]);
-                        }
-                    })
+                (new ArchiveAction(
+                    false,
+                    isOperator: true,
+                    isBulk: true,
+                ))(),
             ]);
     }
 

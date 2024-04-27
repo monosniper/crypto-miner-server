@@ -2,6 +2,7 @@
 
 namespace App\Filament\Call\Resources;
 
+use App\Filament\Actions\ArchiveAction;
 use App\Filament\Actions\OperatorArchiveAction;
 use App\Filament\Actions\OperatorArchiveBulkAction;
 use App\Filament\Actions\ReportBulkAction;
@@ -46,7 +47,7 @@ class HotBaseResource extends Resource
 //                    ->options(User::distinct()->whereNotNull('country_code')->pluck('country_code')->toArray())
             ])
             ->actions([
-                OperatorArchiveAction::make(),
+                (new ArchiveAction(isOperator: true))(),
                 Tables\Actions\EditAction::make('comment')
                     ->label('Комментарий')
                     ->form([
@@ -59,8 +60,11 @@ class HotBaseResource extends Resource
                     ])
             ])
             ->bulkActions([
-                OperatorArchiveBulkAction::make(),
-                ReportBulkAction::make(),
+                (new ArchiveAction(
+                    isOperator: true,
+                    isBulk: true
+                ))(),
+                (new ReportBulkAction())(),
             ]);
     }
 

@@ -15,6 +15,7 @@ readonly class OrderDto
         public OrderType $type,
         public OrderPurchaseType $purchase_type,
         public int $user_id,
+        public int $count,
         public ?int $purchase_id,
         public int $amount,
         public ?int $configuration_id,
@@ -24,6 +25,7 @@ readonly class OrderDto
     static public function from(Array $data): OrderDto
     {
         $type = $data['type'] ?? OrderType::PURCHASE;
+        $count = $data['count'] ?? 1;
         $purchase_type = $data['purchase_type'] ?? OrderPurchaseType::SERVER;
         $method = $data['method'] ?? OrderMethod::CRYPTO;
 
@@ -61,7 +63,8 @@ readonly class OrderDto
             type: $type,
             purchase_type: $purchase_type,
             user_id: auth()->id(),
-            purchase_id: $data['purchase_id'],
+            count: $count,
+            purchase_id: $data['purchase_id'] ?? null,
             amount: $amount ?? 0,
             configuration_id: $configuration?->id ?? $configuration_id ?? null,
             description: $description ?? '',

@@ -2,31 +2,16 @@
 
 namespace App\Filament\Call\Resources;
 
-use App\Enums\CallStatus;
-use App\Filament\Actions\OperatorArchiveAction;
-use App\Filament\Actions\OperatorArchiveBulkAction;
+use App\Filament\Actions\ArchiveAction;
 use App\Filament\Actions\ReportBulkAction;
 use App\Filament\Call\Resources\ColdBaseResource\Pages;
-use App\Filament\Call\Resources\ColdBaseResource\RelationManagers;
 use App\Filament\Rows\CallRow;
 use App\Models\Call;
-use App\Models\ColdBase;
-use App\Models\OperatorReport;
-use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\SelectColumn;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\TextInputColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\View\View;
 
 class ColdBaseResource extends Resource
 {
@@ -48,10 +33,6 @@ class ColdBaseResource extends Resource
         return $table
             ->poll()
             ->defaultPaginationPageOption(50)
-            ->modifyQueryUsing(fn (Builder $query) => $query
-                ->cold()
-                ->where('operator_id', auth()->id())
-            )
             ->columns(CallRow::make())
             ->filters([
 //                SelectFilter::make('status')
@@ -63,7 +44,7 @@ class ColdBaseResource extends Resource
 //                    ]),
             ])
             ->actions([
-                OperatorArchiveAction::make(),
+                (new ArchiveAction(isOperator: true))(),
                 Tables\Actions\EditAction::make('comment')
                     ->label('Комментарий')
                     ->form([
@@ -76,8 +57,11 @@ class ColdBaseResource extends Resource
                     ])
             ])
             ->bulkActions([
-                OperatorArchiveBulkAction::make(),
-                ReportBulkAction::make(),
+                (new ArchiveAction(
+                    isOperator: true,
+                    isBulk: true
+                ))(),
+                (new ReportBulkAction())(),
             ]);
     }
 

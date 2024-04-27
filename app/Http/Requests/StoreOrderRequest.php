@@ -62,6 +62,11 @@ class StoreOrderRequest extends FormRequest
                 'exclude_with:configuration',
                 'exists:presets,id',
             ],
+            'count' => [
+                'numeric',
+                'min:1',
+                'max:24',
+            ]
         ];
     }
 }

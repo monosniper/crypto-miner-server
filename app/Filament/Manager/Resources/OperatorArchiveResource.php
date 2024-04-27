@@ -50,12 +50,10 @@ class OperatorArchiveResource extends Resource
                 //
             ])
             ->actions([
-                OperatorUnarchiveAction::make(),
-                ArchiveAction::make()
+                (new ArchiveAction(isOperator: true))(),
             ])
             ->bulkActions([
-                OperatorUnarchiveBulkAction::make(),
-                ArchiveBulkAction::make(),
+                (new ArchiveAction(isOperator: true, isBulk: true))(),
             ]);
     }
 

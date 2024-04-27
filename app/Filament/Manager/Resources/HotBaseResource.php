@@ -44,10 +44,10 @@ class HotBaseResource extends Resource
                 //
             ])
             ->actions([
-                ArchiveAction::make(),
+                (new ArchiveAction())()
             ])
             ->bulkActions([
-                ArchiveBulkAction::make(),
+                (new ArchiveAction(isBulk: true))(),
                 SetOperatorBulkGroupAction::make()
                     ->label('Переназначить оператора'),
                 SetOperatorBulkGroupAction::make(false)

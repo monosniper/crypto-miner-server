@@ -2,6 +2,8 @@
 
 namespace App\Filament\Manager\Resources;
 
+use App\Filament\Actions\ArchiveAction;
+use App\Filament\Actions\ArchiveBulkAction;
 use App\Filament\Actions\UnarchiveAction;
 use App\Filament\Actions\UnarchiveBulkAction;
 use App\Filament\Manager\Resources\ArchiveResource\Pages;
@@ -41,10 +43,10 @@ class ArchiveResource extends Resource
                 //
             ])
             ->actions([
-                UnarchiveAction::make(),
+                (new ArchiveAction(false))()
             ])
             ->bulkActions([
-                UnarchiveBulkAction::make(),
+                (new ArchiveAction(false, isBulk: true))()
             ]);
     }
 

@@ -8,14 +8,11 @@ use App\Enums\OrderPurchaseType;
 use App\Enums\OrderStatus;
 use App\Enums\OrderType;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'amount',
@@ -26,6 +23,7 @@ class Order extends Model
         'status',
         'checkout_url',
         'method',
+        'count',
         'configuration_id',
     ];
 

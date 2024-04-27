@@ -4,7 +4,6 @@ namespace App\Filament\Call\Resources;
 
 use App\Enums\ReportStatus;
 use App\Filament\Actions\RecallReportAction;
-use App\Filament\Actions\RecallReportBulkAction;
 use App\Filament\Call\Resources\ReportResource\Pages;
 use App\Models\Report;
 use Filament\Resources\Resource;
@@ -54,10 +53,10 @@ class ReportResource extends Resource
                 //
             ])
             ->actions([
-                RecallReportAction::make(),
+                (new RecallReportAction())(),
             ])
             ->bulkActions([
-                RecallReportBulkAction::make()
+                (new RecallReportAction(true))(),
             ]);
     }
 
@@ -78,7 +77,7 @@ class ReportResource extends Resource
     {
         return [
             'index' => Pages\ListReports::route('/'),
-//            'view' => Pages\ViewReport::route('/{record}'),
+            'view' => Pages\ViewReport::route('/{record}'),
         ];
     }
 }

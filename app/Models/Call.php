@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CallStatus;
+use App\Enums\ReportStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ class Call extends Model
         'isHot',
         'isArchive',
         'isManagerArchive',
+        'isNew',
     ];
 
     protected $casts = [
@@ -28,6 +30,10 @@ class Call extends Model
 
     public function scopeArchive(Builder $query): Builder {
         return $query->where('isManagerArchive', true);
+    }
+
+    public function scopeForMonth(Builder $query): Builder {
+        return $query->whereDate('created_at', '>=', now()->subMonth());
     }
 
     public function scopeOperatorArchive(Builder $query): Builder {
@@ -54,6 +60,21 @@ class Call extends Model
             ['isManagerArchive', false],
             ['isArchive', false],
         ]);
+    }
+
+    public function scopeCalled(Builder $query): Builder {
+        return $query->whereIn('status', [
+            CallStatus::CALLED,
+            CallStatus::NOT_ACCEPTED,
+        ]);
+    }
+
+    public function scopeSuccess(Builder $query): Builder {
+        return $query->where('status', CallStatus::CALLED);
+    }
+
+    public function scopeNotSuccess(Builder $query): Builder {
+        return $query->where('status', CallStatus::NOT_ACCEPTED);
     }
 
     public function user(): BelongsTo

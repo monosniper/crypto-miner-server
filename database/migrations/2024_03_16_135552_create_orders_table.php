@@ -29,6 +29,7 @@ return new class extends Migration
             $table->enum('status', OrderStatus::values())->default(OrderStatus::PENDING);
             $table->string('checkout_url')->nullable();
             $table->bigInteger('purchase_id')->nullable();
+            $table->integer('count')->default(1);
             $table->timestamps();
         });
     }
