@@ -2,114 +2,59 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Events\SessionStart;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateSessionRequest;
-use App\Http\Requests\UpdateUserServerRequest;
-use App\Http\Resources\SessionResource;
+use App\Http\Requests\StoreSessionRequest;
 use App\Models\Server;
-use App\Models\ServerLog;
 use App\Models\Session;
-use App\Models\User;
-use App\Models\UserServer;
-use Carbon\Carbon;
+use App\Services\SessionService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class SessionController extends Controller
 {
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function __construct(
+        private readonly SessionService $service,
+    ) {}
+
+    public function store(StoreSessionRequest $request): JsonResponse
     {
-        $session = Session::create([
-            'user_id' => $request->input('user_id')
-        ]);
+        $result = $this->service->store($request->validated());
 
-        $session->coins()->sync($request->input('coins'));
-        $session->user_servers()->sync($request->input('servers'));
-
-        $servers = $session->user_servers;
-
-        foreach ($servers as $server) {
-            if($server->server_log_id) ServerLog::find($server->server_log_id)->delete();
-            $server->update([
-                'status' => Server::WORK_STATUS,
-                'server_log_id' => null
-            ]);
-        }
-
-        $user_id = $request->input('user_id');
-
-        Cache::forget('servers.'.$user_id);
-        Cache::remember('servers.'.$user_id, 86400, function () use($user_id) {
-            return User::find($user_id)->servers;
-        });
-
-        $isFirstStart = $session->user->isFirstStart;
-
-        if($isFirstStart) {
-            $session->user->update([
-                'isFirstStart' => false
-            ]);
-        }
-
-//        event(new SessionStart($session));
-
-        return response()->json([
-            'success' => true,
-            'data' => new SessionResource($session),
-            'isFirstStart' => $isFirstStart
-        ]);
+        return $this->sendResponse($result);
     }
 
-    public function updateUserServer(UserServer $userServer, Request $request): array
+    public function show($id): JsonResponse
     {
-        if($userServer->server_log_id) {
-            $log = $userServer->log;
-            $log->update([
-                'logs' => [...$log->logs, ...$request->logs],
-                'founds' => [...$log->founds, ...$request->founds],
-            ]);
-        } else {
-            $serverLog = ServerLog::create($request->all());
-            $userServer->server_log_id = $serverLog->id;
-        }
+        $result = $this->service->getOne($id);
 
-        $userServer->save();
-
-        $user = User::find($userServer->user_id);
-        Cache::put('sessions.'.$userServer->user_id, new SessionResource($user->session->load('user_servers.log')));
-
-        return ['success' => true];
+        return $this->sendResponse($result);
     }
 
-    public function cacheSession(Session $session): array
+    public function destroy(Session $session): JsonResponse
     {
-        Cache::put('sessions.'.$session->user_id, new SessionResource($session->load('user_servers.log')));
+        $result = $this->service->destroy($session);
 
-        return ['success' => true];
+        return $this->sendResponse($result);
     }
 
-    public function show(Session $session): SessionResource
+    public function update(Session $session, Request $request): JsonResponse
     {
-        return new SessionResource($session->load('coins'));
+        $result = $this->service->update($session, $request->validated());
+
+        return $this->sendResponse($result);
     }
 
-    public function destroy(Session $session): ?bool
+    public function updateServer(Server $server, Request $request): JsonResponse
     {
-        return $session->delete();
+        $result = $this->service->updateServer($server, $request);
+
+        return $this->sendResponse($result);
     }
 
-    public function update(Session $session, Request $request): array
+    public function cacheSession(Session $session): JsonResponse
     {
-        $logs = $session->servers->last()->logs;
+        $result = $this->service->cacheSession($session);
 
-        $session->update([
-            "logs" => $request->logs,
-            'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
-        ]);
-
-        Cache::put('sessions.'.$session->user->id, new SessionResource($session));
-
-        return ['success' => true];
+        return $this->sendResponse($result);
     }
 }

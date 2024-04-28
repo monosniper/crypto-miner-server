@@ -13,6 +13,7 @@ class Server extends Model
         'status',
         'configuration_id',
         'user_id',
+        'server_log_id',
     ];
 
     protected $casts = [

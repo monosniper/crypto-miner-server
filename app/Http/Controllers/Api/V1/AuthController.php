@@ -80,7 +80,7 @@ class AuthController extends Controller
         $user = User::where('token', $request->token)->first();
 
         return [
-            'success' => (bool)$user,
+            'success' => (bool) $user,
             'user_id' => $user?->id
         ];
     }

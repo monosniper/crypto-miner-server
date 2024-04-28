@@ -65,12 +65,13 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::post('orders/reject', [OrderController::class, 'markRejected']);
 
             // Account
-            Route::post('forgot-password', [AuthController::class, 'forgotPassword'])
-                ->middleware('throttle:3,1');
+            Route::middleware('throttle:verification')->group(function () {
+                Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+                Route::get('verificate/{code}', [AuthController::class, 'verificateMail']);
+            });
+
             Route::post('check-password-code', [AuthController::class, 'checkPasswordCode']);
             Route::put('update-password', [AuthController::class, 'updatePassword']);
-            Route::get('verificate/{code}', [AuthController::class, 'verificateMail'])
-                ->middleware('throttle:3,1');
             Route::post('check-username', [AuthController::class, 'checkUsername']);
 
             // Static
@@ -85,7 +86,7 @@ Route::domain('api.hogyx.io')->group(function () {
 
             // WebSockets
             Route::post('check', [AuthController::class, 'checkToken']);
-            Route::put('user/servers/{userServer}', [SessionController::class, 'updateUserServer']);
+            Route::put('user/servers/{server}', [SessionController::class, 'updateServer']);
             Route::put('user/sessions/{session}/cache', [SessionController::class, 'cacheSession']);
             Route::apiResource('sessions', SessionController::class);
         });
@@ -124,14 +125,22 @@ Route::prefix('v1')
 
                 Route::apiResource('orders', OrderController::class)
                     ->except('destroy');
+
+                Route::get('orders/payed/{order}', [OrderController::class, 'payed']);
             });
 
+        // Other
+        Route::post('orders/accept', [OrderController::class, 'markCompleted']);
+        Route::post('orders/reject', [OrderController::class, 'markRejected']);
+
         // Account
-        Route::post('forgot-password', [AuthController::class, 'forgotPassword'])
-            ->middleware('throttle:3,1');
+        Route::middleware('throttle:verification')->group(function () {
+            Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+            Route::get('verificate/{code}', [AuthController::class, 'verificateMail']);
+        });
+
         Route::post('check-password-code', [AuthController::class, 'checkPasswordCode']);
         Route::put('update-password', [AuthController::class, 'updatePassword']);
-        Route::get('verificate/{code}', [AuthController::class, 'verificateMail']);
         Route::post('check-username', [AuthController::class, 'checkUsername']);
 
         // Static
@@ -145,8 +154,8 @@ Route::prefix('v1')
             ->only('index', 'show');
 
         // WebSockets
-        Route::post('check-token', [AuthController::class, 'checkToken']);
-        Route::put('servers/{server}', [SessionController::class, 'updateUserServer']);
-        Route::put('sessions/{session}/cache', [SessionController::class, 'cacheSession']);
+        Route::post('check', [AuthController::class, 'checkToken']);
+        Route::put('user/servers/{server}', [SessionController::class, 'updateServer']);
+        Route::put('user/sessions/{session}/cache', [SessionController::class, 'cacheSession']);
         Route::apiResource('sessions', SessionController::class);
     });

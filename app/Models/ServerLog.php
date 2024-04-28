@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ServerLog extends Model
 {
-    use HasFactory;
-
     protected $table = 'server_logs';
 
     protected $fillable = [

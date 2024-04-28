@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Session extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'logs',
@@ -23,18 +22,18 @@ class Session extends Model
         );
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function coins(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function coins(): BelongsToMany
     {
         return $this->belongsToMany(Coin::class, 'sessions_coins');
     }
 
-    public function servers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function servers(): BelongsToMany
     {
-        return $this->belongsToMany(UserServer::class, 'sessions_servers');
+        return $this->belongsToMany(Server::class, 'session_server');
     }
 }

@@ -40,7 +40,7 @@ class PresetResource extends Resource
                     $select = Forms\Components\Select::make("configuration.value.{$field['slug']}")
                         ->label(__('configuration.fields.'.$field['slug']))
                         ->searchable(['slug'])
-                        ->default(fn (Preset $preset) => $preset->configuration->value[$field['slug']])
+//                        ->default(fn (Preset $preset) => $preset->configuration->value[$field['slug']])
                         ->options(function () use ($field) {
                             $options = [];
 

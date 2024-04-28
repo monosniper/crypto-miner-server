@@ -19,6 +19,7 @@ class ServerResource extends JsonResource
             'title' => $this->title,
             'status' => $this->status,
             'configuration' => $this->configuration->value,
+            'price' => $this->configuration->price,
         ];
     }
 }

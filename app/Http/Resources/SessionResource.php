@@ -17,8 +17,9 @@ class SessionResource extends JsonResource
         return [
             'id' => $this->id,
             'coins' => CoinResource::collection($this->coins),
-            'servers' => UserServerResource::collection($this->user_servers),
+            'servers' => ServerResource::collection($this->servers),
             'logs' => $this->logs,
+            'isFirstStart' => $this->user->isFirstStart,
             'end_at' => $this->end_at,
             'created_at' => $this->created_at,
         ];

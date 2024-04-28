@@ -57,9 +57,9 @@ class StoreOrderRequest extends FormRequest
             ],
             'purchase_id' => [
                 'required_without:type,purchase_type',
+                'exclude_with:configuration',
                 'required_if:type,'.OrderType::PURCHASE->value,
                 'required_if:purchase_type,'.OrderPurchaseType::SERVER->value,
-                'exclude_with:configuration',
                 'exists:presets,id',
             ],
             'count' => [
