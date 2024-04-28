@@ -56,7 +56,6 @@ class StoreOrderRequest extends FormRequest
                 'exists:configuration_options,title',
             ],
             'purchase_id' => [
-                'required_without:type,purchase_type',
                 'exclude_with:configuration',
                 'required_if:type,'.OrderType::PURCHASE->value,
                 'required_if:purchase_type,'.OrderPurchaseType::SERVER->value,
