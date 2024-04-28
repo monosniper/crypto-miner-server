@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ConfigurationOption extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'title',
         'price',

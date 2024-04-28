@@ -6,7 +6,9 @@ use App\Enums\OrderMethod;
 use App\Enums\OrderPurchaseType;
 use App\Enums\OrderType;
 use App\Models\ConfigurationField;
+use App\Rules\Exists;
 use App\Rules\KeysIn;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -50,11 +52,12 @@ class StoreOrderRequest extends FormRequest
                 'exclude_with:purchase_id',
                 'required_if:purchase_type,'.OrderPurchaseType::SERVER->value,
                 'array',
-                new KeysIn(ConfigurationField::whereNot('slug', 'type')->pluck('slug')->toArray())
+                new KeysIn(
+                    ConfigurationField::whereNot('slug', 'type')
+                        ->pluck('slug')->toArray()
+                )
             ],
-            'configuration.*' => [
-                'exists:configuration_options,title',
-            ],
+            'configuration.*' => new Exists,
             'purchase_id' => [
                 'exclude_with:configuration',
                 'required_if:type,'.OrderType::PURCHASE->value,

@@ -23,7 +23,7 @@ class KeysIn implements ValidationRule
         $unknownKeys = array_diff_key($value, $allowedKeys);
 
         // The validation only passes if there are no unknown keys
-        if(count($unknownKeys) === 0) {
+        if(count($unknownKeys) !== 0) {
             $fail(':attribute contains invalid fields');
         }
     }

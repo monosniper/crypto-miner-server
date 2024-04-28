@@ -14,4 +14,11 @@ readonly class ConfigurationDto
             value: $data['configuration']['value'],
         );
     }
+
+    static public function fromRequest(array $data): ConfigurationDto
+    {
+        return new self(
+            value: $data['configuration'],
+        );
+    }
 }

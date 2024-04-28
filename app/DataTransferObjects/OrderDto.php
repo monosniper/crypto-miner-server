@@ -40,7 +40,7 @@ readonly class OrderDto
                             $amount = $preset->price;
                             $configuration_id = $preset->configuration_id;
                         } else if (isset($data['configuration'])) {
-                            $configuration = Configuration::create((array) ConfigurationDto::from($data));
+                            $configuration = Configuration::create((array) ConfigurationDto::fromRequest($data));
                             $amount = $configuration->price;
                         }
 
