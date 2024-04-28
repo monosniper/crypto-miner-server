@@ -50,7 +50,7 @@ class StoreOrderRequest extends FormRequest
                 'exclude_with:purchase_id',
                 'required_if:purchase_type,'.OrderPurchaseType::SERVER->value,
                 'array',
-                new KeysIn(ConfigurationField::pluck('slug')->toArray())
+                new KeysIn(ConfigurationField::whereNot('slug', 'type')->pluck('slug')->toArray())
             ],
             'configuration.*' => [
                 'exists:configuration_options,title',
