@@ -24,15 +24,15 @@ readonly class OrderDto
 
     static public function from(Array $data): OrderDto
     {
-        $type = $data['type'] ?? OrderType::PURCHASE;
+        $type = $data['type'] ?? OrderType::PURCHASE->value;
         $count = $data['count'] ?? 1;
-        $purchase_type = $data['purchase_type'] ?? OrderPurchaseType::SERVER;
-        $method = $data['method'] ?? OrderMethod::CRYPTO;
+        $purchase_type = $data['purchase_type'] ?? OrderPurchaseType::SERVER->value;
+        $method = $data['method'] ?? OrderMethod::CRYPTO->value;
 
         switch ($type) {
-            case OrderType::PURCHASE:
+            case OrderType::PURCHASE->value:
                 switch ($purchase_type) {
-                    case OrderPurchaseType::SERVER:
+                    case OrderPurchaseType::SERVER->value:
                         $description = __('transactions.buy_server');
 
                         if (isset($data['purchase_id'])) {
@@ -45,14 +45,14 @@ readonly class OrderDto
                         }
 
                         break;
-                    case OrderPurchaseType::BALANCE:
+                    case OrderPurchaseType::BALANCE->value:
                         $description = __('transactions.replenishment');
                         $amount = $data['amount'];
 
                         break;
                 }
                 break;
-            case OrderType::DONATE:
+            case OrderType::DONATE->value:
                 $amount = $data['amount'];
                 $description = __('transactions.donate');
                 break;
