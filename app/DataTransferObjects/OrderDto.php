@@ -12,8 +12,8 @@ readonly class OrderDto
 {
     public function __construct(
         public OrderMethod|string $method,
-        public OrderType $type,
-        public OrderPurchaseType $purchase_type,
+        public OrderType|string $type,
+        public OrderPurchaseType|string $purchase_type,
         public int $user_id,
         public int $count,
         public ?int $purchase_id,
