@@ -11,7 +11,7 @@ use App\Models\Preset;
 readonly class OrderDto
 {
     public function __construct(
-        public OrderMethod $method,
+        public OrderMethod|string $method,
         public OrderType $type,
         public OrderPurchaseType $purchase_type,
         public int $user_id,

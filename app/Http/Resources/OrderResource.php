@@ -23,6 +23,7 @@ class OrderResource extends JsonResource
             'description' => $this->description,
             'purchase_type' => $this->purchase_type,
             'purchase_id' => $this->purchase_id,
+            'configuration' => $this->configuration?->value,
             'checkout_url' => $this->checkout_url,
         ];
     }

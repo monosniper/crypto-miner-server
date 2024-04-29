@@ -57,4 +57,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function configuration(): BelongsTo
+    {
+        return $this->belongsTo(Configuration::class);
+    }
 }
