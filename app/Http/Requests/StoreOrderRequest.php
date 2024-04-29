@@ -58,6 +58,8 @@ class StoreOrderRequest extends FormRequest
                 )
             ],
             'configuration.*' => new Exists,
+            'configuration.coins' => ['required', 'array'],
+            'configuration.coins.*' => 'exists:coins,id',
             'purchase_id' => [
                 'exclude_with:configuration',
                 'required_if:type,'.OrderType::PURCHASE->value,
