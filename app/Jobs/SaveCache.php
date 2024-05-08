@@ -20,6 +20,7 @@ class SaveCache implements ShouldQueue
     public ?string $path;
     public mixed $value;
     public bool $delete;
+    public int $single;
     public ?User $user;
     protected CacheService $service;
 
@@ -34,6 +35,7 @@ class SaveCache implements ShouldQueue
         $this->value = $this->options['value'];
         $this->user = $this->options['user'] ?? null;
         $this->delete = $this->options['delete'] ?? false;
+        $this->single = $this->options['single'] ?? 0;
 
         $this->service = new CacheService();
     }
@@ -44,8 +46,14 @@ class SaveCache implements ShouldQueue
     public function handle(): void
     {
         $path = $this->path ?? $this->name->value;
-        $value = $this->value ?: $this->service->getDefaultValue($this->name, $this->user)();
+        $value = $this->value ?: (
+            $this->single
+                ? $this->service->getDefaultSingleValue($this->name, $this->single)()
+                : $this->service->getDefaultValue($this->name, $this->user)()
+        );
+
         Cache::forget($path);
+
         if(!$this->delete) Cache::put($path, $value, $this->service->ttl);
     }
 }

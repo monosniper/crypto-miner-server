@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSessionRequest;
+use App\Http\Requests\UpdateServerLogRequest;
+use App\Http\Requests\UpdateSessionRequest;
 use App\Models\Server;
 use App\Models\Session;
 use App\Services\SessionService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
@@ -37,16 +38,16 @@ class SessionController extends Controller
         return $this->sendResponse($result);
     }
 
-    public function update(Session $session, Request $request): JsonResponse
+    public function update(Session $session, UpdateSessionRequest $request): JsonResponse
     {
         $result = $this->service->update($session, $request->validated());
 
         return $this->sendResponse($result);
     }
 
-    public function updateServer(Server $server, Request $request): JsonResponse
+    public function updateServer(Server $server, UpdateServerLogRequest $request): JsonResponse
     {
-        $result = $this->service->updateServer($server, $request);
+        $result = $this->service->updateServer($server, $request->validated());
 
         return $this->sendResponse($result);
     }

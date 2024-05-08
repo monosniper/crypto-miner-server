@@ -8,7 +8,6 @@ use App\Enums\OrderType;
 use App\Models\ConfigurationField;
 use App\Rules\Exists;
 use App\Rules\KeysIn;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -2,15 +2,14 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\ServerLogDto;
 use App\Enums\CacheName;
-use App\Enums\ServerStatus;
 use App\Http\Resources\SessionResource;
 use App\Models\Server;
 use App\Models\ServerLog;
 use App\Models\Session;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 
@@ -29,18 +28,20 @@ class SessionService extends CachableService
         $servers = $session->servers;
 
         foreach ($servers as $server) {
-            if($server->server_log_id) $server->log->delete();
-
-            $server->update([
-                'status' => ServerStatus::WORK,
-                'server_log_id' => null
-            ]);
+            $server->log?->delete();
+            $server->start();
         }
 
         $this->service::saveFor(
             $this->cacheName,
             $session->id,
             $session
+        );
+
+        $this->service::saveFor(
+            CacheName::USER,
+            $session->user_id,
+            single: $session->user_id,
         );
 
         // event(new SessionStart($session));
@@ -62,25 +63,26 @@ class SessionService extends CachableService
         return true;
     }
 
-    public function updateServer(Server $server, Request $request)
+    public function updateServer(Server $server, $data): true
     {
         if($server->server_log_id) {
             $log = $server->log;
             $log->update([
-                'logs' => [...$log->logs, ...$request->logs],
-                'founds' => [...$log->founds, ...$request->founds],
+                'logs' => [...$log->logs, ...$data['logs']],
+                'founds' => [...$log->founds, ...$data['founds']],
             ]);
         } else {
-            $serverLog = ServerLog::create($request->all());
+            $serverLog = ServerLog::create((array) ServerLogDto::from($data));
             $server->server_log_id = $serverLog->id;
         }
 
         $server->save();
 
         $user = User::find($server->user_id);
-        Cache::put('sessions.'.$server->user_id, new SessionResource($user->session->load('user_servers.log')));
 
-        return ['success' => true];
+        $this->service::saveFor($this->cacheName, $user->session->id);
+
+        return true;
     }
 
     public function cacheSession(Session $session)

@@ -40,7 +40,7 @@ class CacheService
             [ CacheName::ORDERS, fn () => $user?->orders ],
             [ CacheName::WALLET, fn () => $user?->wallet ],
             [ CacheName::SERVERS, fn () => $user?->servers ],
-            [ CacheName::SESSION, fn () => $user?->session()->with('log')->first() ],
+            [ CacheName::SESSION, fn () => $user?->session()->first() ],
             [ CacheName::USER_SERVERS, fn () => $user?->servers()->with('server')->get() ],
             [ CacheName::WITHDRAWS, fn () => $user?->withdraws()->latest()->get() ],
             [ CacheName::CONVERTATIONS, fn () => $user?->convertations()->latest()->get() ],
@@ -56,7 +56,7 @@ class CacheService
             [ CacheName::ORDERS, fn () => Order::find($id) ],
             [ CacheName::USER_SERVERS, fn () => UserServer::find($id) ],
             [ CacheName::USER_NFTS, fn () => Nft::find($id) ],
-            [ CacheName::SERVERS, fn () => Server::with('configuration')->find($id) ],
+            [ CacheName::SERVERS, fn () => Server::with('configuration', 'log')->find($id) ],
             [ CacheName::USER, fn () => User::withCount('session')->find($id) ],
             [ CacheName::USER_REF, fn () => RefDto::from((new RefQuery)($id)) ],
         ]);
@@ -80,13 +80,14 @@ class CacheService
         ]);
     }
 
-    static public function saveFor(CacheName $cacheName, $id, $value = null): void
+    static public function saveFor(CacheName $cacheName, $id, $value = null, $single = false): void
     {
         SaveCache::dispatch([
             'path' => $cacheName->value . '.' . $id,
             'name' => $cacheName,
             'value' => $value,
             'user' => auth()->user(),
+            'single' => $single,
         ]);
     }
 

@@ -20,6 +20,14 @@ class Server extends Model
         'status' => ServerStatus::class
     ];
 
+    public function start(): void
+    {
+        $this->update([
+            'status' => ServerStatus::WORK,
+            'server_log_id' => null,
+        ]);
+    }
+
     public function configuration(): BelongsTo
     {
         return $this->belongsTo(Configuration::class);
@@ -28,5 +36,10 @@ class Server extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function log(): BelongsTo
+    {
+        return $this->belongsTo(ServerLog::class, 'server_log_id');
     }
 }

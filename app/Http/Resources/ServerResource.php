@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ServerLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,8 @@ class ServerResource extends JsonResource
             'status' => $this->status,
             'configuration' => $this->configuration->value,
             'price' => $this->configuration->price,
+            'logs' => $this->whenLoaded('log', fn (ServerLog $log) => $log->logs),
+            'founds' => $this->whenLoaded('log', fn (ServerLog $log) => $log->founds),
         ];
     }
 }
