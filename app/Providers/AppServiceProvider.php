@@ -34,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(CacheService::class);
+//        $this->app->bind(Miner::class, DefaultMiner::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ServerStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Server extends Model
 {
@@ -36,6 +37,11 @@ class Server extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function coins(): BelongsToMany
+    {
+        return $this->belongsToMany(Coin::class, 'server_coin');
     }
 
     public function log(): BelongsTo

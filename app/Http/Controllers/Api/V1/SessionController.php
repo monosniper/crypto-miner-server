@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateSessionRequest;
 use App\Models\Server;
 use App\Models\Session;
 use App\Services\SessionService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class SessionController extends Controller
@@ -19,7 +20,11 @@ class SessionController extends Controller
 
     public function store(StoreSessionRequest $request): JsonResponse
     {
-        $result = $this->service->store($request->validated());
+        try {
+            $result = $this->service->store($request->validated());
+        } catch (Exception $exception) {
+            return $this->sendError($exception);
+        }
 
         return $this->sendResponse($result);
     }

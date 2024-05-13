@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CoinController;
 use App\Http\Controllers\Api\V1\ConfigurationController;
 use App\Http\Controllers\Api\V1\ConvertationController;
+use App\Http\Controllers\Api\V1\FeedbackController;
 use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\OrderController;
@@ -61,6 +62,7 @@ Route::domain('api.hogyx.io')->group(function () {
                 });
 
             // Other
+            Route::post('feedback', [FeedbackController::class, 'store']);
             Route::post('orders/accept', [OrderController::class, 'markCompleted']);
             Route::post('orders/reject', [OrderController::class, 'markRejected']);
 
@@ -99,6 +101,8 @@ Route::prefix('v1')
         Route::middleware(AuthenticateOnceWithBasicAuth::class)
             ->prefix('me')
             ->group(callback: function () {
+                Route::post('mine', [SessionController::class, 'store']);
+
                 Route::put('/', [UserController::class, 'update']);
                 Route::post('transfer', [TransferController::class, 'store']);
 
@@ -130,6 +134,7 @@ Route::prefix('v1')
             });
 
         // Other
+        Route::post('feedback', [FeedbackController::class, 'store']);
         Route::post('orders/accept', [OrderController::class, 'markCompleted']);
         Route::post('orders/reject', [OrderController::class, 'markRejected']);
 
