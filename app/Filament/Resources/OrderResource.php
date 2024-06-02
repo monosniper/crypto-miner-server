@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\OrderMethod;
 use App\Enums\OrderPurchaseType;
 use App\Enums\OrderStatus;
 use App\Enums\OrderType;
@@ -32,10 +33,10 @@ class OrderResource extends Resource
                     ->searchable(),
                 TextColumn::make('type')
                     ->label('Тип')
-                    ->formatStateUsing(fn (string $state): string => __("orders.types.{$state}")),
+                    ->formatStateUsing(fn (OrderType $state): string => __("orders.types.{$state->value}")),
                 TextColumn::make('purchase_type')
                     ->label('Тип покупки')
-                    ->formatStateUsing(fn (string $state): string => __("orders.purchase_types.{$state}")),
+                    ->formatStateUsing(fn (OrderPurchaseType $state): string => __("orders.purchase_types.{$state->value}")),
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Сумма')
                     ->numeric()
@@ -43,7 +44,7 @@ class OrderResource extends Resource
                     ->sortable(),
                 TextColumn::make('method')
                     ->label('Способ оплаты')
-                    ->formatStateUsing(fn (string $state): string => __("orders.methods.{$state}")),
+                    ->formatStateUsing(fn (OrderMethod $state): string => __("orders.methods.{$state->value}")),
                 TextColumn::make('status')
                     ->label('Статус')
                     ->badge()
@@ -52,7 +53,7 @@ class OrderResource extends Resource
                         OrderStatus::PENDING->value => 'gray',
                         OrderStatus::FAILED->value => 'danger',
                     })
-                    ->formatStateUsing(fn (string $state): string => __("orders.statuses.{$state}")),
+                    ->formatStateUsing(fn (OrderStatus $state): string => __("orders.statuses.{$state->value}")),
             ])
             ->filters([
                 SelectFilter::make('type')
