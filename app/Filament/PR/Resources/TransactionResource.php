@@ -4,7 +4,7 @@ namespace App\Filament\PR\Resources;
 
 use App\Filament\PR\Resources\TransactionResource\Pages;
 use App\Filament\PR\Resources\TransactionResource\RelationManagers;
-use App\Models\Transaction;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TransactionResource extends Resource
 {
-    protected static ?string $model = Transaction::class;
+    protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -36,34 +36,34 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label('Пользователь')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('amount')
-                    ->label('Сумма')
-                    ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Описание')
-                ->formatStateUsing(fn (string $state): string => __($state)),
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Тип')
-                    ->formatStateUsing(fn (string $state): string => __("transactions.types.{$state}"))
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('purchase_type')
-                    ->label('Тип покупки')
-                    ->formatStateUsing(fn (string $state): string => __("transactions.purchase_types.{$state}"))
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Тип')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        Transaction::COMPLETED => 'success',
-                        Transaction::FAILED => 'danger',
-                        Transaction::PENDING => 'warning',
-                    })
-                    ->formatStateUsing(fn (string $state): string => __("transactions.statuses.{$state}"))
-                    ->searchable(),
+//                Tables\Columns\TextColumn::make('user.name')
+//                    ->label('Пользователь')
+//                    ->searchable(),
+//                Tables\Columns\TextColumn::make('amount')
+//                    ->label('Сумма')
+//                    ->money()
+//                    ->sortable(),
+//                Tables\Columns\TextColumn::make('description')
+//                    ->label('Описание')
+//                ->formatStateUsing(fn (string $state): string => __($state)),
+//                Tables\Columns\TextColumn::make('type')
+//                    ->label('Тип')
+//                    ->formatStateUsing(fn (string $state): string => __("transactions.types.{$state}"))
+//                    ->searchable(),
+//                Tables\Columns\TextColumn::make('purchase_type')
+//                    ->label('Тип покупки')
+//                    ->formatStateUsing(fn (string $state): string => __("transactions.purchase_types.{$state}"))
+//                    ->searchable(),
+//                Tables\Columns\TextColumn::make('status')
+//                    ->label('Тип')
+//                    ->badge()
+//                    ->color(fn (string $state): string => match ($state) {
+//                        Transaction::COMPLETED => 'success',
+//                        Transaction::FAILED => 'danger',
+//                        Transaction::PENDING => 'warning',
+//                    })
+//                    ->formatStateUsing(fn (string $state): string => __("transactions.statuses.{$state}"))
+//                    ->searchable(),
             ])
             ->filters([
                 //
