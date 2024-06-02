@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\OrderPurchaseType;
+use App\Enums\OrderStatus;
+use App\Enums\OrderType;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -20,14 +22,6 @@ class OrderResource extends Resource
     protected static ?string $navigationLabel = 'Счета';
 
     protected static ?string $navigationGroup = 'Статистика';
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                //
-            ]);
-    }
 
     public static function table(Table $table): Table
     {
@@ -54,9 +48,9 @@ class OrderResource extends Resource
                     ->label('Статус')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        Order::COMPLETED => 'success',
-                        Order::PENDING => 'gray',
-                        Order::FAILED => 'danger',
+                        OrderStatus::COMPLETED->value => 'success',
+                        OrderStatus::PENDING->value => 'gray',
+                        OrderStatus::FAILED->value => 'danger',
                     })
                     ->formatStateUsing(fn (string $state): string => __("orders.statuses.{$state}")),
             ])
@@ -64,21 +58,21 @@ class OrderResource extends Resource
                 SelectFilter::make('type')
                     ->label('Тип')
                     ->options([
-                        Order::DONATE => __("orders.types." . Order::DONATE),
-                        Order::PURCHASE => __("orders.types." . Order::PURCHASE),
+                        OrderType::DONATE->value => __("orders.types." . OrderType::DONATE->value),
+                        OrderType::PURCHASE->value => __("orders.types." . OrderType::PURCHASE->value),
                     ]),
                 SelectFilter::make('purchase_type')
                     ->label('Тип покупки')
                     ->options([
-                        Order::SERVER => __("orders.purchase_types." . Order::SERVER),
-                        Order::BALANCE => __("orders.purchase_types." . Order::BALANCE),
+                        OrderPurchaseType::SERVER->value => __("orders.purchase_types." . OrderPurchaseType::SERVER->value),
+                        OrderPurchaseType::BALANCE->value => __("orders.purchase_types." . OrderPurchaseType::BALANCE->value),
                     ]),
                 SelectFilter::make('status')
                     ->label('Статус')
                     ->options([
-                        Order::COMPLETED => __("orders.statuses." . Order::COMPLETED),
-                        Order::PENDING => __("orders.statuses." . Order::PENDING),
-                        Order::FAILED => __("orders.statuses." . Order::FAILED),
+                        OrderStatus::COMPLETED->value => __("orders.statuses." . OrderStatus::COMPLETED->value),
+                        OrderStatus::PENDING->value => __("orders.statuses." . OrderStatus::PENDING->value),
+                        OrderStatus::FAILED->value => __("orders.statuses." . OrderStatus::FAILED->value),
                     ])
             ])
             ->actions([
@@ -95,7 +89,6 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
             'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
