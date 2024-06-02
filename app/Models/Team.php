@@ -38,7 +38,8 @@ class Team extends Model
         $total = 0;
 
         foreach ($users as $user) {
-            $total += $user->donates->sum('amount');
+//            $total += $user->donates->sum('amount');
+            $total += $user->orders_sum_amount;
         }
 
         return $total;

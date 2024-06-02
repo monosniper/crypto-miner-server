@@ -53,11 +53,14 @@ class TeamResource extends Resource
                     ->label("Кол-во приглашенных")
                     ->sortable()
                     ->state(fn (Team $team) => $team->getTotalRefsCount()),
-                Tables\Columns\TextColumn::make('donates_total')
-                    ->label("Сумма пополнений")
-                    ->money()
-                    ->state(fn (Team $team) => $team->totalDonates())
-                    ->sortable(),
+//                Tables\Columns\TextColumn::make('orders_sum_amount')
+//                    ->label("Сумма пополнений")
+//                    ->money()
+//                    ->sortable(query: fn (Builder $query) => $query->with(['users' => function ($query) {
+//                        $query->withSum(['orders' => fn($query) => $query->completed()], 'amount');
+//                    }]))
+//                    ->state(fn (Team $team) => $team->totalDonates())
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('members_count')
                     ->label("Кол-во участников")
                     ->sortable()
@@ -82,12 +85,12 @@ class TeamResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+//    public static function getEloquentQuery(): Builder
+//    {
+//        return parent::getEloquentQuery()->with(['user', 'users' => function($query) {
+//            $query->withSum(['orders' => fn($query) => $query->completed()], 'amount');
+//        }]);
+//    }
 
     public static function getPages(): array
     {
