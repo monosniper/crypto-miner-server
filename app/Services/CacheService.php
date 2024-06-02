@@ -52,12 +52,12 @@ class CacheService
     protected function single(int $id): ObjectArray
     {
         return new ObjectArray([
-            [ CacheName::ARTICLES, fn () => Article::find($id) ],
-            [ CacheName::ORDERS, fn () => Order::find($id) ],
-            [ CacheName::USER_SERVERS, fn () => UserServer::find($id) ],
-            [ CacheName::USER_NFTS, fn () => Nft::find($id) ],
-            [ CacheName::SERVERS, fn () => Server::with('configuration', 'log')->find($id) ],
-            [ CacheName::USER, fn () => User::withCount('session')->find($id) ],
+            [ CacheName::ARTICLES, fn () => Article::findOrFail($id) ],
+            [ CacheName::ORDERS, fn () => Order::findOrFail($id) ],
+            [ CacheName::USER_SERVERS, fn () => UserServer::findOrFail($id) ],
+            [ CacheName::USER_NFTS, fn () => Nft::findOrFail($id) ],
+            [ CacheName::SERVERS, fn () => Server::with('configuration', 'log')->findOrFail($id) ],
+            [ CacheName::USER, fn () => User::withCount('session')->findOrFail($id) ],
             [ CacheName::USER_REF, fn () => RefDto::from((new RefQuery)($id)) ],
         ]);
     }

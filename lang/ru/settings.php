@@ -22,4 +22,22 @@ return [
             'description' => 'Текст партнертсва описание 2',
         ]
     ],
+
+    'coin_prices.1' => 'Цена USDT (Конфигуратор)',
+    'coin_prices.2' => 'Цена BTC (Конфигуратор)',
+    'coin_prices.3' => 'Цена ETH (Конфигуратор)',
+    'coin_prices.4' => 'Цена BNB (Конфигуратор)',
+    'coin_prices.5' => 'Цена XRP (Конфигуратор)',
+    'coin_prices.6' => 'Цена USDC (Конфигуратор)',
+    'coin_prices.7' => 'Цена SOL (Конфигуратор)',
+    'coin_prices.8' => 'Цена ADA (Конфигуратор)',
+    'coin_prices.9' => 'Цена DOGE (Конфигуратор)',
+    'coin_prices.10' => 'Цена TRX (Конфигуратор)',
+    'coin_prices.11' => 'Цена TON (Конфигуратор)',
+    'coin_prices.12' => 'Цена DAI (Конфигуратор)',
+    'coin_prices.13' => 'Цена MATIC (Конфигуратор)',
+    'coin_prices.14' => 'Цена DAT (Конфигуратор)',
+    'coin_prices.15' => 'Цена LTC (Конфигуратор)',
+    'coin_prices.16' => 'Цена WBTC (Конфигуратор)',
+    'coin_prices.17' => 'Цена XLM (Конфигуратор)',
 ];

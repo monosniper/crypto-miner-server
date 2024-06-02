@@ -78,6 +78,7 @@ class SaveSettings extends Component implements HasForms
 
         return $form
             ->schema($schema)
+            ->columns(3)
             ->statePath('data');
     }
 

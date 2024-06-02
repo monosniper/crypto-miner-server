@@ -18,4 +18,5 @@ class Settings extends Page
     protected static ?string $title = 'Настройки';
 
     protected static ?string $navigationLabel = 'Настройки';
+
 }
