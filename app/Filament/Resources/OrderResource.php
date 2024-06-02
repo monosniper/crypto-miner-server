@@ -48,7 +48,7 @@ class OrderResource extends Resource
                 TextColumn::make('status')
                     ->label('Статус')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (OrderStatus $state): string => match ($state->value) {
                         OrderStatus::COMPLETED->value => 'success',
                         OrderStatus::PENDING->value => 'gray',
                         OrderStatus::FAILED->value => 'danger',
