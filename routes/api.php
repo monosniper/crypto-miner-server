@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\NftController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\PresetController;
+use App\Http\Controllers\Api\V1\QuizController;
 use App\Http\Controllers\Api\V1\ReplenishmentController;
 use App\Http\Controllers\Api\V1\ServerController;
 use App\Http\Controllers\Api\V1\UserNftController;
@@ -62,6 +63,7 @@ Route::domain('api.hogyx.io')->group(function () {
                 });
 
             // Other
+            Route::post('quiz', [QuizController::class, 'store'])->middleware('throttle:1,1');
             Route::post('feedback', [FeedbackController::class, 'store']);
             Route::post('orders/accept', [OrderController::class, 'markCompleted']);
             Route::post('orders/reject', [OrderController::class, 'markRejected']);
@@ -134,6 +136,7 @@ Route::prefix('v1')
             });
 
         // Other
+        Route::post('quiz', [QuizController::class, 'store'])->middleware('throttle:1,1');
         Route::post('feedback', [FeedbackController::class, 'store']);
         Route::post('orders/accept', [OrderController::class, 'markCompleted']);
         Route::post('orders/reject', [OrderController::class, 'markRejected']);

@@ -10,6 +10,12 @@ return [
         'project_code' =>  env('PAYMENT_BOT_PROJECT_CODE', ''),
     ],
 
+    'admin_bot_token' => env('ADMIN_BOT_TOKEN', ''),
+    'admin_tg_ids' => [
+        269530936,
+        531897964,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
