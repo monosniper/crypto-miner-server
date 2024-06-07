@@ -27,7 +27,7 @@ class StoreSessionRequest extends FormRequest
             'coins.*' => ['exists:coins,id'],
             'servers' => ['required', 'array'],
             'servers.*' => ['exists:servers,id'],
-//            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['required', 'exists:users,id'],
         ];
     }
 }

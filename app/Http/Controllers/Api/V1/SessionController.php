@@ -20,11 +20,12 @@ class SessionController extends Controller
 
     public function store(StoreSessionRequest $request): JsonResponse
     {
-        try {
-            $result = $this->service->store($request->validated());
-        } catch (Exception $exception) {
-            return $this->sendError($exception);
-        }
+        $result = $this->service->store($request->validated());
+//        try {
+//            $result = $this->service->store($request->validated());
+//        } catch (Exception $exception) {
+//            return $this->sendError($exception);
+//        }
 
         return $this->sendResponse($result);
     }
