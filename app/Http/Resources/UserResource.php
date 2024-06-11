@@ -27,7 +27,7 @@ class UserResource extends JsonResource
             'isVerificated' => $this->isVerificated,
             'session' => (bool) $this->session_count,
             'coin_positions' => $this->coin_positions,
-            'total_deposit' => $this->replenishments_sum_amount,
+            'total_deposit' => $this->finished_replenishments_sum_amount,
         ];
     }
 }

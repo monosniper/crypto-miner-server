@@ -156,6 +156,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Order::class)->replenishments();
     }
 
+    public function finishedReplenishments(): HasMany
+    {
+        return $this->hasMany(Order::class)->replenishments()->completed();
+    }
+
     public function withdraws(): HasMany
     {
         return $this->hasMany(Withdraw::class);

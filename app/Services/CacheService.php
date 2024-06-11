@@ -57,7 +57,7 @@ class CacheService
             [ CacheName::USER_SERVERS, fn () => UserServer::findOrFail($id) ],
             [ CacheName::USER_NFTS, fn () => Nft::findOrFail($id) ],
             [ CacheName::SERVERS, fn () => Server::with('configuration', 'log')->findOrFail($id) ],
-            [ CacheName::USER, fn () => User::withCount('session')->withSum('replenishments', 'amount')->findOrFail($id) ],
+            [ CacheName::USER, fn () => User::withCount('session')->withSum('finishedReplenishments', 'amount')->findOrFail($id) ],
             [ CacheName::USER_REF, fn () => RefDto::from((new RefQuery)($id)) ],
         ]);
     }
