@@ -9,10 +9,11 @@ class QuizService
     public function store(array $data): bool
     {
         SendQuiz::dispatch([
-            'Сколько готовы инвестировать' => $data['questions']['invest'],
             'Сколько готовы уделять времени' => $data['questions']['time'],
             'Опыт инвестиций' => $data['questions']['experience'],
             'Краткосрочно/Долгосрочно' => $data['questions']['short_long'],
+            'Сколько вы хотите зарабатывать в день?' => $data['questions']['day_income'],
+            'Сколько готовы инвестировать' => $data['questions']['invest'],
             'Имя' => $data['name'],
             'Номер' => $data['phone'],
             'Почта' => $data['email'],

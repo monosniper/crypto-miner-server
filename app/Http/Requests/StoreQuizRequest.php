@@ -27,6 +27,7 @@ class StoreQuizRequest extends FormRequest
             'phone' => ['required', 'string'],
             'email' => ['required', 'string', 'email'],
             'questions' => ['required', 'array'],
+            'questions.day_income' => ['required'],
             'questions.invest' => ['required'],
             'questions.time' => ['required'],
             'questions.experience' => ['required'],
