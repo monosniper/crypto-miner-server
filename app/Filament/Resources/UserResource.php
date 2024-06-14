@@ -49,7 +49,6 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->label('Пароль')
                     ->password()
-                    ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
                     ->label('Номер'),
