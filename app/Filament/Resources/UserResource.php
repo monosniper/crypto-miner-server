@@ -29,9 +29,18 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Имя')
+                    ->label('Ник')
                     ->required()
                     ->maxLength(191),
+
+                Forms\Components\TextInput::make('first_name')
+                    ->label('Имя')
+                    ->maxLength(191),
+
+                Forms\Components\TextInput::make('last_name')
+                    ->label('Фамилия')
+                    ->maxLength(191),
+
                 Forms\Components\TextInput::make('email')
                     ->label('Почта')
                     ->email()
@@ -42,6 +51,11 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(191),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Номер'),
+                Forms\Components\Toggle::make('isVerificated')
+                    ->label('Верифицирован')
+                    ->required(),
                 Forms\Components\Toggle::make('isAdmin')
                     ->label('Админ')
                     ->required(),
