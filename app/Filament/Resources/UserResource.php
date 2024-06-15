@@ -46,10 +46,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('password')
-                    ->label('Пароль')
-                    ->password()
-                    ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
                     ->label('Номер'),
                 Forms\Components\Toggle::make('isVerificated')
