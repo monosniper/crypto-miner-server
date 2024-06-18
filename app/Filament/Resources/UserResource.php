@@ -35,10 +35,12 @@ class UserResource extends Resource
 
                 Forms\Components\TextInput::make('first_name')
                     ->label('Имя')
+                    ->required()
                     ->maxLength(191),
 
                 Forms\Components\TextInput::make('last_name')
                     ->label('Фамилия')
+                    ->required()
                     ->maxLength(191),
 
                 Forms\Components\TextInput::make('email')
@@ -52,6 +54,7 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
+                    ->required()
                     ->label('Номер'),
                 Forms\Components\Toggle::make('isVerificated')
                     ->label('Верифицирован')

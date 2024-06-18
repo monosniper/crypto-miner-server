@@ -5,6 +5,7 @@ namespace App\Enums;
 enum CacheName: string
 {
     case NULL = 'null';
+    case FAQ = 'faq';
     case PRESETS = 'presets';
     case CONFIGURATION = 'configuration';
     case SESSION = 'session';

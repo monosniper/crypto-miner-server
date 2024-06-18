@@ -82,6 +82,7 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::get('configuration', ConfigurationController::class);
             Route::get('presets', PresetController::class);
             Route::get('geo', [AppController::class, 'geo']);
+//            Route::get('faq', FaqController::class);
             Route::get('coins', CoinController::class);
             Route::get('settings', [AppController::class, 'settings']);
             Route::get('nfts', NftController::class);
