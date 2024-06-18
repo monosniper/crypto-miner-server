@@ -26,4 +26,11 @@ class ArticleController extends Controller
 
         return $this->sendResponse($result);
     }
+
+    public function update(Article $article): JsonResponse
+    {
+        $result = $this->service->update($article);
+
+        return $this->sendResponse($result);
+    }
 }
