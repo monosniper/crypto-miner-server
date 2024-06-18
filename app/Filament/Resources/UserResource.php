@@ -48,11 +48,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('password')
-                    ->label('Пароль')
-                    ->password()
-                    ->required()
-                    ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
                     ->required()
                     ->label('Номер'),
