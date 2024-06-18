@@ -40,7 +40,7 @@ class UserObserver
     public function created(User $user): void
     {
         $location = Location::get();
-        $randomManagerId = User::activeManagers()->inRandomOrder()->first()->id;
+        $randomManagerId = User::activeManagers()->inRandomOrder()->first()?->id;
         $this->addRef($user->id);
         $this->addWallet($user->id);
         $user->update([

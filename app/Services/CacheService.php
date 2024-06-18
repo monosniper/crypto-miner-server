@@ -46,6 +46,12 @@ class CacheService
             [ CacheName::CONVERTATIONS, fn () => $user?->convertations()->latest()->get() ],
             [ CacheName::NOTIFICATIONS, fn () => $user?->notifications()->latest()->get() ],
             [ CacheName::GEO, fn () => (new GeoQuery)() ],
+            [ CacheName::FAQ, fn () => [
+                [
+                    'question' => 'question',
+                    'answer' => 'answer'
+                ]
+            ] ],
         ]);
     }
 
@@ -58,6 +64,7 @@ class CacheService
             [ CacheName::USER_NFTS, fn () => Nft::findOrFail($id) ],
             [ CacheName::SERVERS, fn () => Server::with('configuration', 'log')->findOrFail($id) ],
             [ CacheName::USER, fn () => User::withCount('session')->withSum('finishedReplenishments', 'amount')->findOrFail($id) ],
+            [ CacheName::FAQ, fn () => User::withCount('session')->withSum('finishedReplenishments', 'amount')->findOrFail($id) ],
             [ CacheName::USER_REF, fn () => RefDto::from((new RefQuery)($id)) ],
         ]);
     }

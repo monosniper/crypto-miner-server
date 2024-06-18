@@ -34,6 +34,10 @@ class SendVerificationMail implements ShouldQueue
             'user_id' => $this->user->id,
         ]);
 
-        Mail::to($this->user)->send(new Verification($code->value, $this->user->name));
+        try {
+            Mail::to($this->user)->send(new Verification($code->value, $this->user->name));
+        } catch (\Exception $e) {
+            info($e->getMessage());
+        }
     }
 }
