@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->enum('status', ServerStatus::values())->default(ServerStatus::IDLE);
+            $table->timestamp('last_work_at')->nullable();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Configuration::class);
             $table->timestamps();

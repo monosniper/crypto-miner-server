@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\ServerStatus;
 use App\Http\Resources\SessionResource;
 use App\Models\Notification;
 use App\Models\Server;
@@ -45,7 +46,7 @@ class SessionObserver
 //            ServerLog::find($server->server_log_id)->delete();
 
             $server->update([
-                'status' => Server::ACTIVE_STATUS,
+                'status' => ServerStatus::IDLE,
                 'last_work_at' => Carbon::now(),
             ]);
 

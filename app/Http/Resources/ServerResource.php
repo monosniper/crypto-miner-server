@@ -19,7 +19,7 @@ class ServerResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'status' => $this->status,
-            'created_at' => $this->created_at,
+            'last_work_at' => $this->last_work_at,
             'configuration' => $this->configuration->value,
             'price' => $this->configuration->price,
             'logs' => $this->whenLoaded('log', fn (ServerLog $log) => $log->logs),
