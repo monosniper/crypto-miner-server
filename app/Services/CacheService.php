@@ -12,6 +12,7 @@ use App\Models\Coin;
 use App\Models\ConfigurationGroup;
 use App\Models\Nft;
 use App\Models\Order;
+use App\Models\Partner;
 use App\Models\Preset;
 use App\Models\Server;
 use App\Models\User;
@@ -45,6 +46,7 @@ class CacheService
             [ CacheName::WITHDRAWS, fn () => $user?->withdraws()->latest()->get() ],
             [ CacheName::CONVERTATIONS, fn () => $user?->convertations()->latest()->get() ],
             [ CacheName::NOTIFICATIONS, fn () => $user?->notifications()->latest()->get() ],
+            [ CacheName::PARTNERS, fn () => Partner::all() ],
             [ CacheName::GEO, fn () => (new GeoQuery)() ],
             [ CacheName::FAQ, fn () => [
                 [

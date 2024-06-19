@@ -9,6 +9,7 @@ enum CacheName: string
     case PRESETS = 'presets';
     case CONFIGURATION = 'configuration';
     case SESSION = 'session';
+    case PARTNERS = 'partners';
     case USER = 'user';
     case USER_REF = 'user_ref';
     case WALLET = 'wallet';

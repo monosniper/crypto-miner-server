@@ -20,6 +20,7 @@ class Article extends CachableModel implements HasMedia
     protected $fillable = [
         'title',
         'content',
+        'views',
     ];
 
     protected $with = ['media'];

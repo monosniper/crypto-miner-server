@@ -85,10 +85,11 @@ Route::domain('api.hogyx.io')->group(function () {
             Route::get('geo', [AppController::class, 'geo']);
             Route::get('faq', FaqController::class);
             Route::get('coins', CoinController::class);
+            Route::get('partners', [AppController::class, 'partners']);
             Route::get('settings', [AppController::class, 'settings']);
             Route::get('nfts', NftController::class);
             Route::apiResource('articles', ArticleController::class)
-                ->only('index', 'show');
+                ->only('index', 'show', 'update');
 
             // WebSockets
             Route::post('check', [AuthController::class, 'checkToken']);
@@ -158,10 +159,11 @@ Route::prefix('v1')
         Route::get('presets', PresetController::class);
         Route::get('geo', [AppController::class, 'geo']);
         Route::get('coins', CoinController::class);
+        Route::get('partners', [AppController::class, 'partners']);
         Route::get('settings', [AppController::class, 'settings']);
         Route::get('nfts', NftController::class);
         Route::apiResource('articles', ArticleController::class)
-            ->only('index', 'show');
+            ->only('index', 'show', 'update');
 
         // WebSockets
         Route::post('check', [AuthController::class, 'checkToken']);

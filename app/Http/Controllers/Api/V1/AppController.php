@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use anlutro\LaravelSettings\Facades\Setting;
 use App\Enums\CacheName;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PartnerResource;
 use App\Models\Coin;
 use App\Services\CacheService;
 use Illuminate\Http\JsonResponse;
@@ -28,5 +29,13 @@ class AppController extends Controller
     public function settings()
     {
         return Setting::all();
+    }
+
+    public function partners(): JsonResponse
+    {
+        $result = $this->cacheService->get(CacheName::PARTNERS);
+        $images = array_map(fn ($item) => $item['media'][0]['original_url'] , $result->toArray());
+
+        return $this->sendResponse($images);
     }
 }
