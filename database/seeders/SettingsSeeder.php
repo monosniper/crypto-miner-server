@@ -43,9 +43,9 @@ class SettingsSeeder extends Seeder
 //            Coin::where('slug', 'XLM')->first()->id =>   0,
 //        ]);
 
-        Setting::set('wallet_usdt', '');
-        Setting::set('landing_video', '');
-        Setting::set('how_video', '');
+//        Setting::set('wallet_usdt', '');
+//        Setting::set('landing_video', '');
+//        Setting::set('how_video', '');
 
         Setting::save();
     }

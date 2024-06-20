@@ -29,7 +29,7 @@ class ArticleResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->required()
-                    ->label('Заголовок (EN)')
+                    ->label('Заголовок (RU)')
                     ->maxLength(1000),
                 Forms\Components\RichEditor::make('content')
                     ->required()
@@ -59,6 +59,7 @@ class ArticleResource extends Resource
         return $table
             ->columns([
                 SpatieMediaLibraryImageColumn::make('image')
+                    ->collection('image')
                     ->label('Картинка'),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
