@@ -14,6 +14,7 @@ class Server extends Model
         'status',
         'configuration_id',
         'user_id',
+        'last_work_at',
         'server_log_id',
     ];
 
