@@ -40,4 +40,8 @@ return [
     'coin_prices.15' => 'Цена LTC (Конфигуратор)',
     'coin_prices.16' => 'Цена WBTC (Конфигуратор)',
     'coin_prices.17' => 'Цена XLM (Конфигуратор)',
+
+    'wallet_usdt' => 'Кошелек (USDT)',
+    'landing_video' => 'Видео (лендинг)',
+    'how_video' => 'Видео (как пользоваться услугами)',
 ];

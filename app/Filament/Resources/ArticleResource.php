@@ -29,10 +29,21 @@ class ArticleResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->required()
+                    ->label('Заголовок (EN)')
                     ->maxLength(1000),
                 Forms\Components\RichEditor::make('content')
                     ->required()
                     ->maxLength(65535)
+                    ->label('Текст (RU)')
+                    ->fileAttachmentsDirectory('articles'),
+                Forms\Components\TextInput::make('title_en')
+                    ->required()
+                    ->label('Заголовок (EN)')
+                    ->maxLength(1000),
+                Forms\Components\RichEditor::make('content_en')
+                    ->required()
+                    ->maxLength(65535)
+                    ->label('Текст (EN)')
                     ->fileAttachmentsDirectory('articles'),
                 SpatieMediaLibraryFileUpload::make('image')
                     ->label('Картинка')
