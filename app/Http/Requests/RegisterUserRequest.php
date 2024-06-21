@@ -30,6 +30,7 @@ class RegisterUserRequest extends FormRequest
             'password' => ['required'],
             'phone' => ['required'],
             'ref_code' => ['exists:refs,code'],
+            'connect' => ['nullable'],
         ];
     }
 }
