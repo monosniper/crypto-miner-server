@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\CacheName;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FaqResource;
 use App\Services\CacheService;
 use Illuminate\Http\JsonResponse;
 
