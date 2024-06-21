@@ -17,6 +17,6 @@ class FaqController extends Controller
     {
         $result = $this->cacheService->get(CacheName::FAQ);
 
-        return $this->sendResponse($result);
+        return $this->sendResponse(FaqResource::collection($result));
     }
 }

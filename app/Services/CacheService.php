@@ -10,6 +10,7 @@ use App\Jobs\SaveCache;
 use App\Models\Article;
 use App\Models\Coin;
 use App\Models\ConfigurationGroup;
+use App\Models\Faq;
 use App\Models\Nft;
 use App\Models\Order;
 use App\Models\Partner;
@@ -48,12 +49,7 @@ class CacheService
             [ CacheName::NOTIFICATIONS, fn () => $user?->notifications()->latest()->get() ],
             [ CacheName::PARTNERS, fn () => Partner::all() ],
             [ CacheName::GEO, fn () => (new GeoQuery)() ],
-            [ CacheName::FAQ, fn () => [
-                [
-                    'question' => 'question',
-                    'answer' => 'answer'
-                ]
-            ] ],
+            [ CacheName::FAQ, fn () => Faq::all() ],
         ]);
     }
 
