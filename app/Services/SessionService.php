@@ -48,7 +48,7 @@ class SessionService extends CachableService
             'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
         ]);
 
-        $this->service::saveFor($this->cacheName, $session->id);
+        $this->service::saveFor($this->cacheName, $session->id, $session);
 
         return true;
     }
@@ -77,7 +77,11 @@ class SessionService extends CachableService
 
     public function cacheSession(Session $session)
     {
-        $this->service::saveFor($this->cacheName, $session->id);
+        $this->service::saveFor(
+            $this->cacheName,
+            $session->id,
+            $session
+        );
 
         return ['success' => true];
     }

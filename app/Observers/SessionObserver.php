@@ -14,7 +14,6 @@ class SessionObserver
 {
     public function created(Session $session): void
     {
-        info(json_encode($session));
         CacheService::saveFor(
             CacheName::SESSION,
             $session->id,
