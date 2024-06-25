@@ -34,7 +34,7 @@ class SessionObserver
 
     public function deleted(Session $session): void
     {
-        $servers = $session->user_servers;
+        $servers = $session->servers;
         $user = $session->user;
 
 //        $total = [
