@@ -23,6 +23,7 @@ return [
         'http://localhost:3000',
         'https://www.hogyx.io',
         'https://hogyx.io',
+        'https://app.hogyx.io',
     ],
 
     'allowed_origins_patterns' => [],
