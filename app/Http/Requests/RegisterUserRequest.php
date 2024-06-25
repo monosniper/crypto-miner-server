@@ -28,7 +28,7 @@ class RegisterUserRequest extends FormRequest
             'first_name' => ['required'],
             'last_name' => ['required'],
             'password' => ['required'],
-            'phone' => ['required'],
+            'phone' => ['required', 'unique:users,phone'],
             'ref_code' => ['exists:refs,code'],
             'connect' => ['nullable'],
         ];
