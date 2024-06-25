@@ -19,7 +19,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [
+        'localhost',
+        'www.hogyx.io',
+        'hogyx.io',
+    ],
 
     'allowed_origins_patterns' => [],
 
