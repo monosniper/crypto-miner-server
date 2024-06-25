@@ -84,18 +84,6 @@ class SessionService extends CachableService
             $server->start();
         }
 
-        $this->service::saveFor(
-            $this->cacheName,
-            $session->id,
-            $session
-        );
-
-        $this->service::saveFor(
-            CacheName::USER,
-            $session->user_id,
-            single: $session->user_id,
-        );
-
         // event(new SessionStart($session));
 
         return new SessionResource($session);
