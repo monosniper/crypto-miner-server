@@ -20,9 +20,9 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'localhost',
-        'www.hogyx.io',
-        'hogyx.io',
+        'http://localhost:3000',
+        'https://www.hogyx.io',
+        'https://hogyx.io',
     ],
 
     'allowed_origins_patterns' => [],
