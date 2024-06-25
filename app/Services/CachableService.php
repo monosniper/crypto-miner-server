@@ -28,7 +28,7 @@ class CachableService
         return $this->resource::collection($this->types[$this->cacheType->value]($this->cacheName));
     }
 
-    public function getOne(string $id = null): AnonymousResourceCollection|null
+    public function getOne(string $id = null)
     {
         $data = $id !== null
             ? $this->service->getSingle($this->cacheName, $id)
