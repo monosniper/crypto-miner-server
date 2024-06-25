@@ -2,21 +2,29 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheName;
 use App\Enums\ServerStatus;
-use App\Http\Resources\SessionResource;
 use App\Models\Notification;
-use App\Models\Server;
-use App\Models\ServerLog;
 use App\Models\Session;
+use App\Services\CacheService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class SessionObserver
 {
     public function created(Session $session): void
     {
-        Cache::put('sessions.'.$session->user->id, new SessionResource($session));
+        CacheService::saveFor(
+            CacheName::SESSION,
+            $session->id,
+            $session
+        );
+
+        CacheService::saveFor(
+            CacheName::USER,
+            $session->user_id,
+            single: $session->user_id,
+        );
 
         // Send noty for session end
         $notification = Notification::create([
@@ -33,7 +41,7 @@ class SessionObserver
 
     public function deleted(Session $session): void
     {
-        $servers = $session->user_servers;
+        $servers = $session->servers;
         $user = $session->user;
 
 //        $total = [
@@ -93,7 +101,9 @@ class SessionObserver
 //            'content' => __('notifications.session.end.content') . $total_str
         ]);
 
-        Cache::forget('sessions.'.$user->id);
+        Cache::forget(CacheName::USER->value.'.'.$session->user_id);
+        Cache::forget(CacheName::SESSION->value.'.'.$session->id);
+
         Cache::forget('servers.'.$user->id);
         Cache::put('servers.'.$user->id, $user->servers);
 

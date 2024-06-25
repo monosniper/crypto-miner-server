@@ -24,54 +24,6 @@ class SessionService extends CachableService
      */
     public function store($data): SessionResource
     {
-//        $user = auth()->user();
-//
-//        $user_servers = $user->servers->pluck('id')->toArray();
-//        $user_servers_coins = $user->servers->each->coins->pluck('coins')->flatten()->pluck('id')->unique();
-//
-//        if(0 != count(array_diff($data['servers'], $user_servers))) {
-//            throw new Exception('User doesn\'t have provided servers.');
-//        }
-//
-//        if(0 != count(array_diff($data['coins'], $user_servers_coins))) {
-//            throw new Exception('User servers don\'t include provided coins.');
-//        }
-//
-//        $session = Session::create(['user_id' => $user->id]);
-//        $session->coins()->sync($data['coins']);
-//        $session->servers()->sync($data['servers']);
-//        $servers = $session->servers;
-//
-//        $miner = new Miner($session);
-//        $miner->start();
-//
-//        foreach ($servers as $server) {
-//            $server->log?->delete();
-//            $server->start();
-//
-//            for($i = 0; $i < 43200; $i+=5) {
-//                $logs[] = [
-//
-//                ];
-//            }
-//        }
-//
-//        $this->service::saveFor(
-//            $this->cacheName,
-//            $session->id,
-//            $session
-//        );
-//
-//        $this->service::saveFor(
-//            CacheName::USER,
-//            $session->user_id,
-//            single: $session->user_id,
-//        );
-//
-//        // event(new SessionStart($session));
-//
-//        return new SessionResource($session);
-
         $user_id = $data['user_id'];
 
         $session = Session::create(['user_id' => $user_id]);
@@ -83,20 +35,6 @@ class SessionService extends CachableService
             $server->log?->delete();
             $server->start();
         }
-
-        $this->service::saveFor(
-            $this->cacheName,
-            $session->id,
-            $session
-        );
-
-        $this->service::saveFor(
-            CacheName::USER,
-            $session->user_id,
-            single: $session->user_id,
-        );
-
-        // event(new SessionStart($session));
 
         return new SessionResource($session);
     }
@@ -110,7 +48,7 @@ class SessionService extends CachableService
             'end_at' => new Carbon($logs[count($logs)-1]->timestamp)
         ]);
 
-        Cache::put('sessions.'.$session->user->id, new SessionResource($session));
+        $this->service::saveFor($this->cacheName, $session->id, $session);
 
         return true;
     }
@@ -139,7 +77,11 @@ class SessionService extends CachableService
 
     public function cacheSession(Session $session)
     {
-        Cache::put('sessions.'.$session->user_id, new SessionResource($session->load('user_servers.log')));
+        $this->service::saveFor(
+            $this->cacheName,
+            $session->id,
+            $session
+        );
 
         return ['success' => true];
     }

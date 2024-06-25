@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Helpers\TapApp;
 use App\Jobs\SendVerificationMail;
 use App\Mail\ForgotPassword;
 use App\Models\ForgotPasswordCode;
 use App\Models\Ref;
 use App\Models\User;
 use App\Models\VerificationCode;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -42,12 +44,13 @@ class AuthService
 //            info("The message failed with status: " . $message->getStatus());
 //        }
 
+        TapApp::siteVisited($user->id);
         SendVerificationMail::dispatch($user);
 
         return (bool) $user;
     }
 
-    public function verificateMail(string $code): \Illuminate\Http\RedirectResponse
+    public function verificateMail(string $code): RedirectResponse
     {
         $code = VerificationCode::where('value', $code)->first();
 
@@ -92,6 +95,8 @@ class AuthService
     {
         if (Auth::attempt($data)) {
             request()->session()->regenerate();
+
+            TapApp::siteVisited();
 
             return true;
         }

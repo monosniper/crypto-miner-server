@@ -10,11 +10,13 @@ use App\Jobs\SaveCache;
 use App\Models\Article;
 use App\Models\Coin;
 use App\Models\ConfigurationGroup;
+use App\Models\Faq;
 use App\Models\Nft;
 use App\Models\Order;
 use App\Models\Partner;
 use App\Models\Preset;
 use App\Models\Server;
+use App\Models\Session;
 use App\Models\User;
 use App\Models\UserServer;
 use App\Queries\GeoQuery;
@@ -48,12 +50,7 @@ class CacheService
             [ CacheName::NOTIFICATIONS, fn () => $user?->notifications()->latest()->get() ],
             [ CacheName::PARTNERS, fn () => Partner::all() ],
             [ CacheName::GEO, fn () => (new GeoQuery)() ],
-            [ CacheName::FAQ, fn () => [
-                [
-                    'question' => 'question',
-                    'answer' => 'answer'
-                ]
-            ] ],
+            [ CacheName::FAQ, fn () => Faq::all() ],
         ]);
     }
 
@@ -64,6 +61,7 @@ class CacheService
             [ CacheName::ORDERS, fn () => Order::findOrFail($id) ],
             [ CacheName::USER_SERVERS, fn () => UserServer::findOrFail($id) ],
             [ CacheName::USER_NFTS, fn () => Nft::findOrFail($id) ],
+            [ CacheName::SESSION, fn () => Session::find($id)->with('servers.log')->first() ],
             [ CacheName::SERVERS, fn () => Server::with('configuration', 'log')->findOrFail($id) ],
             [ CacheName::USER, fn () => User::withCount('session')->withSum('finishedReplenishments', 'amount')->findOrFail($id) ],
             [ CacheName::FAQ, fn () => User::withCount('session')->withSum('finishedReplenishments', 'amount')->findOrFail($id) ],

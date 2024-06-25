@@ -30,10 +30,10 @@ class CachableService
 
     public function getOne(string $id = null)
     {
-        return $this->resource::make(
-            $id
-                ? $this->service->getSingle($this->cacheName, $id)
-                : $this->service->get($this->cacheName)
-        );
+        $data = $id !== null
+            ? $this->service->getSingle($this->cacheName, $id)
+            : null;
+
+        return $data ? $this->resource::make($data) : null;
     }
 }
