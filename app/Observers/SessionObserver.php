@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheName;
 use App\Enums\ServerStatus;
 use App\Http\Resources\SessionResource;
 use App\Models\Notification;
@@ -93,6 +94,7 @@ class SessionObserver
 //            'content' => __('notifications.session.end.content') . $total_str
         ]);
 
+        Cache::forget(CacheName::SESSION->value.'.'.$session->id);
         Cache::forget('sessions.'.$user->id);
         Cache::forget('servers.'.$user->id);
         Cache::put('servers.'.$user->id, $user->servers);
