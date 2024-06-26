@@ -32,7 +32,7 @@ class CachableService
     {
         $data = $id !== null
             ? $this->service->getSingle($this->cacheName, $id)
-            : null;
+            : $this->service->get($this->cacheName);
 
         return $data ? $this->resource::make($data) : null;
     }
