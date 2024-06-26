@@ -25,6 +25,10 @@ return [
         'https://www.hogyx.io',
         'https://hogyx.io',
         'https://app.hogyx.io',
+        'https://admin.hogyx.io',
+        'https://call.hogyx.io',
+        'https://pr.hogyx.io',
+        'https://manager.hogyx.io',
     ],
 
     'allowed_origins_patterns' => [],
