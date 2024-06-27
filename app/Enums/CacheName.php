@@ -16,6 +16,7 @@ enum CacheName: string
     case NOTIFICATIONS = 'notifications';
     case REPLENISHMENTS = 'replenishments';
     case USER_NFTS = 'user_nfts';
+    case TRANSFERS = 'transfers';
     case USER_SERVERS = 'user_servers';
     case WITHDRAWS = 'withdraws';
     case CONVERTATIONS = 'convertations';

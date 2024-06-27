@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\RateCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transfer extends Model
 {
@@ -13,7 +14,6 @@ class Transfer extends Model
     protected $fillable = [
         'user_id',
         'user_to',
-        'coin_id',
         'amount',
     ];
 
@@ -21,13 +21,13 @@ class Transfer extends Model
         'amount' => RateCast::class,
     ];
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function coin(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function userTo(): BelongsTo
     {
-        return $this->belongsTo(Coin::class);
+        return $this->belongsTo(User::class, 'user_to');
     }
 }
