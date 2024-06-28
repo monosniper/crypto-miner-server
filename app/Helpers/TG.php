@@ -18,7 +18,11 @@ class TG
         }
 
         foreach ($admin_ids as $admin_id) {
-            Http::get("https://api.telegram.org/bot$token/sendMessage?chat_id=$admin_id&parse_mode=HTML&text=" . $message);
+            Http::withQueryParameters([
+                'chat_id' => $admin_id,
+                'parse_mode' => 'HTML',
+                'text' => $message,
+            ])->get("https://api.telegram.org/bot$token/sendMessage");
         }
     }
 }
