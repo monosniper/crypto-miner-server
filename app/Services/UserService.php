@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\CacheName;
+use App\Helpers\TapApp;
 use App\Http\Resources\UserResource;
 use App\Jobs\SendVerificationMail;
 
@@ -27,6 +28,9 @@ class UserService
 
     public function me(): UserResource
     {
+        TapApp::accountLink(request()->connect);
+        TapApp::siteVisited();
+
         return new UserResource($this->cacheService->getSingle(CacheName::USER, auth()->id()));
     }
 
