@@ -25,6 +25,11 @@ class ConvertationObserver
     public function created(Convertation $convertation): void
     {
         $this->cache($convertation);
+
+        CacheService::saveForUser(
+            CacheName::WALLET,
+            $convertation->user_id,
+        );
     }
 
     public function deleted(Convertation $convertation): void

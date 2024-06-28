@@ -2,32 +2,31 @@
 
 namespace App\Services;
 
+use App\Enums\CacheName;
+use App\Enums\CacheType;
+use App\Http\Resources\TransferResource;
+use App\Models\Transfer;
 use App\Models\User;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class TransferService
+class TransferService extends CachableService
 {
-    public function store($data): bool
+    protected string|AnonymousResourceCollection $resource = TransferResource::class;
+    protected CacheName $cacheName = CacheName::TRANSFERS;
+    protected CacheType $cacheType = CacheType::AUTH;
+
+    public function store($data): true
     {
-        $success = true;
-        $user = User::where('name', $data['username'])->first();
+        $user = User::whereName($data['username'])->first();
         $amount = $data['amount'];
+        $amount = $amount - ($amount / 100 * setting('transfer_fee'));
 
-        if($user) {
-            $amount = $amount - ($amount / 100 * setting('transfer_fee'));
+        Transfer::create([
+            'user_id' => auth()->id(),
+            'user_to' => $user->id,
+            'amount' => $amount,
+        ]);
 
-            $wallet = auth()->user()->wallet;
-            $balance = $wallet->balance;
-            $balance['USDT'] -= $amount;
-            $wallet->balance = $balance;
-            $wallet->save();
-
-            $user_wallet = $user->wallet;
-            $user_balance = $user_wallet->balance;
-            $user_balance['USDT'] += $amount;
-            $user_wallet->balance = $user_balance;
-            $user_wallet->save();
-        } else $success = false;
-
-        return $success;
+        return true;
     }
 }

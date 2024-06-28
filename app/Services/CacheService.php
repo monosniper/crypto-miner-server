@@ -48,6 +48,7 @@ class CacheService
             [ CacheName::WITHDRAWS, fn () => $user?->withdraws()->latest()->get() ],
             [ CacheName::CONVERTATIONS, fn () => $user?->convertations()->latest()->get() ],
             [ CacheName::NOTIFICATIONS, fn () => $user?->notifications()->latest()->get() ],
+            [ CacheName::TRANSFERS, fn () => $user?->transfers()->latest()->get() ],
             [ CacheName::PARTNERS, fn () => Partner::all() ],
             [ CacheName::GEO, fn () => (new GeoQuery)() ],
             [ CacheName::FAQ, fn () => Faq::all() ],

@@ -166,6 +166,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Withdraw::class);
     }
 
+    public function transfers(): HasMany
+    {
+        return $this->hasMany(Transfer::class);
+    }
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

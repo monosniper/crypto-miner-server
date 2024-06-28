@@ -15,6 +15,7 @@ use App\Models\Ref;
 use App\Models\Report;
 use App\Models\Server;
 use App\Models\Session;
+use App\Models\Transfer;
 use App\Models\User;
 use App\Models\UserServer;
 use App\Models\VerificationCode;
@@ -31,6 +32,7 @@ use App\Observers\RefObserver;
 use App\Observers\ReportObserver;
 use App\Observers\ServerObserver;
 use App\Observers\SessionObserver;
+use App\Observers\TransferObserver;
 use App\Observers\UserObserver;
 use App\Observers\UserServerObserver;
 use App\Observers\VerificationCodeObserver;
@@ -72,6 +74,7 @@ class EventServiceProvider extends ServiceProvider
         ConfigurationOption::observe(ConfigurationGroupObserver::class);
         Preset::observe(PresetObserver::class);
         Report::observe(ReportObserver::class);
+        Transfer::observe(TransferObserver::class);
     }
 
     /**

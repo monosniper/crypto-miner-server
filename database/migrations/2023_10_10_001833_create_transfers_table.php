@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(User::class, 'user_to');
-            $table->foreignIdFor(Coin::class);
             $table->bigInteger('amount');
             $table->timestamps();
         });
