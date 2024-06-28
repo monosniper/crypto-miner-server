@@ -34,7 +34,7 @@ class AppController extends Controller
     public function partners(): JsonResponse
     {
         $result = $this->cacheService->get(CacheName::PARTNERS);
-        $images = array_map(fn ($item) => $item['media'][0]['original_url'] , $result->toArray());
+        $images = array_map(fn ($item) => isset($item['media']) ? $item['media'][0]['original_url'] : null, $result->toArray());
 
         return $this->sendResponse($images);
     }
