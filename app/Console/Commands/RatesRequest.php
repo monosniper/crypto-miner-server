@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\CacheName;
 use App\Models\Coin;
 use App\Services\CacheService;
 use GuzzleHttp\Client;
@@ -84,6 +85,6 @@ class RatesRequest extends Command implements Isolatable
             }
         }
 
-        CacheService::save(CacheService::COINS);
+        CacheService::save(CacheName::COINS);
     }
 }
