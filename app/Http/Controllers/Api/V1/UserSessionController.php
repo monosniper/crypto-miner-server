@@ -14,7 +14,7 @@ class UserSessionController extends Controller
 
     public function __invoke(): JsonResponse
     {
-        $result = $this->service->getOne(auth()->user()->session?->id);
+        $result = $this->service->getOne();
 
         return $this->sendResponse($result);
     }
