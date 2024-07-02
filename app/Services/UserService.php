@@ -28,7 +28,9 @@ class UserService
 
     public function me(): UserResource
     {
-        TapApp::accountLink(request()->connect);
+        if(request()->filled('connect')) {
+            TapApp::accountLink(request()->input('connect'));
+        }
         TapApp::siteVisited();
 
         return new UserResource($this->cacheService->getSingle(CacheName::USER, auth()->id()));
