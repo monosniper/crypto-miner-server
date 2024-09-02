@@ -31,6 +31,10 @@ class SessionObserver
             $session->user_id,
         );
 
+        $session->servers->update([
+            'status' => ServerStatus::WORK,
+        ]);
+
         // Send noty for session end
         $notification = Notification::create([
             'title' => __('notifications.session.start.title'),
