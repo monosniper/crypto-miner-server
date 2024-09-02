@@ -14,6 +14,7 @@ class SessionObserver
 {
     public function created(Session $session): void
     {
+        info($session->servers()->count());
         $session->servers->each(fn ($server) => $server->start());
 
         CacheService::saveFor(
