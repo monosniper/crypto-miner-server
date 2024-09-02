@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ServerStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,6 +28,14 @@ class Server extends Model
         $this->update([
             'status' => ServerStatus::WORK,
             'server_log_id' => null,
+        ]);
+    }
+
+    public function stop(): void
+    {
+        $this->update([
+            'status' => ServerStatus::IDLE,
+            'last_work_at' => Carbon::now(),
         ]);
     }
 

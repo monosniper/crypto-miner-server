@@ -22,8 +22,8 @@ class ServerResource extends JsonResource
             'last_work_at' => $this->last_work_at,
             'configuration' => $this->configuration->value,
             'price' => $this->configuration->price,
-            'logs' => $this->whenLoaded('log', fn (ServerLog $log) => $log->logs),
-            'founds' => $this->whenLoaded('log', fn (ServerLog $log) => $log->founds),
+            'logs' => $this->log?->logs,
+            'founds' => $this->log?->founds,
         ];
     }
 }

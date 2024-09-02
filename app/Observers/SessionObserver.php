@@ -14,9 +14,7 @@ class SessionObserver
 {
     public function created(Session $session): void
     {
-        $session->servers->each(fn ($server) => $server->update([
-            'status' => ServerStatus::WORK,
-        ]));
+        $session->servers->each(fn ($server) => $server->start());
 
         CacheService::saveFor(
             CacheName::SESSION,
@@ -51,35 +49,34 @@ class SessionObserver
     public function deleted(Session $session): void
     {
         $user = $session->user;
-
-        $log = $session->logs;
-
-        $session->servers->each(fn ($server) => $server->update([
-            'status' => ServerStatus::IDLE,
-            'last_work_at' => Carbon::now(),
-        ]));
-
-        $nfts = array_map(function ($found) {
-            return $found['id'];
-        }, array_filter($log['founds'], function ($found) {
-            return $found['type'] === 'nft';
-        }));
-
-        $coins = array_filter($log['founds'], function ($found) {
-            return $found['type'] === 'coin';
-        });
-
         $wallet = $user->wallet;
         $balance = $wallet->balance;
 
-        foreach ($coins as $found) {
-            $slug = $found->id;
-            $balance[$slug] += $found->amount;
+        $session->servers->each(fn ($server) => $server->stop());
+
+        foreach ($session->servers as $server) {
+            $log = $server->log;
+
+            $nfts = array_map(function ($found) {
+                return $found->id;
+            }, array_filter($log->founds, function ($found) {
+                return $found->type === 'nft';
+            }));
+
+            $coins = array_filter($log->founds, function ($found) {
+                return $found->type === 'coin';
+            });
+
+            foreach ($coins as $found) {
+                $slug = $found->id;
+                $balance[$slug] += $found->amount;
+            }
+
+            $user->nfts()->attach($nfts);
         }
 
         $wallet->balance = $balance;
         $wallet->save();
-        $user->nfts()->attach($nfts);
 
 //        Cache::forget(CacheName::USER->value.'.'.$session->user_id);
 //        Cache::forget(CacheName::SESSION->value.'.'.$session->id);
@@ -90,6 +87,6 @@ class SessionObserver
         $notification = Notification::create([
             'title' => __('notifications.session.end.title'),
         ]);
-        $session->user->notify($notification->id);
+        $user->notify($notification->id);
     }
 }
