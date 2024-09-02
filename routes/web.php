@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Session;
 
 Route::get('test/:post', function () {
     return view('test');
