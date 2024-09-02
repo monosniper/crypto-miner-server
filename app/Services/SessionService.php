@@ -28,8 +28,8 @@ class SessionService extends CachableService
 
         $session = Session::create(['user_id' => $user_id]);
         $session->coins()->sync($data['coins']);
-        $session->servers()->sync([1]);
-        dd($session);
+        $session->servers()->sync($data['servers']);
+
 //        $servers = $session->servers;
 //
 //        foreach ($servers as $server) {
@@ -37,7 +37,7 @@ class SessionService extends CachableService
 //            $server->start();
 //        }
 
-        return new SessionResource($session);
+        return new SessionResource(Session::with('servers')->find($session->id));
     }
 
     public function update(Session $session, $data): true
