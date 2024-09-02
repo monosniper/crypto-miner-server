@@ -31,9 +31,9 @@ class SessionObserver
             $session->user_id,
         );
 
-        $session->servers->update([
+        $session->servers->each(fn ($server) => $server->update([
             'status' => ServerStatus::WORK,
-        ]);
+        ]));
 
         // Send noty for session end
         $notification = Notification::create([
@@ -59,10 +59,10 @@ class SessionObserver
 
         $log = $session->logs;
 
-        $session->servers->update([
+        $session->servers->each(fn ($server) => $server->update([
             'status' => ServerStatus::IDLE,
             'last_work_at' => Carbon::now(),
-        ]);
+        ]));
 
         $nfts = array_map(function ($found) {
             return $found->id;
