@@ -14,8 +14,10 @@ class SessionObserver
 {
     public function created(Session $session): void
     {
-        info($session->servers()->count());
-        $session->servers->each(fn ($server) => $server->start());
+        foreach ($session->servers as $server) {
+            info('id: ' . $server->id);
+            $server->start();
+        }
 
         CacheService::saveFor(
             CacheName::SESSION,
@@ -53,7 +55,9 @@ class SessionObserver
         $wallet = $user->wallet;
         $balance = $wallet->balance;
 
-        $session->servers->each(fn ($server) => $server->stop());
+        foreach ($session->servers as $server) {
+            $server->stop();
+        }
 
         foreach ($session->servers as $server) {
             $log = $server->log;
