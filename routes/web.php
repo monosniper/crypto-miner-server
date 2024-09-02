@@ -8,12 +8,5 @@ Route::get('test/:post', function () {
 
 
 Route::get('test', function () {
-    $session = Session::create([
-        'user_id' => 1023,
-    ]);
-
-    $session->servers()->sync([2]);
-    $session->save();
-
-    dd($session);
+    dd(Session::all());
 });
