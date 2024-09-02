@@ -14,6 +14,10 @@ class SessionObserver
 {
     public function created(Session $session): void
     {
+        $session->servers->each(fn ($server) => $server->update([
+            'status' => ServerStatus::WORK,
+        ]));
+
         CacheService::saveFor(
             CacheName::SESSION,
             $session->id,
@@ -31,10 +35,6 @@ class SessionObserver
             $session->user_id,
         );
 
-        $session->servers->each(fn ($server) => $server->update([
-            'status' => ServerStatus::WORK,
-        ]));
-
         // Send noty for session end
         $notification = Notification::create([
             'title' => __('notifications.session.start.title'),
@@ -50,12 +50,7 @@ class SessionObserver
 
     public function deleted(Session $session): void
     {
-        $servers = $session->servers;
         $user = $session->user;
-
-//        $total = [
-//            'nfts' => 0
-//        ];
 
         $log = $session->logs;
 
