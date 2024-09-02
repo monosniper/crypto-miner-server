@@ -26,6 +26,11 @@ class SessionObserver
             single: $session->user_id,
         );
 
+        CacheService::saveForUser(
+            CacheName::SERVERS,
+            $session->user_id,
+        );
+
         // Send noty for session end
         $notification = Notification::create([
             'title' => __('notifications.session.start.title'),
@@ -48,65 +53,44 @@ class SessionObserver
 //            'nfts' => 0
 //        ];
 
-        foreach ($servers as $server) {
-            $log = $server->log;
+        $log = $session->logs;
 
-//            ServerLog::find($server->server_log_id)->delete();
+        $session->servers->update([
+            'status' => ServerStatus::IDLE,
+            'last_work_at' => Carbon::now(),
+        ]);
 
-            $server->update([
-                'status' => ServerStatus::IDLE,
-                'last_work_at' => Carbon::now(),
-            ]);
+        $nfts = array_map(function ($found) {
+            return $found->id;
+        }, array_filter($log->founds, function ($found) {
+            return $found->type === 'nft';
+        }));
 
-            $nfts = array_map(function ($found) {
-                return $found->id;
-            }, array_filter($log->founds, function ($found) {
-                return $found->type === 'nft';
-            }));
+        $coins = array_filter($log->founds, function ($found) {
+            return $found->type === 'coin';
+        });
 
-//            $total['nfts'] += count($nfts);
+        $wallet = $user->wallet;
+        $balance = $wallet->balance;
 
-            $coins = array_filter($log->founds, function ($found) {
-                return $found->type === 'coin';
-            });
-
-            $wallet = $user->wallet;
-            $balance = $wallet->balance;
-
-            foreach ($coins as $found) {
-                $slug = $found->id;
-
-//                if(!$total[$slug]) {
-//                    $total[$slug] = 0;
-//                }
-
-//                $total[$slug] += $found->amount;
-                $balance[$slug] += $found->amount;
-            }
-
-            $wallet->balance = $balance;
-            $wallet->save();
-            $user->nfts()->attach($nfts);
+        foreach ($coins as $found) {
+            $slug = $found->id;
+            $balance[$slug] += $found->amount;
         }
 
-        // Send noty for session end
-//        $total_str = "</br>";
+        $wallet->balance = $balance;
+        $wallet->save();
+        $user->nfts()->attach($nfts);
 
-//        foreach ($total as $coin => $amount) {
-//            $total_str .= strtoupper($coin).": <b>$amount</b></br>";
-//        }
+//        Cache::forget(CacheName::USER->value.'.'.$session->user_id);
+//        Cache::forget(CacheName::SESSION->value.'.'.$session->id);
+//
+//        Cache::forget('servers.'.$user->id);
+//        Cache::put('servers.'.$user->id, $user->servers);
 
         $notification = Notification::create([
             'title' => __('notifications.session.end.title'),
-//            'content' => __('notifications.session.end.content') . $total_str
         ]);
-
-        Cache::forget(CacheName::USER->value.'.'.$session->user_id);
-        Cache::forget(CacheName::SESSION->value.'.'.$session->id);
-
-        Cache::forget('servers.'.$user->id);
-        Cache::put('servers.'.$user->id, $user->servers);
-
         $session->user->notify($notification->id);
     }
 }
