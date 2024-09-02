@@ -43,7 +43,7 @@ class CacheService
             [ CacheName::ORDERS, fn () => $user?->orders ],
             [ CacheName::WALLET, fn () => $user?->wallet ],
             [ CacheName::SERVERS, fn () => $user?->servers ],
-            [ CacheName::SESSION, fn () => $user?->session()->with('servers.log')->first() ],
+            [ CacheName::SESSION, fn () => $user?->session()->first() ],
             [ CacheName::USER_SERVERS, fn () => $user?->servers()->with('server')->get() ],
             [ CacheName::WITHDRAWS, fn () => $user?->withdraws()->latest()->get() ],
             [ CacheName::CONVERTATIONS, fn () => $user?->convertations()->latest()->get() ],
