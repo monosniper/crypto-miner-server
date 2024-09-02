@@ -28,13 +28,13 @@ class SessionService extends CachableService
 
         $session = Session::create(['user_id' => $user_id]);
         $session->coins()->sync($data['coins']);
-        $session->servers()->sync(array_values($data['servers']));
-        $servers = $session->servers;
-
-        foreach ($servers as $server) {
-            $server->log?->delete();
-            $server->start();
-        }
+        $session->servers()->sync($data['servers']);
+//        $servers = $session->servers;
+//
+//        foreach ($servers as $server) {
+//            $server->log?->delete();
+//            $server->start();
+//        }
 
         return new SessionResource($session);
     }
