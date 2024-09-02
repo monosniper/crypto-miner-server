@@ -60,13 +60,13 @@ class SessionObserver
         ]));
 
         $nfts = array_map(function ($found) {
-            return $found->id;
-        }, array_filter($log->founds, function ($found) {
-            return $found->type === 'nft';
+            return $found['id'];
+        }, array_filter($log['founds'], function ($found) {
+            return $found['type'] === 'nft';
         }));
 
-        $coins = array_filter($log->founds, function ($found) {
-            return $found->type === 'coin';
+        $coins = array_filter($log['founds'], function ($found) {
+            return $found['type'] === 'coin';
         });
 
         $wallet = $user->wallet;
