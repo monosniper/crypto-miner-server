@@ -13,6 +13,7 @@ Route::get('test', function () {
     ]);
 
     $session->servers()->sync([2]);
+    $session->save();
 
     dd($session);
 });
