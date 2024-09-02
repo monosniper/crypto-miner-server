@@ -8,5 +8,5 @@ Route::get('test/:post', function () {
 
 
 Route::get('test', function () {
-    dd(Session::all());
+    dd(Session::with('servers')->get());
 });
