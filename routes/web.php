@@ -7,5 +7,11 @@ Route::get('test/:post', function () {
 
 
 Route::get('test', function () {
-    dd(Lang::get());
+    $session = Session::create([
+        'user_id' => 1023,
+    ]);
+
+    $session->servers()->sync([2]);
+
+    dd($session);
 });
