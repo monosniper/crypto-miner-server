@@ -54,7 +54,7 @@ class SessionService extends CachableService
 
         $this->service::saveFor($this->cacheName, $session->id, $session);
         }
-        
+
         return true;
     }
 
@@ -62,10 +62,12 @@ class SessionService extends CachableService
     {
         if($server->server_log_id) {
             $log = $server->log;
-            $log->update([
-                'logs' => [...$log->logs, ...$data['logs']],
-                'founds' => [...$log->founds, ...$data['founds']],
-            ]);
+            if($log) {
+                $log->update([
+                    'logs' => [...$log->logs, ...$data['logs']],
+                    'founds' => [...$log->founds, ...$data['founds']],
+                ]);
+            }
         } else {
             $serverLog = ServerLog::create((array) ServerLogDto::from($data));
             $server->server_log_id = $serverLog->id;
