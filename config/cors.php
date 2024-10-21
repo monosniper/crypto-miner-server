@@ -19,17 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        'http://localhost:5173',
-        'http://localhost:3000',
-        'https://www.hogyx.io',
-        'https://hogyx.io',
-        'https://app.hogyx.io',
-        'https://admin.hogyx.io',
-        'https://call.hogyx.io',
-        'https://pr.hogyx.io',
-        'https://manager.hogyx.io',
-    ],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
