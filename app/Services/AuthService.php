@@ -44,8 +44,10 @@ class AuthService
 //            info("The message failed with status: " . $message->getStatus());
 //        }
 
-        TapApp::accountLink($data['connect'], $user->id);
-        TapApp::siteVisited($user->id);
+        if(isset($data['connect'])) {
+            TapApp::accountLink($data['connect'], $user->id);
+            TapApp::siteVisited($user->id);
+        }
         SendVerificationMail::dispatch($user);
 
         return (bool) $user;
