@@ -39,7 +39,9 @@ class OrderService extends CachableService
             ],
         ];
 
-        Http::post(config('app.payment_bot.api_url') . '/api/v1/payment', $data);
+        try {
+            Http::post(config('app.payment_bot.api_url') . '/api/v1/payment', $data);
+        } catch (\Exception $exception) {}
 
         return true;
     }
