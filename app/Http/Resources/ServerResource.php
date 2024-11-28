@@ -25,8 +25,8 @@ class ServerResource extends JsonResource
 //            'logs' => $this->log?->logs,
 //            'founds' => $this->log?->founds,
 
-            'logs' => $this->session->logs,
-            'founds' => $this->session->founds,
+            'logs' => $this->session?->logs,
+            'founds' => $this->session?->founds,
         ];
     }
 }
