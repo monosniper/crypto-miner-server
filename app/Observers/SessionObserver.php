@@ -61,26 +61,45 @@ class SessionObserver
             $server->stop();
         }
 
-        foreach ($session->servers as $server) {
-            $log = $server->log;
+        $logs = $session->logs;
 
-            $nfts = array_map(function ($found) {
-                return $found->id;
-            }, array_filter($log->founds, function ($found) {
-                return $found->type === 'nft';
-            }));
+        $nfts = array_map(function ($found) {
+            return $found->id;
+        }, array_filter($logs->founds, function ($found) {
+            return $found->type === 'nft';
+        }));
 
-            $coins = array_filter($log->founds, function ($found) {
-                return $found->type === 'coin';
-            });
+        $coins = array_filter($logs->founds, function ($found) {
+            return $found->type === 'coin';
+        });
 
-            foreach ($coins as $found) {
-                $slug = $found->id;
-                $balance[$slug] += $found->amount;
-            }
-
-            $user->nfts()->attach($nfts);
+        foreach ($coins as $found) {
+            $slug = $found->id;
+            $balance[$slug] += $found->amount;
         }
+
+        $user->nfts()->attach($nfts);
+
+//        foreach ($session->servers as $server) {
+//            $log = $server->log;
+//
+//            $nfts = array_map(function ($found) {
+//                return $found->id;
+//            }, array_filter($log->founds, function ($found) {
+//                return $found->type === 'nft';
+//            }));
+//
+//            $coins = array_filter($log->founds, function ($found) {
+//                return $found->type === 'coin';
+//            });
+//
+//            foreach ($coins as $found) {
+//                $slug = $found->id;
+//                $balance[$slug] += $found->amount;
+//            }
+//
+//            $user->nfts()->attach($nfts);
+//        }
 
         $wallet->balance = $balance;
         $wallet->save();
