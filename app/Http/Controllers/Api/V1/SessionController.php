@@ -11,6 +11,7 @@ use App\Models\Session;
 use App\Services\SessionService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
@@ -44,9 +45,9 @@ class SessionController extends Controller
         return $this->sendResponse($result);
     }
 
-    public function update(Session $session, UpdateSessionRequest $request): JsonResponse
+    public function update(Session $session, Request $request): JsonResponse
     {
-        $result = $this->service->update($session, $request->validated());
+        $result = $this->service->update($session, $request->all());
 
         return $this->sendResponse($result);
     }
