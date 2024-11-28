@@ -46,7 +46,7 @@ class SessionService extends CachableService
 
         if(isset($data['logs'])) {
             $session->update([
-                "logs" => $data,
+                "logs" => $data['logs'],
                 'end_at' => new Carbon($data['logs'][(count($data['logs']) - 1)]['timestamp'])
             ]);
 
