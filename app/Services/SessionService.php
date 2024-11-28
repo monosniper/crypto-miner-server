@@ -43,11 +43,11 @@ class SessionService extends CachableService
     public function update(Session $session, $data): true
     {
 //        $log = $session->servers->last()->log;
-        info(json_encode($data));
+
         if(isset($data['logs'])) {
             $session->update([
                 "logs" => $data,
-                'end_at' => new Carbon($data['logs'][(count($data['logs']) - 1)]->timestamp)
+                'end_at' => new Carbon($data['logs'][(count($data['logs']) - 1)]['timestamp'])
             ]);
 
             $this->service::saveFor($this->cacheName, $session->id, $session);
