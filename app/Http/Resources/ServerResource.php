@@ -22,11 +22,11 @@ class ServerResource extends JsonResource
             'last_work_at' => $this->last_work_at,
             'configuration' => $this->configuration->value,
             'price' => $this->configuration->price,
-//            'logs' => $this->log?->logs,
-//            'founds' => $this->log?->founds,
+            'logs' => $this->log?->logs,
+            'founds' => $this->log?->founds,
 
-            'logs' => $this->session?->logs,
-            'founds' => $this->session?->founds,
+//            'logs' => $this->session?->logs,
+//            'founds' => $this->session?->founds,
         ];
     }
 }

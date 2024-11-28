@@ -69,24 +69,24 @@ class SessionService extends CachableService
 
     public function updateServer(Server $server, $data): true
     {
-//        if($server->server_log_id) {
-//            $log = $server->log;
-//            if($log) {
-//                $log->update([
-//                    'logs' => [...$log->logs, ...$data['logs']],
-//                    'founds' => [...$log->founds, ...$data['founds']],
-//                ]);
-//            }
-//        } else {
-//            $serverLog = ServerLog::create((array) ServerLogDto::from($data));
-//            $server->server_log_id = $serverLog->id;
-//        }
-//
-//        $server->save();
-//
-//        $user = User::find($server->user_id);
-//
-//        $this->service::saveFor($this->cacheName, $user->session->id);
+        if($server->server_log_id) {
+            $log = $server->log;
+            if($log) {
+                $log->update([
+                    'logs' => [...$log->logs, ...$data['logs']],
+                    'founds' => [...$log->founds, ...$data['founds']],
+                ]);
+            }
+        } else {
+            $serverLog = ServerLog::create((array) ServerLogDto::from($data));
+            $server->server_log_id = $serverLog->id;
+        }
+
+        $server->save();
+
+        $user = User::find($server->user_id);
+
+        $this->service::saveFor($this->cacheName, $user->session->id);
 
         return true;
     }
