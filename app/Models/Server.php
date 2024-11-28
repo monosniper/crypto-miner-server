@@ -58,4 +58,9 @@ class Server extends Model
     {
         return $this->belongsTo(ServerLog::class, 'server_log_id');
     }
+
+    public function session(): BelongsTo
+    {
+        return $this->belongsTo(Session::class);
+    }
 }

@@ -15,7 +15,7 @@ class SessionObserver
     public function created(Session $session): void
     {
         $session = Session::with('servers')->find($session->id);
-        
+
         foreach ($session->servers as $server) {
             info('id: ' . $server->id);
             $server->start();
