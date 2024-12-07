@@ -20,6 +20,7 @@ class SessionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-m-rocket-launch';
 
     protected static ?string $navigationLabel = 'Сессии';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function canCreate(): bool
     {

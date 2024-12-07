@@ -23,6 +23,8 @@ class TeamResource extends Resource
 
     protected static ?string $navigationGroup = 'Пиар';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
