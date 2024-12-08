@@ -25,6 +25,7 @@ class ManagerResource extends Resource
 
     protected static ?string $label = 'Менеджеры';
     protected static ?string $pluralLabel = 'Менеджеры';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

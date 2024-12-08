@@ -11,7 +11,7 @@ class SessionsCounter extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Запущено сессий', Session::count()),
+//            Stat::make('Запущено сессий', Session::count()),
         ];
     }
 }
