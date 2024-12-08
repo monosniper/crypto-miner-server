@@ -17,6 +17,7 @@ class ServerController extends Controller
 
     public function index(): JsonResponse
     {
+        return $this->sendResponse('hello');
         return $this->sendResponse(ServerResource::collection(auth()->user()->servers));
 
 //        $result = $this->service->getAll();
