@@ -99,8 +99,10 @@ class AuthService
         if (Auth::attempt($data)) {
             request()->session()->regenerate();
 
-            TapApp::accountLink($data['connect']);
-            TapApp::siteVisited();
+            try {
+                TapApp::accountLink($data['connect']);
+                TapApp::siteVisited();
+            } catch (\Exception $e) {}
 
             return true;
         }
