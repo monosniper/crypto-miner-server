@@ -28,10 +28,10 @@ class UserService
 
     public function me(): UserResource
     {
-        if(request()->filled('connect')) {
-            TapApp::accountLink(request()->input('connect'));
-        }
-        TapApp::siteVisited();
+//        if(request()->filled('connect')) {
+//            TapApp::accountLink(request()->input('connect'));
+//        }
+//        TapApp::siteVisited();
 
         return new UserResource($this->cacheService->getSingle(CacheName::USER, auth()->id()));
     }
