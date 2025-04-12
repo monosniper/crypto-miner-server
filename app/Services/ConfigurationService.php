@@ -45,7 +45,7 @@ class ConfigurationService extends CachableService
         $coin_price = 0;
 
         foreach ($configuration['coins'] as $coin_id) {
-            $coin_price += setting('coin_prices')[$coin_id];
+            $coin_price += setting('coin_prices')[$coin_id] ?? 0;
         }
 
         $coin_count = count($configuration['coins']);
