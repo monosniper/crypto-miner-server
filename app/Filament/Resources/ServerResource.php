@@ -20,6 +20,11 @@ class ServerResource extends Resource
 
     protected static ?string $navigationLabel = 'Сервера';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -54,10 +59,12 @@ class ServerResource extends Resource
                 Forms\Components\Select::make('possibilities')
                     ->label('Возможности')
                     ->relationship(name: 'possibilities', titleAttribute: 'name')
+                    ->preload()
                     ->multiple(),
                 Forms\Components\Select::make('coins')
                     ->label('Монеты')
                     ->relationship(name: 'coins', titleAttribute: 'name')
+                    ->preload()
                     ->multiple()
             ]);
     }

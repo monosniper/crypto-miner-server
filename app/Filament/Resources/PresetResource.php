@@ -51,7 +51,7 @@ class PresetResource extends Resource
                             } else if($field['type'] === 'coins') {
                                 $coins = Coin::whereNot('slug', 'USDT')->pluck('id', 'name');
                                 foreach ($coins as $name => $id) {
-                                    $price = setting('coin_prices')[$id];
+                                    $price = setting('coin_prices')[$id] ?? 0;
                                     $options[$id] = "$name (\${$price})";
                                 }
                             }
