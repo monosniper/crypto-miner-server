@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
-use App\Enums\CacheName;
 use App\Http\Resources\CoinResource;
+use App\Models\Coin;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class CoinService extends CachableService
+class CoinService
 {
-    protected string|AnonymousResourceCollection $resource = CoinResource::class;
-    protected CacheName $cacheName = CacheName::COINS;
+    public function getAll(): AnonymousResourceCollection
+    {
+        return CoinResource::collection(Coin::all());
+    }
 }
